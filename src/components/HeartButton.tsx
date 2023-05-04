@@ -1,10 +1,9 @@
-import Image from "next/image";
 import React from "react";
 import styled from "styled-components";
 import EmptyHeartImage from "../assets/emptyheart.png";
 import HeartImage from "../assets/heart.png";
 
-const Heart = styled(Image)`
+const Heart = styled.img`
   // css
 `;
 

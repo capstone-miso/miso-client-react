@@ -1,4 +1,4 @@
-import Tab from "../components/maziplist/CategoryTab";
+import Tab from "../components/matziplist/CategoryTab";
 
 export default function matziplist() {
   return (
