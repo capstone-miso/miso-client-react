@@ -1,11 +1,6 @@
 import { Card, CardBody, Heading, Stack, Text } from "@chakra-ui/react";
-import dynamic from "next/dynamic";
 import React from "react";
-// import Doughnut from "../charts/Doughnut";
-
-const Doughnut = dynamic(() => import("../charts/Doughnut"), {
-  ssr: false,
-});
+import Doughnut from "../charts/Doughnut";
 
 const Statistics = () => {
   return (

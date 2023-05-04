@@ -1,5 +1,6 @@
 import { extendTheme } from "@chakra-ui/react";
-import { Do_Hyeon } from "next/font/google";
+// import { Do_Hyeon } from "next/font/google";
+
 
 
 type Alpha =
@@ -52,13 +53,13 @@ export const Colors = {
 
 const PRETENDARD_PREFERED_FONT =
   "'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,Roboto,'Helvetica Neue','Segoe UI','Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic','Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol',sans-serif";
-const dohyeon = Do_Hyeon({ weight: "400", subsets: ["latin"] });
+// const dohyeon = Do_Hyeon({ weight: "400", subsets: ["latin"] });
 
 const theme = extendTheme({
   fonts: {
     heading: PRETENDARD_PREFERED_FONT,
     body: PRETENDARD_PREFERED_FONT,
-    logo: dohyeon,
+    // logo: dohyeon,
   },
   colors: Colors,
   components: {
