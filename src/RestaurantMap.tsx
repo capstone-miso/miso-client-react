@@ -1,3 +1,4 @@
+import KakaoMap from './components/kakomap/KakaoMap'
 
 export default function RestaurantMap(){
 

@@ -106,7 +106,6 @@ export default function KakaoMap(){
       }
     ]
 
-  currentLocation.center
 
   const LocateCurrentPosition = () => {
     if (navigator.geolocation){

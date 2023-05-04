@@ -50,7 +50,7 @@ export default function RestaurantMarker(store: Store, setCurrentLocation: Locat
         <CustomOverlayMap 
           position={{ lat: store.lat, lng: store.lon }}
         >
-          <div className="label">
+          <div className="Label">
             <span className="left"></span>
             <span className="center">{store.name}</span>
             <span className="right"></span>

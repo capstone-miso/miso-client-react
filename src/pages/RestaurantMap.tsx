@@ -1,5 +1,6 @@
 import KakaoMap from '../components/kakomap/KakaoMap'
-// import BottomSheet from '@/components/kakomap/bottom-sheet/BottomSheet'
+import { useRef } from 'react'
+import { BottomSheet, BottomSheetRef } from 'react-spring-bottom-sheet'
 import { useEffect, useState } from "react"
 import styled from 'styled-components'
 
@@ -29,19 +30,37 @@ const MapContainer = styled.div`
 `
 
 export default function RestaurantMap(){
+  const sheetRef = useRef<BottomSheetRef>(null)
 
+  const maxHeight = 50
+  
   return (
     <>
-      <Container>
+      {/* <Container>
         <Title>
           맛집 지도
         </Title>
         <MapContainer>
           <KakaoMap />
         </MapContainer>
+      </Container> */}
+      <Container>
+        
+      <BottomSheet open ref={sheetRef}
+      snapPoints={({ minHeight, maxHeight }) => [minHeight, maxHeight]}
+      style={{background: "red"}}>
+        <button
+          onClick={() => {
+            // Full typing for the arguments available in snapTo, yay!!
+            sheetRef.current!.snapTo(({ maxHeight }) => maxHeight)
+          }}
+        >
+          Expand to full height
+        </button>
+      </BottomSheet>
+      <div >도도도</div>
+
       </Container>
-      
-      {/* <BottomSheet /> */}
     </>
   )
 }

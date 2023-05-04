@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import theme from "./constants/theme";
 import Matziplist from "./pages/matziplist";
-import RestaurantMap from "./RestaurantMap";
+import RestaurantMap from './pages/test';
 
 function App() {
   return (
