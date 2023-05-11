@@ -55,7 +55,7 @@ const MatzipListContainer = () => {
     {
       id: 1,
       image: "https://ifh.cc/g/1qrGTs.jpg",
-      name: "오돌이생삼겹",
+      name: "대원칼국수",
       type: "한식",
       like: "❤️",
     },

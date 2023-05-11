@@ -5,7 +5,7 @@ export function Container({ children }: PropsWithChildren) {
   return (
     <Flex
       w={["100%", "100%", "390px"]}
-      h="804px"
+      h="805px"
       flexGrow="1"
       overflow="auto"
       flexDir="column"
