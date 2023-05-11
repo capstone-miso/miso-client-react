@@ -1,9 +1,16 @@
 import { MapMarker, CustomOverlayMap } from "react-kakao-maps-sdk"
-import { Store } from './KakaoMap'
+import { Store, Location } from './KakaoMap'
 import { useState, useEffect } from "react"
 import styled from 'styled-components'
 
-export default function RestaurantMarker(store: Store, setCurrentLocation: Location){
+const Label = styled.div`
+    margin-top: 10px;
+    color: black;
+    font-weight: 700;
+    background-color: white;
+  `
+
+export default function RestaurantMarker({ store, currentLocation, setCurrentLocation }: { store: Store, currentLocation: Location, setCurrentLocation: Function }){
 
   const [isClicked, setIsClicked] = useState(false)
 
@@ -18,12 +25,17 @@ export default function RestaurantMarker(store: Store, setCurrentLocation: Locat
     return "/location.png"
   }
 
-  const Label = styled.div`
-    margin-top: 10px;
-    color: black;
-    font-weight: 700;
-    background-color: white;
-  `
+  useEffect(() => {
+    setCurrentLocation(() => ({ 
+      center: {
+        lat: store.lat,   //위도
+        lng: store.lon   //경도
+      },
+      errMsg: "",
+      isLoading: false
+    }))
+  }, [isClicked])
+
 
   return (
 

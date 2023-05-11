@@ -1,7 +1,8 @@
 import { Map, ZoomControl, MarkerClusterer } from "react-kakao-maps-sdk"
 import { useState, useEffect, useRef } from "react"
 import RestaurantMarker from "./RestaurantMarker"
-import { Button } from "@chakra-ui/react"
+import Button from '@material-ui/core/Button';
+import DeleteIcon from "../../assets/current-location.png";
 
 export interface Store{
   name: string,
@@ -19,6 +20,11 @@ export interface Location{
   },
   errMsg: string,
   isLoading: boolean,
+}
+
+export interface MarkerLocation {
+  location: any,
+  setLocation: any
 }
 
 export default function KakaoMap(){
@@ -106,7 +112,6 @@ export default function KakaoMap(){
       }
     ]
 
-
   const LocateCurrentPosition = () => {
     if (navigator.geolocation){
       navigator.geolocation.getCurrentPosition(
@@ -141,6 +146,10 @@ export default function KakaoMap(){
     LocateCurrentPosition()
   }, [])
   
+  const handleClick = (store: Store) => {
+    console.log(store);
+  };
+
   return(
     <>
       <Map
@@ -184,21 +193,34 @@ export default function KakaoMap(){
         >
           {stores.map((store, index) => (
             <RestaurantMarker
-              key={`${store.lat}-${store.lon}, ${setCurrentLocation}`} 
-              {...stores[index]}/>
+              key={`${store.lat}-${store.lon}`}
+              {...stores[index]}
+              store={store}
+              currentLocation={currentLocation}
+              setCurrentLocation={setCurrentLocation}/>
           ))}
 
         </MarkerClusterer>
         
       </Map>
-
-      <Button 
-        colorScheme='blue'
-        style={{position: "fixed", bottom: "15%", right: "0", width: "30%", zIndex: "10"}}
+      
+      <div
+        style={{position: "fixed", top: "9%", left: "2%", zIndex: "10"}}>
+        <Button 
+          variant="contained"
+          onClick={LocateCurrentPosition}
+          startIcon={<img src={"./current-location.png"} alt="cafeImage" width="30px"/>}
+          style={{background: "white", fontWeight: "700", borderRadius: "50px"}}>
+          내 위치로
+        </Button>
+      </div>
+      {/* <button 
+        // colorScheme='blue'
+        style={{position: "fixed", top: "9%", left: "2%", width: "30%", zIndex: "10"}}
         onClick={LocateCurrentPosition}>
-        {/* leftIcon={<Image src={cafeIcon} alt="cafeImage" layout="fill"/>}> */}
+        leftIcon={<Image src={"./cafe.png"} alt="cafeImage" layout="fill"/>}
           현재 위치
-      </Button>
+      </button> */}
     </>
   )
 }
