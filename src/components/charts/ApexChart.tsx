@@ -1,37 +1,61 @@
+import { Heading, Stack, Text } from "@chakra-ui/react";
 import React from "react";
-import { Pie, PieChart } from "recharts";
+import ReactApexChart from "react-apexcharts";
 
-export default function ApexChart() {
-  const data01 = [
-    {
-      name: "Group A",
-      value: 67,
-    },
-    {
-      name: "Group B",
-      value: 21,
-    },
-    {
-      name: "Group C",
-      value: 11,
-    },
-    {
-      name: "Group D",
-      value: 27,
-    },
-  ];
+interface ApexChartProps {}
 
-  return (
-    <PieChart width={300} height={250}>
-      <Pie
-        data={data01}
-        dataKey="value"
-        nameKey="name"
-        cx="50%"
-        cy="50%"
-        outerRadius={50}
-        fill="#8884d8"
-      />
-    </PieChart>
-  );
+interface ApexChartState {
+  series: number[];
+  options: ApexCharts.ApexOptions;
 }
+
+class ApexChart extends React.Component<ApexChartProps, ApexChartState> {
+  constructor(props: ApexChartProps) {
+    super(props);
+
+    this.state = {
+      series: [60, 20, 15, 5],
+      options: {
+        chart: {
+          width: 380,
+          type: "pie",
+        },
+        labels: ["봄", "여름", "가을", "겨울"],
+        responsive: [
+          {
+            breakpoint: 480,
+            options: {
+              chart: {
+                width: 280,
+              },
+              legend: {
+                position: "bottom",
+              },
+            },
+          },
+        ],
+      },
+    };
+  }
+
+  render() {
+    return (
+      <>
+        <Stack mt="20px">
+          <Heading fontSize="lg">계절별 방문자 비율</Heading>
+          <Text fontSize="xs">#봄에많이찾는</Text>
+          <div id="chart">
+            <ReactApexChart
+              options={this.state.options}
+              series={this.state.series}
+              type="pie"
+              width={350}
+            />
+          </div>
+        </Stack>
+      </>
+    );
+  }
+}
+
+export default ApexChart;
