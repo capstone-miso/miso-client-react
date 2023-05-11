@@ -8,8 +8,19 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 
-// for문 도는 방식으로 고쳐야함
 function FoodMatzipList() {
+  interface FoodType {
+    id: number;
+    type: string;
+  }
+
+  const foodButton: FoodType[] = [
+    { id: 0, type: "한식" },
+    { id: 1, type: "중식" },
+    { id: 2, type: "일식" },
+    { id: 3, type: "양식" },
+    { id: 4, type: "기타" },
+  ];
   return (
     <>
       <Flex
@@ -26,66 +37,20 @@ function FoodMatzipList() {
           direction="column"
           align="center"
         >
-          <Card key="elevated" variant="elevated" w="350px">
-            <CardHeader>
-              <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
-                <Image
-                  boxSize="18px"
-                  src="https://ifh.cc/g/rZHQ4y.png"
-                  alt="집"
-                />
-                <Heading size="sm">한식</Heading>
-              </Flex>
-            </CardHeader>
-          </Card>
-          <Card key="elevated" variant="elevated" w="350px">
-            <CardHeader>
-              <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
-                <Image
-                  boxSize="18px"
-                  src="https://ifh.cc/g/rZHQ4y.png"
-                  alt="집"
-                />
-                <Heading size="sm">중식</Heading>
-              </Flex>
-            </CardHeader>
-          </Card>
-          <Card key="elevated" variant="elevated" w="350px">
-            <CardHeader>
-              <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
-                <Image
-                  boxSize="18px"
-                  src="https://ifh.cc/g/rZHQ4y.png"
-                  alt="집"
-                />
-                <Heading size="sm">일식</Heading>
-              </Flex>
-            </CardHeader>
-          </Card>
-          <Card key="elevated" variant="elevated" w="350px">
-            <CardHeader>
-              <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
-                <Image
-                  boxSize="18px"
-                  src="https://ifh.cc/g/rZHQ4y.png"
-                  alt="집"
-                />
-                <Heading size="sm">양식</Heading>
-              </Flex>
-            </CardHeader>
-          </Card>
-          <Card key="elevated" variant="elevated" w="350px">
-            <CardHeader>
-              <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
-                <Image
-                  boxSize="18px"
-                  src="https://ifh.cc/g/rZHQ4y.png"
-                  alt="집"
-                />
-                <Heading size="sm">기타</Heading>
-              </Flex>
-            </CardHeader>
-          </Card>
+          {foodButton.map((FoodType) => (
+            <Card key={FoodType.id} variant="elevated" w="350px">
+              <CardHeader>
+                <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
+                  <Image
+                    boxSize="18px"
+                    src="https://ifh.cc/g/rZHQ4y.png"
+                    alt="집"
+                  />
+                  <Heading size="sm">{FoodType.type}</Heading>
+                </Flex>
+              </CardHeader>
+            </Card>
+          ))}
         </Stack>
       </Flex>
     </>

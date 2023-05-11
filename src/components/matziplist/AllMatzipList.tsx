@@ -36,11 +36,43 @@ const MatzipListContainer = () => {
   //   setLike(!like);
   // };
 
-  const matzipTable: [string, string, string, string][] = [
-    ["https://ifh.cc/g/HY2lWp.jpg", "시홍쓰", "중식", "❤️"],
-    ["https://ifh.cc/g/HnMJm7.jpg", "춘천집", "한식", "❤️"],
-    ["https://ifh.cc/g/dKD1wS.png", "개미집투", "한식", "❤️"],
-    ["https://ifh.cc/g/1qrGTs.jpg", "오돌이생삼겹", "한식", "❤️"],
+  interface Matzip {
+    id: number;
+    image: string;
+    name: string;
+    type: string;
+    like: string;
+  }
+
+  const matzipTable: Matzip[] = [
+    {
+      id: 0,
+      image: "https://ifh.cc/g/HY2lWp.jpg",
+      name: "시홍쓰",
+      type: "중식",
+      like: "❤️",
+    },
+    {
+      id: 1,
+      image: "https://ifh.cc/g/1qrGTs.jpg",
+      name: "오돌이생삼겹",
+      type: "한식",
+      like: "❤️",
+    },
+    {
+      id: 2,
+      image: "https://ifh.cc/g/dKD1wS.png",
+      name: "개미집투",
+      type: "한식",
+      like: "❤️",
+    },
+    {
+      id: 3,
+      image: "https://ifh.cc/g/1qrGTs.jpg",
+      name: "오돌이생삼겹",
+      type: "한식",
+      like: "❤️",
+    },
   ];
 
   return (
@@ -56,21 +88,21 @@ const MatzipListContainer = () => {
           <Table w="350px">
             <Tbody>
               {/* <HeartButton like={like} onClick={toggleLike} /> */}
-              {matzipTable.map(([imageUrl, menu, type, like], index) => (
-                <Tr key={index}>
+              {matzipTable.map((Matzip) => (
+                <Tr key={Matzip.id}>
                   <Td>
                     <Image
                       boxSize="100px"
-                      src={imageUrl}
-                      alt={menu}
+                      src={Matzip.image}
+                      alt={Matzip.name}
                       borderRadius="lg"
                     />
                   </Td>
                   <Td>
-                    <Heading size="sm">{menu}</Heading>
-                    <Text fontSize="xs">{type}</Text>
+                    <Heading size="sm">{Matzip.name}</Heading>
+                    <Text fontSize="xs">{Matzip.type}</Text>
                   </Td>
-                  <Td>{like}</Td>
+                  <Td>{Matzip.like}</Td>
                 </Tr>
               ))}
             </Tbody>

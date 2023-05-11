@@ -15,10 +15,16 @@ type CardProps = {
 };
 
 const AgainListCard = ({ title, content }: CardProps) => {
-  const again: [string, string][] = [
-    ["https://ifh.cc/g/vcwjFd.jpg", "시홍쓰"],
-    ["https://ifh.cc/g/oKLQGh.jpg", "대원칼국수"],
-    ["https://ifh.cc/g/8KxBlw.jpg", "보승회관"],
+  interface Again {
+    id: number;
+    image: string;
+    name: string;
+  }
+
+  const again: Again[] = [
+    { id: 0, image: "https://ifh.cc/g/vcwjFd.jpg", name: "시홍쓰" },
+    { id: 1, image: "https://ifh.cc/g/oKLQGh.jpg", name: "대원칼국수" },
+    { id: 2, image: "https://ifh.cc/g/8KxBlw.jpg", name: "보승회관" },
   ];
 
   return (
@@ -53,7 +59,7 @@ const AgainListCard = ({ title, content }: CardProps) => {
                     더보기
                   </Text>
                   <Card variant="unstyled" direction="row" w="390px">
-                    {again.map(([imageUrl, store], index) => (
+                    {again.map((Again) => (
                       <Card
                         variant="unstyled"
                         alignItems="center"
@@ -63,17 +69,17 @@ const AgainListCard = ({ title, content }: CardProps) => {
                         h="115px"
                         mr="1"
                         ml="1"
-                        key={index}
+                        key={Again.id}
                       >
                         <Image
                           w="950px"
                           h="95px"
-                          src={imageUrl}
+                          src={Again.image}
                           alt="food"
                           borderRadius="lg"
                         />
                         <Text fontStyle="bold" fontSize="xs">
-                          {store}
+                          {Again.name}
                         </Text>
                       </Card>
                     ))}
