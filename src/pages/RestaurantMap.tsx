@@ -1,9 +1,10 @@
 import KakaoMap from '../components/kakomap/KakaoMap'
 import { useEffect, useState, useRef } from "react"
 import Sheet from 'react-modal-sheet';
-import styled from 'styled-components'
-import MatzipListContainer from '../components/matziplist/AllMatzipList';
+import { Store } from '../components/kakomap/KakaoMap';
+import RestaurantList from '../components/kakomap/RestaurantList';
 import { Image } from "@chakra-ui/react";
+import styled from 'styled-components'
 
 const Container = styled.div`
   width: 100vw;
@@ -80,7 +81,9 @@ export default function RestaurantMap(){
           }>
           <Sheet.Container>
             <Sheet.Header />
-            <Sheet.Content><MatzipListContainer/></Sheet.Content>
+            <Sheet.Content>
+              <RestaurantList />
+            </Sheet.Content>
           </Sheet.Container>
 
           <Sheet.Backdrop

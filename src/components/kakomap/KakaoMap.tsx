@@ -2,7 +2,6 @@ import { Map, ZoomControl, MarkerClusterer } from "react-kakao-maps-sdk"
 import { useState, useEffect, useRef } from "react"
 import RestaurantMarker from "./RestaurantMarker"
 import Button from '@material-ui/core/Button';
-import DeleteIcon from "../../assets/current-location.png";
 
 export interface Store{
   name: string,
@@ -196,7 +195,6 @@ export default function KakaoMap(){
               key={`${store.lat}-${store.lon}`}
               {...stores[index]}
               store={store}
-              currentLocation={currentLocation}
               setCurrentLocation={setCurrentLocation}/>
           ))}
 

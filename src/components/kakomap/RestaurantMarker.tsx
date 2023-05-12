@@ -4,13 +4,13 @@ import { useState, useEffect } from "react"
 import styled from 'styled-components'
 
 const Label = styled.div`
-    margin-top: 10px;
-    color: black;
-    font-weight: 700;
-    background-color: white;
+  margin-top: 10px;
+  color: black;
+  font-weight: 700;
+  background-color: white;
   `
 
-export default function RestaurantMarker({ store, currentLocation, setCurrentLocation }: { store: Store, currentLocation: Location, setCurrentLocation: Function }){
+export default function RestaurantMarker({ store, setCurrentLocation }: { store: Store , setCurrentLocation: Function }){
 
   const [isClicked, setIsClicked] = useState(false)
 
@@ -26,7 +26,7 @@ export default function RestaurantMarker({ store, currentLocation, setCurrentLoc
   }
 
   useEffect(() => {
-    setCurrentLocation(() => ({ 
+    setCurrentLocation((prev: any) => ({ 
       center: {
         lat: store.lat,   //위도
         lng: store.lon   //경도
