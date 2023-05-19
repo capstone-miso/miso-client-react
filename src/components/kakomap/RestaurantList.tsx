@@ -11,17 +11,18 @@ const Container = styled.div`
 
 const District = styled.div`
   width: 100%;
-  height: 10%;
+  height: 8%;
   font-weight: 700;
-  font-size: 22px;
+  font-size: 18px;
   `
 
 const RestaurantContainer = styled.div`
   width: 100%;
-  height: 90%;
+  height: 92%;
   `
 
 export default function RestaurantList(){
+  let location = "광진구 군자동"
 
   let stores: Store[] = 
     [
@@ -86,7 +87,7 @@ export default function RestaurantList(){
   return(
     <Container>
       <District>
-        광진구 군자동
+        {location}
       </District>
 
       <RestaurantContainer>

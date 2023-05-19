@@ -80,7 +80,7 @@ export default function RestaurantMap(){
             console.log('> Current snap point index:', snapIndex)
           }>
           <Sheet.Container>
-            <Sheet.Header />
+            <Sheet.Header/>
             <Sheet.Content>
               <RestaurantList />
             </Sheet.Content>
