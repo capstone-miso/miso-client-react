@@ -1,15 +1,21 @@
-import {
-  Card,
-  CardHeader,
-  Flex,
-  Heading,
-  Image,
-  Stack,
-} from "@chakra-ui/react";
+import { Flex, Stack } from "@chakra-ui/react";
 import React from "react";
+import "./ImageWithText.css";
 
-// for문 도는 방식으로 고쳐야함
 function KeywordMatzipList() {
+  interface KeywordType {
+    id: number;
+    type: string;
+    image: string;
+  }
+
+  const keywordButton: KeywordType[] = [
+    { id: 0, type: "#가격대", image: "https://ifh.cc/g/8p8xlh.jpg" },
+    { id: 1, type: "#계절별", image: "https://ifh.cc/g/rGhZLW.jpg" },
+    { id: 2, type: "#시간대", image: "https://ifh.cc/g/BTDtGn.jpg" },
+    { id: 3, type: "#방문자", image: "https://ifh.cc/g/B9G4KN.jpg" },
+  ];
+
   return (
     <>
       <Flex
@@ -26,102 +32,30 @@ function KeywordMatzipList() {
           direction="column"
           align="center"
         >
-          <Card key="elevated" variant="elevated" w="350px">
-            <CardHeader>
-              <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
-                <Image
-                  boxSize="18px"
-                  src="https://ifh.cc/g/GZq5S6.png"
-                  alt="집"
-                />
-                <Heading size="sm">#점심에많이가는</Heading>
-              </Flex>
-            </CardHeader>
-          </Card>
-          <Card key="elevated" variant="elevated" w="350px">
-            <CardHeader>
-              <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
-                <Image
-                  boxSize="18px"
-                  src="https://ifh.cc/g/GZq5S6.png"
-                  alt="집"
-                />
-                <Heading size="sm">#저녁에많이가는</Heading>
-              </Flex>
-            </CardHeader>
-          </Card>
-          <Card key="elevated" variant="elevated" w="350px">
-            <CardHeader>
-              <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
-                <Image
-                  boxSize="18px"
-                  src="https://ifh.cc/g/GZq5S6.png"
-                  alt="집"
-                />
-                <Heading size="sm">#가성비맛집</Heading>
-              </Flex>
-            </CardHeader>
-          </Card>
-          <Card key="elevated" variant="elevated" w="350px">
-            <CardHeader>
-              <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
-                <Image
-                  boxSize="18px"
-                  src="https://ifh.cc/g/GZq5S6.png"
-                  alt="집"
-                />
-                <Heading size="sm">#회식은이곳에서</Heading>
-              </Flex>
-            </CardHeader>
-          </Card>
-          <Card key="elevated" variant="elevated" w="350px">
-            <CardHeader>
-              <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
-                <Image
-                  boxSize="18px"
-                  src="https://ifh.cc/g/GZq5S6.png"
-                  alt="집"
-                />
-                <Heading size="sm">#봄에많이찾는</Heading>
-              </Flex>
-            </CardHeader>
-          </Card>
-          <Card key="elevated" variant="elevated" w="350px">
-            <CardHeader>
-              <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
-                <Image
-                  boxSize="18px"
-                  src="https://ifh.cc/g/GZq5S6.png"
-                  alt="집"
-                />
-                <Heading size="sm">#여름에많이찾는</Heading>
-              </Flex>
-            </CardHeader>
-          </Card>
-          <Card key="elevated" variant="elevated" w="350px">
-            <CardHeader>
-              <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
-                <Image
-                  boxSize="18px"
-                  src="https://ifh.cc/g/GZq5S6.png"
-                  alt="집"
-                />
-                <Heading size="sm">#가을에많이찾는</Heading>
-              </Flex>
-            </CardHeader>
-          </Card>
-          <Card key="elevated" variant="elevated" w="350px">
-            <CardHeader>
-              <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
-                <Image
-                  boxSize="18px"
-                  src="https://ifh.cc/g/GZq5S6.png"
-                  alt="집"
-                />
-                <Heading size="sm">#겨울에많이찾는</Heading>
-              </Flex>
-            </CardHeader>
-          </Card>
+          {keywordButton.map((KeywordType) => (
+            <div key={KeywordType.id}>
+              <div
+                style={{
+                  justifySelf: "center",
+                  width: "390px",
+                  height: "200px",
+                  backgroundImage: `url(${KeywordType.image})`,
+                  backgroundSize: "cover",
+                  position: "relative",
+                  backgroundRepeat: "no-repeat",
+                  display: "inline-block",
+                  marginTop: "10px",
+                  marginBottom: "10px",
+                  maxWidth: "100%",
+                  zIndex: "0",
+                }}
+              >
+                <div className="banner-txt">
+                  <h1>{KeywordType.type}</h1>
+                </div>
+              </div>
+            </div>
+          ))}
         </Stack>
       </Flex>
     </>

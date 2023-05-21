@@ -30,14 +30,35 @@ const ImageContainer = styled.div`
   padding: 0px 10px 0px 0px;
 `
 
-
 const ContentImage = styled.img`
   height: 18px;
   vertical-align: middle;
 `
 
+const HeartButtonContainer = styled.div`
+  width: 20%;
+  display: felx;
+  justify-content: flex-end;
+`
+
+const HeartButton = styled.img`
+  height: 50%;
+`
 
 export default function Restaurant({ store }: { store: Store }){
+  const [isClicked, setIsClicked] = useState<boolean>(false)  //사용자가 찜했는지 여부를 받아와 변수 초기화 필요
+
+  useEffect(() => {
+    console.log(isClicked)
+  }, [isClicked])
+
+  const getHeartButtonIcon = () => {
+    if (isClicked){
+      return "./cafe.png"   //하트 아이콘으로 변경 예정
+    }
+    
+    return "./restaurant.png"
+  }
 
   return(
     <Container>
@@ -51,34 +72,43 @@ export default function Restaurant({ store }: { store: Store }){
       store.mainImage
       }
       style={{objectFit: "cover", width: "100%", height: "15em", paddingBottom: "10px"}}/>
+      
+      <div style={{width: "100%", display: "flex"}}>
+        <div style={{width: "80%"}}>      
+          <Content>
+            <ImageContainer>
+              <ContentImage src="./home-icon.png" />
+            </ImageContainer>
+            <div>
+              { store.category }
+            </div>
+          </Content>
+          <Content>
+            <ImageContainer>
+              <ContentImage src="./location-icon.png" />
+            </ImageContainer>
+            <div>
+              { store.address }
+            </div>
+          </Content>
 
-      <Content>
-        <ImageContainer>
-          <ContentImage src="./home-icon.png" />
-        </ImageContainer>
-        <div>
-          { store.category }
+          <Content>
+            <ImageContainer>
+              <ContentImage src="./phone-icon.png" />
+            </ImageContainer>
+            <div>
+              { store.phone }
+            </div>
+          </Content>
         </div>
-      </Content>
-
-      <Content>
-        <ImageContainer>
-          <ContentImage src="./location-icon.png" />
-        </ImageContainer>
-        <div>
-          { store.address }
-        </div>
-      </Content>
-
-      <Content>
-        <ImageContainer>
-          <ContentImage src="./phone-icon.png" />
-        </ImageContainer>
-        <div>
-          { store.phone }
-        </div>
-      </Content>
-
+        
+        <HeartButtonContainer>  
+          <HeartButton 
+            src={getHeartButtonIcon()}
+            alt="찜하기" 
+            onClick={() => setIsClicked(!isClicked)}/>
+        </HeartButtonContainer>
+      </div>
     </Container>
   )             
 }

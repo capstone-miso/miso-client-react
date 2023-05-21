@@ -12,8 +12,8 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 
-function MyAgainListTable() {
-  interface MyMatzip {
+function SimilarAgainListTable() {
+  interface SimilarMatzip {
     id: number;
     image: string;
     storeName: string;
@@ -22,7 +22,7 @@ function MyAgainListTable() {
     like: string;
   }
 
-  const matzipTable: MyMatzip[] = [
+  const matzipTable: SimilarMatzip[] = [
     {
       id: 0,
       image: "https://ifh.cc/g/HY2lWp.jpg",
@@ -69,18 +69,18 @@ function MyAgainListTable() {
         <TableContainer maxW="100%">
           <Table w="350px">
             <Tbody>
-              {matzipTable.map((MyMatzip) => (
-                <Tr key={MyMatzip.id}>
+              {matzipTable.map((SimilarMatzip) => (
+                <Tr key={SimilarMatzip.id}>
                   <Td>
                     <Image
                       boxSize="100px"
-                      src={MyMatzip.image}
-                      alt={MyMatzip.storeName}
+                      src={SimilarMatzip.image}
+                      alt={SimilarMatzip.storeName}
                       borderRadius="lg"
                     />
                   </Td>
                   <Td>
-                    <Heading size="sm">{MyMatzip.storeName}</Heading>
+                    <Heading size="sm">{SimilarMatzip.storeName}</Heading>
                     <Stack mt="5px">
                       <Flex mb="-10px">
                         <Image
@@ -90,7 +90,7 @@ function MyAgainListTable() {
                           mr="5px"
                           mt="4px"
                         />
-                        <Text fontSize="xs">{MyMatzip.category}</Text>
+                        <Text fontSize="xs">{SimilarMatzip.category}</Text>
                       </Flex>
                       <Flex>
                         <Image
@@ -101,12 +101,12 @@ function MyAgainListTable() {
                           mt="5px"
                         />
                         <Text fontSize="xs" mt="2px">
-                          {MyMatzip.address}
+                          {SimilarMatzip.address}
                         </Text>
                       </Flex>
                     </Stack>
                   </Td>
-                  <Td>{MyMatzip.like}</Td>
+                  <Td>{SimilarMatzip.like}</Td>
                 </Tr>
               ))}
             </Tbody>
@@ -117,4 +117,4 @@ function MyAgainListTable() {
   );
 }
 
-export default MyAgainListTable;
+export default SimilarAgainListTable;

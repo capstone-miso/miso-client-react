@@ -1,4 +1,3 @@
-import { useState, useEffect, useRef } from "react"
 import { Store } from './KakaoMap'
 import styled from 'styled-components'
 import Restaurant from './Restaurant'

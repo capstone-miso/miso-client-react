@@ -2,6 +2,7 @@ import {
   Flex,
   Heading,
   Image,
+  Stack,
   Table,
   TableContainer,
   Tbody,
@@ -36,11 +37,48 @@ const MatzipListContainer = () => {
   //   setLike(!like);
   // };
 
-  const matzipTable: [string, string, string, string][] = [
-    ["https://ifh.cc/g/HY2lWp.jpg", "시홍쓰", "중식", "❤️"],
-    ["https://ifh.cc/g/HnMJm7.jpg", "춘천집", "한식", "❤️"],
-    ["https://ifh.cc/g/dKD1wS.png", "개미집투", "한식", "❤️"],
-    ["https://ifh.cc/g/1qrGTs.jpg", "오돌이생삼겹", "한식", "❤️"],
+  interface Matzip {
+    storeId: number;
+    image: string;
+    storeName: string;
+    category: string;
+    address: string;
+    like: string;
+  }
+
+  const matzipTable: Matzip[] = [
+    {
+      storeId: 0,
+      image: "https://ifh.cc/g/HY2lWp.jpg",
+      storeName: "시홍쓰",
+      category: "중식",
+      address: "gd",
+      like: "❤️",
+    },
+    {
+      storeId: 1,
+      image: "https://ifh.cc/g/1qrGTs.jpg",
+      storeName: "대원칼국수",
+      category: "한식",
+      address: "",
+      like: "❤️",
+    },
+    {
+      storeId: 2,
+      image: "https://ifh.cc/g/dKD1wS.png",
+      storeName: "개미집투",
+      category: "한식",
+      address: "",
+      like: "❤️",
+    },
+    {
+      storeId: 3,
+      image: "https://ifh.cc/g/1qrGTs.jpg",
+      storeName: "오돌이생삼겹",
+      category: "한식",
+      address: "",
+      like: "❤️",
+    },
   ];
 
   return (
@@ -56,21 +94,42 @@ const MatzipListContainer = () => {
           <Table w="350px">
             <Tbody>
               {/* <HeartButton like={like} onClick={toggleLike} /> */}
-              {matzipTable.map(([imageUrl, menu, type, like], index) => (
-                <Tr key={index}>
+              {matzipTable.map((Matzip) => (
+                <Tr key={Matzip.storeId}>
                   <Td>
                     <Image
                       boxSize="100px"
-                      src={imageUrl}
-                      alt={menu}
+                      src={Matzip.image}
+                      alt={Matzip.storeName}
                       borderRadius="lg"
                     />
                   </Td>
                   <Td>
-                    <Heading size="sm">{menu}</Heading>
-                    <Text fontSize="xs">{type}</Text>
+                    <Heading size="sm">{Matzip.storeName}</Heading>
+                    <Stack mt="5px">
+                      <Flex mb="-10px">
+                        <Image
+                          boxSize="12px"
+                          src="https://ifh.cc/g/QXRC8y.png"
+                          alt="종류"
+                          mr="5px"
+                          mt="4px"
+                        />
+                        <Text fontSize="xs">{Matzip.category}</Text>
+                      </Flex>
+                      <Flex>
+                        <Image
+                          boxSize="12px"
+                          src="https://ifh.cc/g/Xjtdvd.png"
+                          alt="위치"
+                          mr="5px"
+                          mt="5px"
+                        />
+                        <Text fontSize="xs">{Matzip.address}</Text>
+                      </Flex>
+                    </Stack>
                   </Td>
-                  <Td>{like}</Td>
+                  <Td>{Matzip.like}</Td>
                 </Tr>
               ))}
             </Tbody>
