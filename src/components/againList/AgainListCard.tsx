@@ -9,29 +9,26 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+
+interface Again {
+  id: number;
+  image: string;
+  name: string;
+}
+
 type CardProps = {
   title: string;
   content: string;
   url: string;
+  again: Again[];
 };
 
-const AgainListCard = ({ title, content, url }: CardProps) => {
+const AgainListCard = ({ title, content, url, again }: CardProps) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
     navigate(url);
   };
-  interface Again {
-    id: number;
-    image: string;
-    name: string;
-  }
-
-  const again: Again[] = [
-    { id: 0, image: "https://ifh.cc/g/vcwjFd.jpg", name: "시홍쓰" },
-    { id: 1, image: "https://ifh.cc/g/oKLQGh.jpg", name: "대원칼국수" },
-    { id: 2, image: "https://ifh.cc/g/8KxBlw.jpg", name: "보승회관" },
-  ];
 
   return (
     <>
