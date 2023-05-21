@@ -162,11 +162,11 @@ export default function BestRestaurants(){
 
       <RestaurantContainer>
         {stores.map((store, index) => (
-            <Restaurant
-              key={`${store.lat}-${store.lon}`}
-              {...stores[index]}
-              store={store}/>
-          ))}
+          <Restaurant
+            key={`${store.lat}-${store.lon}`}
+            {...stores[index]}
+            store={store}/>
+        ))}
       </RestaurantContainer>
     </Container>
   )
