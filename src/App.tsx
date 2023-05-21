@@ -5,6 +5,9 @@ import theme from "./constants/theme";
 import AgainList from "./pages/againList";
 import MatzipDetail from "./pages/matzipDetail";
 import Matziplist from "./pages/matziplist";
+import MuchAgainList from "./pages/muchAgainList";
+import MyAgainList from "./pages/myAgainList";
+import SimilarAgainList from "./pages/similarAgainList";
 import RestaurantMap from "./RestaurantMap";
 
 function App() {
@@ -16,6 +19,12 @@ function App() {
           <Route path="/matzipList" element={<Matziplist />}></Route>
           <Route path="/matzipDetail" element={<MatzipDetail />}></Route>
           <Route path="/againList" element={<AgainList />}></Route>
+          <Route path="/myagainList" element={<MyAgainList />}></Route>
+          <Route
+            path="/similaragainList"
+            element={<SimilarAgainList />}
+          ></Route>
+          <Route path="/muchagainList" element={<MuchAgainList />}></Route>
         </Routes>
       </BrowserRouter>
     </ChakraProvider>

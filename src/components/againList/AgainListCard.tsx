@@ -8,13 +8,19 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React from "react";
-
+import { useNavigate } from "react-router-dom";
 type CardProps = {
   title: string;
   content: string;
+  url: string;
 };
 
-const AgainListCard = ({ title, content }: CardProps) => {
+const AgainListCard = ({ title, content, url }: CardProps) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(url);
+  };
   interface Again {
     id: number;
     image: string;
@@ -29,7 +35,13 @@ const AgainListCard = ({ title, content }: CardProps) => {
 
   return (
     <>
-      <Flex w="390px">
+      <Flex
+        w="390px"
+        justifyContent="center"
+        justifyItems="center"
+        alignContent="center"
+        alignItems="center"
+      >
         <Card
           variant="unstyled"
           alignItems="left"
@@ -55,6 +67,7 @@ const AgainListCard = ({ title, content }: CardProps) => {
                     alignItems="right"
                     alignSelf="right"
                     mb="1"
+                    onClick={() => handleClick()}
                   >
                     더보기
                   </Text>
