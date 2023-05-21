@@ -1,17 +1,18 @@
 import { Card, CardBody, Heading, Stack, Text } from "@chakra-ui/react";
 import React from "react";
 
+// api 정보 반영
 function MatzipMenu() {
   interface Menu {
-    id: number;
-    menuName: string;
-    price: string;
+    mid: number;
+    name: string;
+    cost: string;
   }
   const menu: Menu[] = [
-    { id: 0, menuName: "손칼국수", price: "8,000원" },
-    { id: 1, menuName: "칼만두국", price: "9,000원" },
-    { id: 2, menuName: "들깨칼국수", price: "9,000원" },
-    { id: 3, menuName: "클로렐라만두-한판", price: "6,000원" },
+    { mid: 0, name: "손칼국수", cost: "8,000원" },
+    { mid: 1, name: "칼만두국", cost: "9,000원" },
+    { mid: 2, name: "들깨칼국수", cost: "9,000원" },
+    { mid: 3, name: "클로렐라만두-한판", cost: "6,000원" },
   ];
 
   return (
@@ -27,12 +28,12 @@ function MatzipMenu() {
             대표메뉴
           </Heading>
           {menu.map((Menu) => (
-            <Stack key={Menu.id}>
+            <Stack key={Menu.mid}>
               <Text mt="8px" mb="-10px" as="b" fontSize="sm">
-                {Menu.menuName}
+                {Menu.name}
               </Text>
               <Text color="gray.500" fontSize="xs">
-                {Menu.price}
+                {Menu.cost}
               </Text>
             </Stack>
           ))}

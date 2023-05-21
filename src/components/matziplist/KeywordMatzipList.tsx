@@ -1,14 +1,7 @@
-import {
-  Card,
-  CardHeader,
-  Flex,
-  Heading,
-  Image,
-  Stack,
-} from "@chakra-ui/react";
+import { Flex, Stack } from "@chakra-ui/react";
 import React from "react";
+import "./ImageWithText.css";
 
-// for문 도는 방식으로 고쳐야함
 function KeywordMatzipList() {
   interface KeywordType {
     id: number;
@@ -43,18 +36,13 @@ function KeywordMatzipList() {
           align="center"
         >
           {keywordButton.map((KeywordType) => (
-            <Card key={KeywordType.id} variant="elevated" w="350px">
-              <CardHeader>
-                <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
-                  <Image
-                    boxSize="18px"
-                    src="https://ifh.cc/g/GZq5S6.png"
-                    alt="집"
-                  />
-                  <Heading size="sm">{KeywordType.type}</Heading>
-                </Flex>
-              </CardHeader>
-            </Card>
+            <div key={KeywordType.id}>
+              <div className="banner">
+                <div className="banner-txt">
+                  <h1>{KeywordType.type}</h1>
+                </div>
+              </div>
+            </div>
           ))}
         </Stack>
       </Flex>

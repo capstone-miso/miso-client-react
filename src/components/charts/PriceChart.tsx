@@ -50,7 +50,7 @@ class ApexChart extends React.Component<Props, State> {
           intersect: false,
         },
         xaxis: {
-          categories: ["동종 업계", "현재"],
+          categories: ["현재", "동종업계"],
         },
       },
     };
@@ -59,8 +59,8 @@ class ApexChart extends React.Component<Props, State> {
   render() {
     return (
       <Stack mt="30px">
-        <Heading fontSize="lg">계절별 방문자 비율</Heading>
-        <Text fontSize="xs">#저녁에많이가는</Text>
+        <Heading fontSize="lg">동종업계 대비 평균 식사비용</Heading>
+        <Text fontSize="xs">#가성비맛집</Text>
         <div id="chart">
           <ReactApexChart
             options={this.state.options}

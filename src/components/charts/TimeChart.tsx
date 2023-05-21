@@ -17,7 +17,7 @@ class ApexChart extends React.Component<Props, State> {
       series: [
         {
           name: "Desktops",
-          data: [10, 41, 35, 51, 49, 62, 69, 91, 145, 90, 20, 10],
+          data: [10, 41, 100, 145, 99, 62, 69, 91, 80, 90, 20, 10],
         },
       ],
       options: {
@@ -65,7 +65,7 @@ class ApexChart extends React.Component<Props, State> {
       <>
         <Stack mt="30px">
           <Heading fontSize="lg">계절별 방문자 비율</Heading>
-          <Text fontSize="xs">#저녁에많이가는</Text>
+          <Text fontSize="xs">#점심에많이가는</Text>
           <div id="chart">
             <ReactApexChart
               options={this.state.options}

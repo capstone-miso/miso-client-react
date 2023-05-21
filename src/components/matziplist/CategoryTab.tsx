@@ -23,7 +23,14 @@ export default function CategoryTab() {
       >
         <Tabs w="390px">
           <Header title="맛집리스트" />
-          <TabList bg="white" mt="20" w="390px" h="50px" position="fixed">
+          <TabList
+            bg="white"
+            mt="20"
+            w="390px"
+            h="50px"
+            position="fixed"
+            zIndex="9999"
+          >
             <Tab color="orange.300" w="130px">
               전체
             </Tab>
