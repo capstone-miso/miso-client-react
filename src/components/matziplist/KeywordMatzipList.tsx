@@ -36,7 +36,8 @@ function KeywordMatzipList() {
             <div key={KeywordType.id}>
               <div
                 style={{
-                  width: "400px",
+                  justifySelf: "center",
+                  width: "390px",
                   height: "200px",
                   backgroundImage: `url(${KeywordType.image})`,
                   backgroundSize: "cover",
