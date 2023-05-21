@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { Store } from '../components/kakomap/KakaoMap'
 import Restaurant from '../components/kakomap/Restaurant'
 import { Button } from "@chakra-ui/react"
+import { useState, useEffect } from "react"
 
 const Container = styled.div`
   width: 100vw;
@@ -51,6 +52,8 @@ const ScrollingWrapper = styled.div`
     display:none;
   }
   padding: 0 10px;
+  display: felx;
+  justify-content: center;
 `
 
 const ButtonContainer = styled.div`
@@ -126,9 +129,28 @@ export default function BestRestaurants(){
       }
     ]
 
-  const categories: string[] = [
-    "8,000원 이하", "15,000원 이하", "25,000원 이하", "25,000원 이상"
-  ]
+  const [clickeButtonIndex, setClickeButtonIndex] = useState<number>(0)
+  let categoryType: string = "가격대"
+  let categories: string[] = []
+
+  const setRankType = () => {
+    switch(categoryType){
+      case '가격대':
+        categories = ["8,000원 이하", "15,000원 이하", "25,000원 이하", "25,000원 이상"]
+        break;
+      case '계절':
+        categories = ["봄", "여름", "가을", "겨울"]
+        break;
+      case '참석인원':
+        categories = ["5명 이하", "10명 이하", "20명 이하", "20명 이상"]
+        break;
+      default:
+        categories = ["아침", "점심", "저녁"]
+        break;
+    }
+  }
+
+  setRankType()
 
   return(
     <Container>
@@ -138,22 +160,24 @@ export default function BestRestaurants(){
 
       <TitleContainer>
         <div>
-          <MainTitle>#가격대</MainTitle>
-          <SubTitle>가격대로 찾아보는 가성비 맛집</SubTitle>
+          <MainTitle>#{categoryType}</MainTitle>
+          <SubTitle>{categoryType}로 찾아보는 맛집</SubTitle>
         </div>
       </TitleContainer>
 
-    <ScrollingWrapper>
+    <ScrollingWrapper >
       {categories.map((category, index) => (
         <ButtonContainer
           key={index}>
-          <Button 
+          <Button
             variant='outline'
             borderRadius='3xl'
             _hover={{ bg: 'orange', textColor: 'white', borderColor: 'orange' }}
-            bg={'white'}
-            borderColor='black'
-            fontWeight='semibold'>
+            bg={index == clickeButtonIndex ? 'orange' : 'white'}
+            borderColor={index == clickeButtonIndex ? 'orange' : '#b3b3b3'}
+            fontWeight='semibold'
+            onClick={() => setClickeButtonIndex(index)}
+            textColor={index == clickeButtonIndex ? 'white' : 'black'}>
             {category}
           </Button>
         </ButtonContainer>
