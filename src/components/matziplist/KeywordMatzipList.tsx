@@ -11,9 +11,9 @@ function KeywordMatzipList() {
 
   const keywordButton: KeywordType[] = [
     { id: 0, type: "#가격대", image: "https://ifh.cc/g/8p8xlh.jpg" },
-    { id: 1, type: "#계절별", image: "https://ifh.cc/g/l2x5jh.jpg" },
-    { id: 2, type: "#시간대", image: "https://ifh.cc/g/l2x5jh.jpg" },
-    { id: 3, type: "#방문자", image: "https://ifh.cc/g/l2x5jh.jpg" },
+    { id: 1, type: "#계절별", image: "https://ifh.cc/g/rGhZLW.jpg" },
+    { id: 2, type: "#시간대", image: "https://ifh.cc/g/BTDtGn.jpg" },
+    { id: 3, type: "#방문자", image: "https://ifh.cc/g/B9G4KN.jpg" },
   ];
 
   return (
