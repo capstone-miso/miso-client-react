@@ -8,22 +8,37 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React from "react";
+import { useNavigate } from "react-router-dom";
+
+interface Again {
+  id: number;
+  image: string;
+  name: string;
+}
 
 type CardProps = {
   title: string;
   content: string;
+  url: string;
+  again: Again[];
 };
 
-const AgainListCard = ({ title, content }: CardProps) => {
-  const again: [string, string][] = [
-    ["https://ifh.cc/g/vcwjFd.jpg", "시홍쓰"],
-    ["https://ifh.cc/g/oKLQGh.jpg", "대원칼국수"],
-    ["https://ifh.cc/g/8KxBlw.jpg", "보승회관"],
-  ];
+const AgainListCard = ({ title, content, url, again }: CardProps) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(url);
+  };
 
   return (
     <>
-      <Flex w="390px">
+      <Flex
+        w="390px"
+        justifyContent="center"
+        justifyItems="center"
+        alignContent="center"
+        alignItems="center"
+      >
         <Card
           variant="unstyled"
           alignItems="left"
@@ -49,11 +64,12 @@ const AgainListCard = ({ title, content }: CardProps) => {
                     alignItems="right"
                     alignSelf="right"
                     mb="1"
+                    onClick={() => handleClick()}
                   >
                     더보기
                   </Text>
                   <Card variant="unstyled" direction="row" w="390px">
-                    {again.map(([imageUrl, store], index) => (
+                    {again.map((Again) => (
                       <Card
                         variant="unstyled"
                         alignItems="center"
@@ -63,17 +79,17 @@ const AgainListCard = ({ title, content }: CardProps) => {
                         h="115px"
                         mr="1"
                         ml="1"
-                        key={index}
+                        key={Again.id}
                       >
                         <Image
                           w="950px"
                           h="95px"
-                          src={imageUrl}
+                          src={Again.image}
                           alt="food"
                           borderRadius="lg"
                         />
                         <Text fontStyle="bold" fontSize="xs">
-                          {store}
+                          {Again.name}
                         </Text>
                       </Card>
                     ))}

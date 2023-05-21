@@ -1,12 +1,12 @@
 import { Flex, Stack } from "@chakra-ui/react";
 import React from "react";
 import Header from "../Header";
-import MyAgainListTable from "./MyAgainListTable";
+import SimilarAgainListTable from "./SimilarAgainListTable";
 
-function MyAgainListContainer() {
+function SimilarAgainListContainer() {
   return (
     <>
-      <Header title="내가 또갈집" />
+      <Header title="비슷한 또갈집" />
       <Flex
         justifyContent="center"
         justifyItems="center"
@@ -14,11 +14,11 @@ function MyAgainListContainer() {
         alignItems="center"
       >
         <Stack maxW="390px" mt="85px">
-          <MyAgainListTable />
+          <SimilarAgainListTable />
         </Stack>
       </Flex>
     </>
   );
 }
 
-export default MyAgainListContainer;
+export default SimilarAgainListContainer;
