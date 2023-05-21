@@ -1,7 +1,10 @@
 import { MapMarker, CustomOverlayMap } from "react-kakao-maps-sdk"
 import { Store, Location } from './KakaoMap'
-import { useState, useEffect } from "react"
+import { useState, useEffect, Ref } from "react"
 import styled from 'styled-components'
+import { border } from "@chakra-ui/react"
+import zIndex from "@material-ui/core/styles/zIndex"
+import { relative } from "path"
 
 const Label = styled.div`
   margin-top: 10px;
@@ -10,65 +13,94 @@ const Label = styled.div`
   background-color: white;
   `
 
-export default function RestaurantMarker({ store, setCurrentLocation }: { store: Store , setCurrentLocation: Function }){
+export default function RestaurantMarker({ store, setCurrentLocation, level,index,selectedIndex,setSelectedIndex,mapRef }: { store: Store , setCurrentLocation: Function,level:number,index:number,selectedIndex:number, setSelectedIndex:Function,mapRef:kakao.maps.Map}){
 
-  const [isClicked, setIsClicked] = useState(false)
 
-  const getMarkerImage = (sector: string): string => {
-    if (sector == "음식점"){
+  const getMarkerImage = (category: string): string => {
+    if (category.includes("음식점")){
       return "/restaurant.png"
     }
-    else if (sector == "제과,베이커리"){
+    else if (category == "제과,베이커리"){
       return "/cafe.png"
     }
     
     return "/location.png"
   }
 
-  useEffect(() => {
-    setCurrentLocation((prev: any) => ({ 
-      center: {
-        lat: store.lat,   //위도
-        lng: store.lon   //경도
-      },
-      errMsg: "",
-      isLoading: false
-    }))
-  }, [isClicked])
-
 
   return (
 
     <>
-      <MapMarker
-        position={{ lat: store.lat, lng: store.lon }}
-        onClick={() => setIsClicked(true)}
-        image={{
-          src: getMarkerImage(store.sector), 
-          size: {
-            width: 50,
-            height: 50,
-          }, 
-          options: {
-            offset: {
-              x: 30,
-              y: 70,
-            },
-          },
-        }}>
-      </MapMarker>
       
-      {isClicked && (
+      {level && level<=2 ? 
+
+        selectedIndex===index?
         <CustomOverlayMap 
-          position={{ lat: store.lat, lng: store.lon }}
+          position={{ lat: store.lat+0.0001*level, lng: store.lon }}
         >
-          <div className="Label">
-            <span className="left"></span>
-            <span className="center">{store.name}</span>
-            <span className="right"></span>
+          <div style={{display:"flex",flexDirection:"column",alignItems:"center"} }>
+            <div onClick={()=>console.log(level)} style={{height:"50px",display:"flex",flexDirection:"row",borderRadius:"20px",border:"1px solid orange",backgroundColor:"orange"}}>
+              <div style={{width:"50px",height:"100%",justifyContent:"center",alignItems:"center",display:"flex"}}>
+                <img style={{width:"40px",height:"40px",borderRadius:"60px", border:"2px solid white"}} src={store.mainImage===null?
+                  "/default-image.png"
+                :
+                  store.mainImage
+                }/>
+              </div>
+              <div style={{height:"40px",paddingTop:"2px"}}>
+                <p style={{fontSize:"17px", fontWeight:"bold",color:"white"}}>{store.storeName}</p>
+                <p style={{fontSize:"12px",fontWeight:"bold",color:"white"}}>{store.category}</p>
+              </div>
+              <div style={{width:"20px"}}>
+                
+              </div>
+            </div>
+            <div style={{width:"0",height:"0",borderTop:"20px solid orange",borderLeft:"10px solid transparent",borderRight:"10px solid transparent"}}></div>
           </div>
         </CustomOverlayMap>
-      )}
+        :
+        <MapMarker
+        position={{ lat: store.lat, lng: store.lon }}
+        onClick={() => {setCurrentLocation((prev: any) => ({ 
+          center: {
+            lat: store.lat,   //위도
+            lng: store.lon   //경도
+          },
+          errMsg: "",
+          isLoading: false
+        }))
+        setSelectedIndex(index)}}
+        image={{
+          src: getMarkerImage(store.category), 
+          size: {
+            width: 40,
+            height: 40,
+          }, 
+        }}></MapMarker>
+      :
+      <MapMarker
+        position={{ lat: store.lat, lng: store.lon }}
+        onClick={() => {setCurrentLocation((prev: any) => ({ 
+          center: {
+            lat: store.lat,   //위도
+            lng: store.lon   //경도
+          },
+          errMsg: "",
+          isLoading: false
+        }))
+        setSelectedIndex(index)
+        mapRef.setLevel(2)
+      }}
+        image={{
+          src: getMarkerImage(store.category), 
+          size: {
+            width: 40,
+            height: 40,
+          }, 
+        }}>
+
+      </MapMarker>
+      }
     </>
   );
 }

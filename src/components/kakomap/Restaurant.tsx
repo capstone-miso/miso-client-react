@@ -42,10 +42,14 @@ export default function Restaurant({ store }: { store: Store }){
   return(
     <Container>
       <NameContainer>
-        <Name>{ store.name }&nbsp;</Name>
+        <Name>{ store.storeName }&nbsp;</Name>
       </NameContainer>
 
-      <img src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMDA4MzFfMzQg%2FMDAxNTk4ODAyNzA5NzM4.ZEgHu39PEYbQ8Npcc6AvqGGoNmVOPpeG5PFfSKQSYi8g.dD3HWOAy289Zs3zbQA44rY1UNL0u4qclxt32iHPW1zEg.JPEG.950905_%2FIMG_3171.jpg&type=sc960_832" 
+      <img src={store.mainImage===null?
+      "/default-image.png"
+      :
+      store.mainImage
+      }
       style={{objectFit: "cover", width: "100%", height: "15em", paddingBottom: "10px"}}/>
 
       <Content>
@@ -53,7 +57,7 @@ export default function Restaurant({ store }: { store: Store }){
           <ContentImage src="./home-icon.png" />
         </ImageContainer>
         <div>
-          { store.sector }
+          { store.category }
         </div>
       </Content>
 

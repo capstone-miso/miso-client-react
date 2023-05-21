@@ -2,14 +2,25 @@ import { Map, ZoomControl, MarkerClusterer } from "react-kakao-maps-sdk"
 import { useState, useEffect, useRef } from "react"
 import RestaurantMarker from "./RestaurantMarker"
 import Button from '@material-ui/core/Button';
+import axios, { AxiosResponse } from "axios";
+import { Category, Store } from "@mui/icons-material";
+import { delay } from "framer-motion";
+import { resolve } from "path";
+import { map } from "@amcharts/amcharts5/.internal/core/util/Array";
+//import { Button } from "@amcharts/amcharts5";
 
 export interface Store{
-  name: string,
+  id:number
+  storeName: string,
   lat: number,
   lon: number,
   address: string,
   phone: string,
-  sector: string
+  category: string,
+  keywords:string[],
+  mainImage:string,
+  preference:boolean,
+  sector:string
 }
 
 export interface Location{
@@ -26,7 +37,7 @@ export interface MarkerLocation {
   setLocation: any
 }
 
-export default function KakaoMap(){
+export default function KakaoMap({stores,setStoreList}:{stores:Store[],setStoreList:Function}){
   const kakaoMap = {
     width: "100%",
     height: "100%"
@@ -41,7 +52,7 @@ export default function KakaoMap(){
         lng: 127.63534848763183
       },
       errMsg: "",
-      isLoading: true
+      isLoading: false
     })
 
   const mapRef = useRef<any>()
@@ -51,67 +62,12 @@ export default function KakaoMap(){
     map.setLevel(level - 2, {anchor: cluster.getCenter()});
   }
 
-  let stores: Store[] = 
-    [
-      {
-        name: "보승회관",
-        lat: 37.5539147125513,
-        lon: 127.077390878728,
-        address: "서울 광진구 능동로 267",
-        phone: "070-5030-5424",
-        sector: "음식점"
-      },
-      {
-        name: "카레당",
-        lat: 37.55265374492164,
-        lon: 127.07673319398943,
-        address: "서울 광진구 능동로 251",
-        phone: "02-464-4022",
-        sector: "음식점"
-      },
-      {
-        name: "비밀 군자점",
-        lat: 37.5538530201804,
-        lon: 127.078035889182,
-        address: "서울 광진구 능동로 268",
-        phone: "010-2480-3330",
-        sector: "제과,베이커리"
-      },
-      {
-        name: "이이요",
-        lat: 37.555185919524014,
-        lon: 127.07890418373962,
-        address: "서울 광진구 능동로32길 6",
-        phone: "02-3437-2225",
-        sector: "음식점"
-      },
-      {
-        name: "한촌설렁탕 군자점",
-        lat: 37.5529383510837,
-        lon: 127.076900976702,
-        address: "서울 광진구 군자동 242",
-        phone: "02-468-4200",
-        sector: "음식점"
-      },
-      {
-        name: "소사면옥",
-        lat: 37.55400798942731,
-        lon: 127.07803944590441,
-        address: "서울 광진구 능동 283-7",
-        phone: "02-447-0904",
-        sector: "음식점"
-      },
-      {
-        name: "군자돈까스",
-        lat: 37.55450602563902,
-        lon: 127.07836476861877,
-        address: "서울 광진구 능동 282-6",
-        phone: "02-6402-0010",
-        sector: "음식점"
-      }
-    ]
+  const [isClickSearch,setIsClickSearch]=useState<boolean>(false)
+  const [selectedTap,setSelectedTap]=useState<String>(" 전 체 ")
+
 
   const LocateCurrentPosition = () => {
+    currentLocation.isLoading=true
     if (navigator.geolocation){
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -149,13 +105,64 @@ export default function KakaoMap(){
     console.log(store);
   };
 
+  const detectLevel=(map:kakao.maps.Map)=>{
+    if(map.getLevel()>2){
+      setSelectedIndex(-1)
+    }
+  }
+
+  const insertStores=async (type:number)=>{
+    const items=await getStores(type)
+    setStoreList(items)
+  }
+
+  const getStores= async(type:number):Promise<Store[]>=>{
+    setIsClickSearch(false)
+    setStoreList([])
+    const pages:number[]=[]
+    for(var i=1;i<=mapRef.current.getLevel();i++){
+      pages.push(i)
+    }
+    const promises=pages.map((page)=>searchStore(type,page))
+    const result=await Promise.all(promises)
+    const items:Store[]=[]
+    result.forEach(element => {
+      element.forEach(item=>{
+        items.push(item)
+      })
+    });
+    return items
+  }
+
+  const searchStore= async (type:number,page:number):Promise<Store[]>=>{
+    let lat=currentLocation.center.lat
+    let lng=currentLocation.center.lng
+    let category=""
+    if (type===1){
+      category=""
+    }
+    const response= await axios.get("https://dishcovery.site/api/store",{
+      params:{
+        page:page,
+        lat:lat,
+        lon:lng,
+        category:category
+      }
+    })
+    return response.data.dtoList
+  }
+
+  const [selectedIndex,setSelectedIndex]=useState<number>(-1)
+
   return(
     <>
       <Map
         style={kakaoMap}
         center={currentLocation.center}
         level = {3}
-        onZoomChanged={(map) => setLevel(map.getLevel())}
+        onZoomChanged={(map) => {setLevel(map.getLevel())
+          detectLevel(map)}
+        }
         ref={mapRef}
         onCenterChanged={(map) => setCurrentLocation({
           center: {
@@ -163,7 +170,7 @@ export default function KakaoMap(){
             lng: map.getCenter().getLng(),
           },
           errMsg: "",
-          isLoading: true
+          isLoading: false
         })}
       >
         <ZoomControl />
@@ -192,10 +199,16 @@ export default function KakaoMap(){
         >
           {stores.map((store, index) => (
             <RestaurantMarker
-              key={`${store.lat}-${store.lon}`}
+              key={`${store.id}`}
               {...stores[index]}
               store={store}
-              setCurrentLocation={setCurrentLocation}/>
+              setCurrentLocation={setCurrentLocation}
+              level={level}
+              index={index}
+              selectedIndex={selectedIndex}
+              setSelectedIndex={setSelectedIndex}
+              mapRef={mapRef.current}
+              />
           ))}
 
         </MarkerClusterer>
@@ -204,14 +217,77 @@ export default function KakaoMap(){
       
       <div
         style={{position: "fixed", top: "9%", left: "2%", zIndex: "10"}}>
-        <Button 
+        {currentLocation.isLoading===true ?
+          <Button
+            variant="contained"
+            onClick={LocateCurrentPosition}
+            startIcon={<img src={"./current-location.png"} alt="cafeImage" width="30px"/>}
+            style={{background: "orange", fontWeight: "700", borderRadius: "50px"}}>
+            이동중입니다...
+          </Button>
+          :
+          <Button 
           variant="contained"
           onClick={LocateCurrentPosition}
           startIcon={<img src={"./current-location.png"} alt="cafeImage" width="30px"/>}
           style={{background: "white", fontWeight: "700", borderRadius: "50px"}}>
           내 위치로
         </Button>
+        }
       </div>
+      {
+        isClickSearch ?
+          <>
+        <div style={{position: "fixed", top: "9%", left: "71%", zIndex: "10"}}>
+        <Button
+          variant="contained"
+          onClick={()=>setIsClickSearch(false)}
+          style={{backgroundColor:"orange",height:"42px",fontWeight: "700", borderRadius: "50px"}}>
+          &nbsp;&nbsp;&nbsp;X&nbsp;&nbsp;&nbsp;
+        </Button>
+      </div>
+
+      <div style={{position: "fixed", top: "16%", left: "71%", zIndex: "10"}}>
+        <Button
+          variant="contained"
+          onClick={()=>
+            {insertStores(0)
+            setSelectedTap(" 전 체 ")}}
+          style={{backgroundColor:"white",height:"42px",fontWeight: "700", borderRadius: "50px"}}>
+          &nbsp;전&nbsp;체&nbsp;
+        </Button>
+      </div>
+      <div style={{position: "fixed", top: "23%", left: "71%", zIndex: "10"}}>
+        <Button
+          variant="contained"
+          onClick={()=>{
+            insertStores(1)
+            setSelectedTap("음식점")}}
+          style={{backgroundColor:"white",height:"42px",fontWeight: "700", borderRadius: "50px"}}>
+          음식점
+        </Button>
+      </div>
+      <div style={{position: "fixed", top: "30%", left: "71%", zIndex: "10"}}>
+        <Button
+          variant="contained"
+          onClick={()=>{setSelectedTap(" 카 페 ")
+          insertStores(2)
+        }}
+          style={{backgroundColor:"white",height:"42px",fontWeight: "700", borderRadius: "50px"}}>
+          &nbsp;카&nbsp;페&nbsp;
+        </Button>
+      </div></>
+        :
+        <div style={{position: "fixed", top: "9%", left: "71%", zIndex: "10"}}>
+        <Button
+          variant="contained"
+          onClick={()=>setIsClickSearch(true)}
+          style={{backgroundColor:"white",height:"42px",fontWeight: "700", borderRadius: "50px"}}>
+          {selectedTap}
+        </Button>
+      </div>
+      }
+
       {/* <button 
         // colorScheme='blue'
         style={{position: "fixed", top: "9%", left: "2%", width: "30%", zIndex: "10"}}

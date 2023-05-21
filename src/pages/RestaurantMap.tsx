@@ -28,15 +28,15 @@ const MapContainer = styled.div`
 export default function RestaurantMap(){
   const [isOpen, setOpen] = useState(true);
   const windowSize = useRef([window.innerWidth, window.innerHeight])
-
+  let tempStores:Store[]=[]
+  const [stores,setStoreList]=useState<Store[]>(tempStores);
   const currentSnapPoint = useRef<number>(1)
 
   const getSnapPoints = (): any => {
     let snapPoints = []
-
-    for(let i = windowSize.current[1]*0.9; i >= windowSize.current[1]*0.2; i--){
-      snapPoints.push(i)
-    }
+    snapPoints.push(windowSize.current[1]*0.9)
+    snapPoints.push(windowSize.current[1]*0.8)
+    snapPoints.push(windowSize.current[1]*0.2)
 
     return snapPoints
   }
@@ -68,21 +68,25 @@ export default function RestaurantMap(){
 
       <MapContainer
         onClick={showMapzipList}>
-        <KakaoMap />
+        <KakaoMap 
+        stores={stores}
+        setStoreList={setStoreList}
+        />
       </MapContainer>
 
       <Sheet 
         isOpen={isOpen}
         onClose={() => setOpen(false)}
         snapPoints={ snapPoints }
-        initialSnap={ snapPoints.length - 1 }
+        initialSnap={ snapPoints.length -1}
         onSnap={snapIndex =>
             console.log('> Current snap point index:', snapIndex)
           }>
           <Sheet.Container>
             <Sheet.Header/>
             <Sheet.Content>
-              <RestaurantList />
+              <RestaurantList
+              stores={stores} />
             </Sheet.Content>
           </Sheet.Container>
 
