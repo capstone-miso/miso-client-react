@@ -1,4 +1,4 @@
-import { Stack } from "@chakra-ui/react";
+import { Flex, Stack } from "@chakra-ui/react";
 import React from "react";
 import Header from "../Header";
 import AgainListCard from "./AgainListCard";
@@ -31,15 +31,22 @@ function AgainListContainer() {
   return (
     <>
       <Header title="또갈집" />
-      <Stack maxW="390px" mt="85px">
-        {againButtonList.map((AgainButton) => (
-          <AgainListCard
-            key={AgainButton.id}
-            title={AgainButton.title}
-            content={AgainButton.content}
-          />
-        ))}
-      </Stack>
+      <Flex
+        justifyContent="center"
+        justifyItems="center"
+        alignContent="center"
+        alignItems="center"
+      >
+        <Stack maxW="390px" mt="85px">
+          {againButtonList.map((AgainButton) => (
+            <AgainListCard
+              key={AgainButton.id}
+              title={AgainButton.title}
+              content={AgainButton.content}
+            />
+          ))}
+        </Stack>
+      </Flex>
     </>
   );
 }
