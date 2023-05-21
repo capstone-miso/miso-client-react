@@ -45,7 +45,7 @@ function KeywordMatzipList() {
                   backgroundRepeat: "no-repeat",
                   display: "inline-block",
                   marginTop: "10px",
-                  marginBottom: "5%",
+                  marginBottom: "10px",
                   maxWidth: "100%",
                   zIndex: "0",
                 }}
