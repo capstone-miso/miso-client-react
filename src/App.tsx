@@ -1,6 +1,7 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
+import Main from "./components/main/Main";
 import theme from "./constants/theme";
 import AgainList from "./pages/againList";
 import MatzipDetail from "./pages/matzipDetail";
@@ -15,6 +16,7 @@ function App() {
     <ChakraProvider theme={theme}>
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<Main />}></Route>
           <Route path="/test" element={<RestaurantMap />}></Route>
           <Route path="/matzipList" element={<Matziplist />}></Route>
           <Route path="/matzipDetail" element={<MatzipDetail />}></Route>
