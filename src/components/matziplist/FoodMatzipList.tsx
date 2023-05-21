@@ -63,13 +63,14 @@ function FoodMatzipList() {
           justifyItems="center"
           alignContent="center"
           alignItems="center"
+          key={FoodType.id}
         >
-          <Stack key={FoodType.id} pt="45px" maxW="100%" direction="column">
+          <Stack pt="45px" maxW="100%" direction="column">
             <Image
               src={FoodType.image}
               alt="Green double couch with wooden legs"
             />
-            <Flex maxW="100%">
+            <Flex>
               <Image
                 mt="10px"
                 ml="10px"
