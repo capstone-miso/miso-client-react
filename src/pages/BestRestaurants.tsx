@@ -145,9 +145,9 @@ export default function BestRestaurants(){
 
     <ScrollingWrapper>
       {categories.map((category, index) => (
-        <ButtonContainer>
+        <ButtonContainer
+          key={index}>
           <Button 
-            key={index}
             variant='outline'
             borderRadius='3xl'
             _hover={{ bg: 'orange', textColor: 'white', borderColor: 'orange' }}
