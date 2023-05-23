@@ -1,14 +1,16 @@
 import axios from 'axios'
+import { API } from '../config'
+import { Store } from "../models/Store"
 
-const url = 'https://dishcovery.site/api/rank'
-
-export const getApiData = async () => {
-  const data = await axios.get(url, {
+export const getStoreRank = async (keyWord: string, page: number, size: number) : Promise<Store[]> => {
+  const stores = await axios.get(API.RANK_PAGE, {
     params: {
-      keyword: 'WINTER',
-      page: 0,
-      size: 10
+      keyword: keyWord,
+      page: page,
+      size: size
     }})
 
-  return data.data
+  // let stores: Store[] = stores.data
+
+  return stores.data
 }

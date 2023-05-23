@@ -3,11 +3,6 @@ import { useState, useEffect, useRef } from "react"
 import RestaurantMarker from "./RestaurantMarker"
 import Button from '@material-ui/core/Button';
 import axios, { AxiosResponse } from "axios";
-import { Category, Store } from "@mui/icons-material";
-import { delay } from "framer-motion";
-import { resolve } from "path";
-import { map } from "@amcharts/amcharts5/.internal/core/util/Array";
-//import { Button } from "@amcharts/amcharts5";
 
 export interface Store{
   id:number
