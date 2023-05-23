@@ -3,6 +3,7 @@ import { Store } from '../components/kakomap/KakaoMap'
 import Restaurant from '../components/kakomap/Restaurant'
 import { Button } from "@chakra-ui/react"
 import { useState, useEffect } from "react"
+import { getApiData } from "../services/RankAPI"
 
 const Container = styled.div`
   width: 100vw;
@@ -150,7 +151,13 @@ export default function BestRestaurants(){
     }
   }
 
-  setRankType()
+  setRankType();
+
+  const test = async () => {
+    const data = await getApiData();
+    console.log(data)
+  }
+  test()
 
   return(
     <Container>
