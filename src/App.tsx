@@ -1,9 +1,10 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import Main from "./components/main/Main";
+import BottomNavigation from "./components/BottomNavigation";
 import theme from "./constants/theme";
 import AgainList from "./pages/againList";
+import Main from "./pages/main";
 import MatzipDetail from "./pages/matzipDetail";
 import Matziplist from "./pages/matziplist";
 import MuchAgainList from "./pages/muchAgainList";
@@ -11,10 +12,11 @@ import MyAgainList from "./pages/myAgainList";
 import SimilarAgainList from "./pages/similarAgainList";
 import RestaurantMap from "./RestaurantMap";
 
-function App() {
+const App: React.FC = () => {
   return (
     <ChakraProvider theme={theme}>
       <BrowserRouter>
+        <BottomNavigation />
         <Routes>
           <Route path="/" element={<Main />}></Route>
           <Route path="/test" element={<RestaurantMap />}></Route>
@@ -31,7 +33,7 @@ function App() {
       </BrowserRouter>
     </ChakraProvider>
   );
-}
+};
 
 // function App() {
 //   return (

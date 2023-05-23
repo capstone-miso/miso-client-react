@@ -6,16 +6,18 @@ import SimilarAgainListTable from "./SimilarAgainListTable";
 function SimilarAgainListContainer() {
   return (
     <>
-      <Header title="비슷한 또갈집" />
-      <Flex
-        justifyContent="center"
-        justifyItems="center"
-        alignContent="center"
-        alignItems="center"
-      >
-        <Stack maxW="390px" mt="85px">
-          <SimilarAgainListTable />
-        </Stack>
+      <Flex direction="column" alignContent="center" alignItems="center">
+        <Header title="비슷한 또갈집" />
+        <Flex
+          justifyContent="center"
+          justifyItems="center"
+          alignContent="center"
+          alignItems="center"
+        >
+          <Stack maxW="390px" mt="85px">
+            <SimilarAgainListTable />
+          </Stack>
+        </Flex>
       </Flex>
     </>
   );

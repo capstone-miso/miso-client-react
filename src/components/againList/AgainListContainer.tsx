@@ -56,24 +56,26 @@ function AgainListContainer() {
 
   return (
     <>
-      <Header title="또갈집" />
-      <Flex
-        justifyContent="center"
-        justifyItems="center"
-        alignContent="center"
-        alignItems="center"
-      >
-        <Stack maxW="390px" mt="85px">
-          {againButtonList.map((AgainButton) => (
-            <AgainListCard
-              key={AgainButton.id}
-              title={AgainButton.title}
-              content={AgainButton.content}
-              url={AgainButton.url}
-              again={AgainButton.again}
-            />
-          ))}
-        </Stack>
+      <Flex direction="column" alignContent="center" alignItems="center">
+        <Header title="또갈집" />
+        <Flex
+          justifyContent="center"
+          justifyItems="center"
+          alignContent="center"
+          alignItems="center"
+        >
+          <Stack maxW="390px" mt="85px">
+            {againButtonList.map((AgainButton) => (
+              <AgainListCard
+                key={AgainButton.id}
+                title={AgainButton.title}
+                content={AgainButton.content}
+                url={AgainButton.url}
+                again={AgainButton.again}
+              />
+            ))}
+          </Stack>
+        </Flex>
       </Flex>
     </>
   );

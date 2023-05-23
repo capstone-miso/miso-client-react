@@ -16,7 +16,7 @@ const SocialKakao = () => {
     <>
       <Image
         w="340px"
-        mt="290px"
+        mt="300px"
         src={KakaoButton}
         alt="카카오로그인"
         onClick={handleLogin}
