@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react"
-import { Store } from './KakaoMap'
+import { Store } from "../../models/Store";
 import styled from 'styled-components'
 
 const Container = styled.div`

@@ -1,4 +1,4 @@
-import { Store } from './KakaoMap'
+import { Store } from "../../models/Store";
 import styled from 'styled-components'
 import Restaurant from './Restaurant'
 

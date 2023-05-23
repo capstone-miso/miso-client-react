@@ -1,7 +1,7 @@
 import KakaoMap from '../components/kakomap/KakaoMap'
 import { useEffect, useState, useRef } from "react"
 import Sheet from 'react-modal-sheet';
-import { Store } from '../components/kakomap/KakaoMap';
+import { Store } from "../models/Store";
 import RestaurantList from '../components/kakomap/RestaurantList';
 import { Image } from "@chakra-ui/react";
 import styled from 'styled-components'

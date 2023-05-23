@@ -3,34 +3,7 @@ import { useState, useEffect, useRef } from "react"
 import RestaurantMarker from "./RestaurantMarker"
 import Button from '@material-ui/core/Button';
 import axios, { AxiosResponse } from "axios";
-
-export interface Store{
-  id:number
-  storeName: string,
-  lat: number,
-  lon: number,
-  address: string,
-  phone: string,
-  category: string,
-  keywords:string[],
-  mainImage:string,
-  preference:boolean,
-  sector:string
-}
-
-export interface Location{
-  center: {
-    lat: number,
-    lng: number,
-  },
-  errMsg: string,
-  isLoading: boolean,
-}
-
-export interface MarkerLocation {
-  location: any,
-  setLocation: any
-}
+import { Store, Location } from "../../models/Store";
 
 export default function KakaoMap({stores,setStoreList}:{stores:Store[],setStoreList:Function}){
   const kakaoMap = {

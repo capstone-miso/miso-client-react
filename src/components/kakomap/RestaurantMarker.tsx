@@ -1,20 +1,7 @@
 import { MapMarker, CustomOverlayMap } from "react-kakao-maps-sdk"
-import { Store, Location } from './KakaoMap'
-import { useState, useEffect, Ref } from "react"
-import styled from 'styled-components'
-import { border } from "@chakra-ui/react"
-import zIndex from "@material-ui/core/styles/zIndex"
-import { relative } from "path"
-
-const Label = styled.div`
-  margin-top: 10px;
-  color: black;
-  font-weight: 700;
-  background-color: white;
-  `
+import { Store, Location } from "../../models/Store";
 
 export default function RestaurantMarker({ store, setCurrentLocation, level,index,selectedIndex,setSelectedIndex,mapRef }: { store: Store , setCurrentLocation: Function,level:number,index:number,selectedIndex:number, setSelectedIndex:Function,mapRef:kakao.maps.Map}){
-
 
   const getMarkerImage = (category: string): string => {
     if (category.includes("음식점")){

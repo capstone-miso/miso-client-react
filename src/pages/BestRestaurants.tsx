@@ -73,6 +73,7 @@ export default function BestRestaurants(){
   const [clickeButtonIndex, setClickeButtonIndex] = useState<number>(0)
   
   let [stores, setStores] = useState<Store[]>([]);
+
   let categoryType: string = "가격대";
   let categories: string[] = [];
 
@@ -96,10 +97,11 @@ export default function BestRestaurants(){
   setRankType()
   
   useEffect(() => {
-    const test = async () => {
+    const setStoreRank = async () => {
       setStores(await getStoreRank('WINTER', 0, 10))
     }
-    test()
+    
+    setStoreRank()
   }, [])
   
   return(
