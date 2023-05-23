@@ -91,49 +91,58 @@ const MatzipListContainer = () => {
         alignItems="center"
       >
         <TableContainer pt="30px" maxW="100%">
-          <Table w="350px">
-            <Tbody>
-              {/* <HeartButton like={like} onClick={toggleLike} /> */}
-              {matzipTable.map((Matzip) => (
-                <Tr key={Matzip.storeId}>
-                  <Td>
-                    <Image
-                      boxSize="100px"
-                      src={Matzip.image}
-                      alt={Matzip.storeName}
-                      borderRadius="lg"
-                    />
-                  </Td>
-                  <Td>
-                    <Heading size="sm">{Matzip.storeName}</Heading>
-                    <Stack mt="5px">
-                      <Flex mb="-10px">
-                        <Image
-                          boxSize="12px"
-                          src="https://ifh.cc/g/QXRC8y.png"
-                          alt="종류"
-                          mr="5px"
-                          mt="4px"
-                        />
-                        <Text fontSize="xs">{Matzip.category}</Text>
-                      </Flex>
+          <Flex>
+            <Table w="340px">
+              <Tbody>
+                {/* <HeartButton like={like} onClick={toggleLike} /> */}
+                {matzipTable.map((Matzip) => (
+                  <Tr key={Matzip.storeId}>
+                    <Td>
+                      <Image
+                        boxSize="100px"
+                        src={Matzip.image}
+                        alt={Matzip.storeName}
+                        borderRadius="lg"
+                        ml="-20px"
+                      />
+                    </Td>
+                    <Td>
                       <Flex>
-                        <Image
-                          boxSize="12px"
-                          src="https://ifh.cc/g/Xjtdvd.png"
-                          alt="위치"
-                          mr="5px"
-                          mt="5px"
-                        />
-                        <Text fontSize="xs">{Matzip.address}</Text>
+                        <Heading ml="-95px" mb="10px" size="sm">
+                          {Matzip.storeName}
+                        </Heading>
                       </Flex>
-                    </Stack>
-                  </Td>
-                  <Td>{Matzip.like}</Td>
-                </Tr>
-              ))}
-            </Tbody>
-          </Table>
+                      <Stack ml="-95px" mt="5px">
+                        <Flex mb="-10px">
+                          <Image
+                            boxSize="12px"
+                            src="https://ifh.cc/g/QXRC8y.png"
+                            alt="종류"
+                            mr="5px"
+                            mt="4px"
+                          />
+                          <Text fontSize="xs">{Matzip.category}</Text>
+                        </Flex>
+                        <Flex>
+                          <Image
+                            boxSize="12px"
+                            src="https://ifh.cc/g/Xjtdvd.png"
+                            alt="위치"
+                            mr="5px"
+                            mt="5px"
+                          />
+                          <Text fontSize="xs">{Matzip.address}</Text>
+                        </Flex>
+                      </Stack>
+                    </Td>
+                    <Td w="60px">
+                      <Text>{Matzip.like}</Text>
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </Flex>
         </TableContainer>
       </Flex>
     </>

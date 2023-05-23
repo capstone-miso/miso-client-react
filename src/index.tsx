@@ -9,7 +9,6 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    {/* <ButtonNavigation /> */}
     <App />
   </React.StrictMode>
 );

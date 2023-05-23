@@ -6,6 +6,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
+import { Outlet } from "react-router";
 import { useNavigate } from "react-router-dom";
 import "./BottomNavigation.css";
 
@@ -19,40 +20,47 @@ const BottomNavigation: React.FC = () => {
   };
 
   return (
-    <nav className="wrapper">
-      <div
-        className={activeNav === "/test" ? "nav-link active" : "nav-link"}
-        onClick={() => handleNavClick("/test")}
-      >
-        <div>
-          <FontAwesomeIcon icon={faHome} />
+    <>
+      <nav className="wrapper">
+        <div
+          className={activeNav === "/test" ? "nav-link active" : "nav-link"}
+          onClick={() => handleNavClick("/test")}
+        >
+          <div>
+            <FontAwesomeIcon icon={faHome} />
+          </div>
         </div>
-      </div>
-      <div
-        className={activeNav === "/matzipList" ? "nav-link active" : "nav-link"}
-        onClick={() => handleNavClick("/matzipList")}
-      >
-        <div>
-          <FontAwesomeIcon icon={faCompass} />
+        <div
+          className={
+            activeNav === "/matzipList" ? "nav-link active" : "nav-link"
+          }
+          onClick={() => handleNavClick("/matzipList")}
+        >
+          <div>
+            <FontAwesomeIcon icon={faCompass} />
+          </div>
         </div>
-      </div>
-      <div
-        className={activeNav === "/againList" ? "nav-link active" : "nav-link"}
-        onClick={() => handleNavClick("/againList")}
-      >
-        <div>
-          <FontAwesomeIcon icon={faHeart} />
+        <div
+          className={
+            activeNav === "/againList" ? "nav-link active" : "nav-link"
+          }
+          onClick={() => handleNavClick("/againList")}
+        >
+          <div>
+            <FontAwesomeIcon icon={faHeart} />
+          </div>
         </div>
-      </div>
-      <div
-        className={activeNav === "/" ? "nav-link active" : "nav-link"}
-        onClick={() => handleNavClick("/againList")}
-      >
-        <div>
-          <FontAwesomeIcon icon={faUser} />
+        <div
+          className={activeNav === "/" ? "nav-link active" : "nav-link"}
+          onClick={() => handleNavClick("/againList")}
+        >
+          <div>
+            <FontAwesomeIcon icon={faUser} />
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+      <Outlet />
+    </>
   );
 };
 
