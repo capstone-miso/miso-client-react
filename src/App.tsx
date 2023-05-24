@@ -4,13 +4,13 @@ import "./App.css";
 import Main from "./components/main/Main";
 import theme from "./constants/theme";
 import AgainList from "./pages/againList";
-import MatzipDetail from "./pages/matzipDetail";
 import Matziplist from "./pages/matziplist";
 import RestaurantMap from './pages/RestaurantMap';
 import BestRestaurants from './pages/BestRestaurants';
 import MuchAgainList from "./pages/muchAgainList";
 import MyAgainList from "./pages/myAgainList";
 import SimilarAgainList from "./pages/similarAgainList";
+import MatzipDetail from "./pages/MatzipDetail";
 
 function App() {
   return (

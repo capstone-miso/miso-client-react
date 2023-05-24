@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { border } from "@chakra-ui/react"
 import zIndex from "@material-ui/core/styles/zIndex"
 import { relative } from "path"
-
+import { useNavigate } from "react-router-dom"
 const Label = styled.div`
   margin-top: 10px;
   color: black;
@@ -26,6 +26,14 @@ export default function RestaurantMarker({ store, setCurrentLocation, level,inde
     
     return "/location.png"
   }
+  const navigate=useNavigate()
+  const showStoreDetail= (storeId:number) =>{
+    navigate('../matzipDetail',{
+      state:{
+        storeId:storeId
+      }
+    })
+  }
 
 
   return (
@@ -38,8 +46,8 @@ export default function RestaurantMarker({ store, setCurrentLocation, level,inde
         <CustomOverlayMap 
           position={{ lat: store.lat+0.0001*level, lng: store.lon }}
         >
-          <div style={{display:"flex",flexDirection:"column",alignItems:"center"} }>
-            <div onClick={()=>console.log(level)} style={{height:"50px",display:"flex",flexDirection:"row",borderRadius:"20px",border:"1px solid orange",backgroundColor:"orange"}}>
+          <div style={{display:"flex",flexDirection:"column",alignItems:"center"}} onClick={()=>showStoreDetail(store.id)}>
+            <div style={{height:"50px",display:"flex",flexDirection:"row",borderRadius:"20px",border:"1px solid orange",backgroundColor:"orange"}}>
               <div style={{width:"50px",height:"100%",justifyContent:"center",alignItems:"center",display:"flex"}}>
                 <img style={{width:"40px",height:"40px",borderRadius:"60px", border:"2px solid white"}} src={store.mainImage===null?
                   "/default-image.png"

@@ -1,8 +1,11 @@
 import { Heading, Stack, Text } from "@chakra-ui/react";
 import React from "react";
 import ReactApexChart from "react-apexcharts";
+import { storeDetail } from "../../pages/MatzipDetail";
 
-interface Props {}
+interface Props {
+  storeData:storeDetail|null
+}
 
 interface State {
   series: { name: string; data: number[] }[];
@@ -13,11 +16,24 @@ class ApexChart extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
+    
+  }
+
+  render() {
+    const {storeData}=this.props
+    const times:number[]=[storeData?.visitedTime.under8 ? storeData?.visitedTime.under8:0,storeData?.visitedTime.hour9 ? storeData?.visitedTime.hour9:0
+      ,storeData?.visitedTime.hour10 ? storeData?.visitedTime.hour10:0,storeData?.visitedTime.hour11 ? storeData?.visitedTime.hour11:0
+      ,storeData?.visitedTime.hour12 ? storeData?.visitedTime.hour12:0,storeData?.visitedTime.hour13 ? storeData?.visitedTime.hour13:0
+      ,storeData?.visitedTime.hour14 ? storeData?.visitedTime.hour14:0,storeData?.visitedTime.hour15 ? storeData?.visitedTime.hour15:0
+      ,storeData?.visitedTime.hour16 ? storeData?.visitedTime.hour16:0,storeData?.visitedTime.hour17 ? storeData?.visitedTime.hour17:0
+      ,storeData?.visitedTime.hour18 ? storeData?.visitedTime.hour18:0,storeData?.visitedTime.hour19 ? storeData?.visitedTime.hour19:0
+      ,storeData?.visitedTime.hour20 ? storeData?.visitedTime.hour20:0,storeData?.visitedTime.hour21 ? storeData?.visitedTime.hour21:0
+      ,storeData?.visitedTime.after22 ? storeData?.visitedTime.after22:0]
     this.state = {
       series: [
         {
-          name: "Desktops",
-          data: [10, 41, 100, 145, 99, 62, 69, 91, 80, 90, 20, 10],
+          name: "방문횟수",
+          data: times,
         },
       ],
       options: {
@@ -42,6 +58,8 @@ class ApexChart extends React.Component<Props, State> {
         },
         xaxis: {
           categories: [
+            "08:00",
+            "09:00",
             "10:00",
             "11:00",
             "12:00",
@@ -54,17 +72,15 @@ class ApexChart extends React.Component<Props, State> {
             "19:00",
             "20:00",
             "21:00",
+            "22:00",
           ],
         },
       },
     };
-  }
-
-  render() {
     return (
       <>
         <Stack mt="30px">
-          <Heading fontSize="lg">계절별 방문자 비율</Heading>
+          <Heading fontSize="lg">시간대별 방문자수</Heading>
           <Text fontSize="xs">#점심에많이가는</Text>
           <div id="chart">
             <ReactApexChart

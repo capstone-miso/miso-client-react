@@ -37,19 +37,19 @@ export interface MarkerLocation {
   setLocation: any
 }
 
-export default function KakaoMap({stores,setStoreList}:{stores:Store[],setStoreList:Function}){
+export default function KakaoMap({stores,setStoreList,setCurrentAddress}:{stores:Store[],setStoreList:Function,setCurrentAddress:Function}){
   const kakaoMap = {
     width: "100%",
     height: "100%"
   }
-
   const [level, setLevel] = useState<number>(3)
+
 
   let [currentLocation, setCurrentLocation] =
     useState<Location>({
       center: {
-        lat: 37.27019987550703,
-        lng: 127.63534848763183
+        lat: 37.549605785399,
+        lng: 127.075150292867
       },
       errMsg: "",
       isLoading: false
@@ -138,10 +138,16 @@ export default function KakaoMap({stores,setStoreList}:{stores:Store[],setStoreL
     let lat=currentLocation.center.lat
     let lng=currentLocation.center.lng
     let category=""
-    if (type===1){
+    if (type===0){
       category=""
     }
-    const response= await axios.get("https://dishcovery.site/api/store",{
+    else if (type===1){
+      category="식당"
+    }
+    else if(type===2){
+      category="디저트"
+    }
+    try{const response= await axios.get("https://dishcovery.site/api/store",{
       params:{
         page:page,
         lat:lat,
@@ -150,7 +156,11 @@ export default function KakaoMap({stores,setStoreList}:{stores:Store[],setStoreL
       }
     })
     return response.data.dtoList
+    } catch(e){
+      return []
+    }
   }
+  // const geocoder:kakao.maps.services.Geocoder=new kakao.maps.services.Geocoder()
 
   const [selectedIndex,setSelectedIndex]=useState<number>(-1)
 
@@ -163,6 +173,16 @@ export default function KakaoMap({stores,setStoreList}:{stores:Store[],setStoreL
         onZoomChanged={(map) => {setLevel(map.getLevel())
           detectLevel(map)}
         }
+        onCreate={(map)=>(
+          new kakao.maps.services.Geocoder().coord2Address(map.getCenter().getLng(),map.getCenter().getLat(),(result)=>{
+            setCurrentAddress(result[0].address.address_name)
+          })
+        )}
+        onDragEnd={(map)=>(
+          new kakao.maps.services.Geocoder().coord2Address(map.getCenter().getLng(),map.getCenter().getLat(),(result)=>{
+            setCurrentAddress(result[0].address.address_name)
+          })
+        )}
         ref={mapRef}
         onCenterChanged={(map) => setCurrentLocation({
           center: {
@@ -181,10 +201,6 @@ export default function KakaoMap({stores,setStoreList}:{stores:Store[],setStoreL
           disableClickZoom={true}
           onClusterclick={onClusterclick}
           styles={[{ // calculator 각 사이 값 마다 적용될 스타일을 지정한다
-            // width : '50px', 
-            // height : '50px',
-            // background: '#f2c4ff',
-            // borderRadius: '50px',
             color: '#000',
             display: 'flex',
             alignItems: 'center',

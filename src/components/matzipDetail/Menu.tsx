@@ -1,8 +1,9 @@
 import { Card, CardBody, Heading, Stack, Text } from "@chakra-ui/react";
 import React from "react";
+import { storeDetail } from "../../pages/MatzipDetail";
 
 // api 정보 반영
-function MatzipMenu() {
+function MatzipMenu({storeData}:{storeData:storeDetail|null}) {
   interface Menu {
     mid: number;
     name: string;
@@ -27,7 +28,7 @@ function MatzipMenu() {
           <Heading size="md" mb="2">
             대표메뉴
           </Heading>
-          {menu.map((Menu) => (
+          {storeData?.menus.map((Menu) => (
             <Stack key={Menu.mid}>
               <Text mt="8px" mb="-10px" as="b" fontSize="sm">
                 {Menu.name}
