@@ -51,8 +51,10 @@ const BottomNavigation: React.FC = () => {
           </div>
         </div>
         <div
-          className={activeNav === "/" ? "nav-link active" : "nav-link"}
-          onClick={() => handleNavClick("/againList")}
+          className={
+            activeNav === "/personalpage" ? "nav-link active" : "nav-link"
+          }
+          onClick={() => handleNavClick("/personalpage")}
         >
           <div>
             <FontAwesomeIcon icon={faUser} />
