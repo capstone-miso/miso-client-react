@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react"
 import { Store } from "../../models/Store";
 import styled from 'styled-components'
+import HeartIcon from "../../assets/heart.png"
+import EmptyHeartIcon from "../../assets/emptyheart.png"
 
 const Container = styled.div`
   width: 100%;
@@ -54,10 +56,46 @@ export default function Restaurant({ store }: { store: Store }){
 
   const getHeartButtonIcon = () => {
     if (isClicked){
-      return "./cafe.png"   //하트 아이콘으로 변경 예정
+      return HeartIcon  
     }
     
-    return "./restaurant.png"
+    return EmptyHeartIcon
+  }
+
+  const getCategory = (category: string): string => {
+    let types: string[] = category.split(' > ')
+    
+    if (types.length == 2) {
+      return types[1]
+    }
+
+    if (types[1] == "퓨전요리"){
+      if (category.includes("한식")) {
+        return "한식"
+      }
+      else {
+        return "일식"
+      }
+    }
+
+    if (category.includes("닭강정")) {
+      return "양식"
+    }
+
+    switch (types[1]){
+      case "간식": case "패스트푸드":
+        return types[2]
+      case "치킨":
+        return "양식"
+      case "아시아음식":
+        return "아시아음식(" + types[2] +  ")"
+      case "뷔페":
+        return "한식"
+      case "술집":
+        return "주점"
+    }
+
+    return types[1]
   }
 
   return(
@@ -80,7 +118,7 @@ export default function Restaurant({ store }: { store: Store }){
               <ContentImage src="./home-icon.png" />
             </ImageContainer>
             <div>
-              { store.category }
+              { getCategory(store.category) }
             </div>
           </Content>
           <Content>
@@ -92,6 +130,7 @@ export default function Restaurant({ store }: { store: Store }){
             </div>
           </Content>
 
+          {store.phone != "" &&
           <Content>
             <ImageContainer>
               <ContentImage src="./phone-icon.png" />
@@ -99,7 +138,7 @@ export default function Restaurant({ store }: { store: Store }){
             <div>
               { store.phone }
             </div>
-          </Content>
+          </Content>}
         </div>
         
         <HeartButtonContainer>  

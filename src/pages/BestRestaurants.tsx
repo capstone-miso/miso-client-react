@@ -1,14 +1,15 @@
 import styled from 'styled-components'
 import Restaurant from '../components/kakomap/Restaurant'
 import { Button } from "@chakra-ui/react"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { getStoreRank } from "../services/RankAPI"
 import { Store } from "../models/Store"
+import Scroll from 'react-infinite-scroll-component'
 
 const Container = styled.div`
   width: 100vw;
   height: 100vh;
-  `
+`
 
 const BackButton = styled.div`
   height: 5%;
@@ -69,12 +70,31 @@ const RestaurantContainer = styled.div`
 `
 
 export default function BestRestaurants(){
+  const [clickedButtonIndex, setClickedButtonIndex] = useState<number>(0);  //선택한 조회 유형
+  const [stores, setStores] = useState<Store[]>([]);
 
-  const [clickeButtonIndex, setClickeButtonIndex] = useState<number>(0)
+  // const [items, setItems] = useState(Array.from({ length: 10}))
+  const pageRef = useRef<number>(1);
+  const scrollable = useRef<boolean>(true);
+
+  const fetchData = () => {
+    if (stores.length >= 50) {
+      scrollable.current = false;
+      return;
+    }
+
+    setTimeout(() => {
+      const setStoreRank = async () => {
+        pageRef.current += 1
+        let storeList: Store[] = await getStoreRank('WINTER', pageRef.current, 10)
+        setStores([...stores, ...storeList])
+      }
   
-  let [stores, setStores] = useState<Store[]>([]);
+      setStoreRank()
+    }, 2000);
+  }
 
-  let categoryType: string = "가격대";
+  let categoryType: string = "가격대";   //카테고리 페이지에서 넘어온 검색유형
   let categories: string[] = [];
 
   const setRankType = () => {
@@ -98,9 +118,10 @@ export default function BestRestaurants(){
   
   useEffect(() => {
     const setStoreRank = async () => {
-      setStores(await getStoreRank('WINTER', 0, 10))
+      let storeList: Store[] = await getStoreRank('WINTER', pageRef.current, 10)
+      setStores([...stores, ...storeList])
     }
-    
+
     setStoreRank()
   }, [])
   
@@ -125,11 +146,11 @@ export default function BestRestaurants(){
             variant='outline'
             borderRadius='3xl'
             _hover={{ bg: 'orange', textColor: 'white', borderColor: 'orange' }}
-            bg={index == clickeButtonIndex ? 'orange' : 'white'}
-            borderColor={index == clickeButtonIndex ? 'orange' : '#b3b3b3'}
+            bg={index == clickedButtonIndex ? 'orange' : 'white'}
+            borderColor={index == clickedButtonIndex ? 'orange' : '#b3b3b3'}
             fontWeight='semibold'
-            onClick={() => setClickeButtonIndex(index)}
-            textColor={index == clickeButtonIndex ? 'white' : 'black'}>
+            onClick={() => setClickedButtonIndex(index)}
+            textColor={index == clickedButtonIndex ? 'white' : 'black'}>
             {category}
           </Button>
         </ButtonContainer>
@@ -137,12 +158,31 @@ export default function BestRestaurants(){
     </ScrollingWrapper>
 
       <RestaurantContainer>
-        {stores.map((store, index) => (
-          <Restaurant
-            key={`${store.lat}-${store.lon}`}
-            {...stores[index]}
-            store={store}/>
-        ))}
+        <Scroll
+        dataLength={stores.length} //반복되는 컴포넌트 개수
+        next={fetchData}          //스크롤이 바닥에 닿은 경우 -> 데이터 추가
+        hasMore={scrollable.current}            //추가 데이터 유무
+        loader={
+          <h4 style={{ 
+          textAlign: "center",
+          padding: "10px 0 10px 0"}}>
+            Loading...
+          </h4>}   //로딩 스피너
+        endMessage={
+            <h4 style={{ 
+            textAlign: "center",
+            padding: "10px 0 10px 0"}}>
+              End...
+            </h4>}
+        scrollableTarget={RestaurantContainer}
+        >
+          {stores.map((store, index) => (
+            <Restaurant
+              key={`${store.id}-${index}`}
+              {...stores[index]}
+              store={store}/>
+          ))}
+        </Scroll>
       </RestaurantContainer>
     </Container>
   )

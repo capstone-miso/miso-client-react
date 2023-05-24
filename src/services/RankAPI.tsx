@@ -10,7 +10,5 @@ export const getStoreRank = async (keyWord: string, page: number, size: number) 
       size: size
     }})
 
-  // let stores: Store[] = stores.data
-
-  return stores.data
+  return stores.data.dtoList
 }
