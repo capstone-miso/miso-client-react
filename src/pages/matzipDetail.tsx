@@ -3,7 +3,8 @@ import MatzipDetailPage from "../components/matzipDetail/DetailContainer";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { AxiosResponse } from "axios";
-import { Store } from "../components/kakomap/KakaoMap";
+import { Store } from "../models/Store";
+
 
 export interface storeDetail{
   id:number,

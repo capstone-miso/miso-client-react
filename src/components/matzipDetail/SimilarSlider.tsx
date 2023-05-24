@@ -1,5 +1,5 @@
 import { Stack } from "@chakra-ui/react";
-import { Store } from "../kakomap/KakaoMap";
+import { Store } from "../../models/Store";
 import Restaurant from "../kakomap/Restaurant";
 
 const SimilarSlider=({similarStores}:{similarStores:Store[]})=>{

@@ -5,11 +5,10 @@ import MatzipStatistics from "./Statistics";
 import { useState } from "react";
 import axios, { AxiosDefaults, AxiosResponse } from "axios";
 import { storeDetail } from "../../pages/MatzipDetail";
-import { Store } from "../kakomap/KakaoMap";
+import { Store } from "../../models/Store";
 import SimilarSlider from "./SimilarSlider";
 
-
- function MatzipDetailContainer({storeData,similarStores}:{storeData:storeDetail|null,similarStores:Store[]}) {
+function MatzipDetailContainer({storeData,similarStores}:{storeData:storeDetail|null,similarStores:Store[]}) {
   
   return (
     <Flex
