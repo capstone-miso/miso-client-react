@@ -1,9 +1,9 @@
 import styled from 'styled-components'
-import Restaurant from '../components/kakomap/Restaurant'
+import Restaurant from '../components/bestrestaurant/Restaurant'
 import { Button } from "@chakra-ui/react"
 import { useState, useEffect, useRef } from "react"
 import { getStoreRank } from "../services/RankAPI"
-import { Store } from "../models/Store"
+import { Store, StoreRank } from "../models/Store"
 import Scroll from 'react-infinite-scroll-component'
 
 const Container = styled.div`
@@ -73,7 +73,6 @@ export default function BestRestaurants(){
   const [clickedButtonIndex, setClickedButtonIndex] = useState<number>(0);  //선택한 조회 유형
   const [stores, setStores] = useState<Store[]>([]);
 
-  // const [items, setItems] = useState(Array.from({ length: 10}))
   const pageRef = useRef<number>(1);
   const scrollable = useRef<boolean>(true);
 
@@ -85,7 +84,8 @@ export default function BestRestaurants(){
 
     setTimeout(() => {
       const setStoreRank = async () => {
-        pageRef.current += 1
+        // const storeRanking: StoreRank = await getStoreRank('WINTER', pageRef.current, 10)
+        // console.log(storeRanking)
         let storeList: Store[] = await getStoreRank('WINTER', pageRef.current, 10)
         setStores([...stores, ...storeList])
       }

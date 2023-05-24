@@ -12,6 +12,19 @@ export interface Store{
   sector: string
 }
 
+export interface StoreRank{
+  page: number,
+  size: number,
+  total: number,
+  start: number,
+  end: number,
+  prev: boolean,
+  next: boolean,
+  prevPage: string,
+  nextPage: string,
+  dtoList: Store
+}
+
 export interface Location{
   center: {
     lat: number,
