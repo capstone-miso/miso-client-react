@@ -30,6 +30,7 @@ export default function RestaurantMap(){
   const windowSize = useRef([window.innerWidth, window.innerHeight])
   let tempStores:Store[]=[]
   const [stores,setStoreList]=useState<Store[]>(tempStores);
+  const [currentAddress,setCurrentAddress]=useState<string>("")
   const currentSnapPoint = useRef<number>(1)
 
   const getSnapPoints = (): any => {
@@ -71,6 +72,7 @@ export default function RestaurantMap(){
         <KakaoMap 
         stores={stores}
         setStoreList={setStoreList}
+        setCurrentAddress={setCurrentAddress}
         />
       </MapContainer>
 
@@ -86,7 +88,8 @@ export default function RestaurantMap(){
             <Sheet.Header/>
             <Sheet.Content>
               <RestaurantList
-              stores={stores} />
+              stores={stores}
+              currentAddress={currentAddress} />
             </Sheet.Content>
           </Sheet.Container>
 

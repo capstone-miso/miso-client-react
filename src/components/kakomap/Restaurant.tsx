@@ -3,11 +3,18 @@ import { Store } from "../../models/Store";
 import styled from 'styled-components'
 import HeartIcon from "../../assets/heart.png"
 import EmptyHeartIcon from "../../assets/emptyheart.png"
+import { useNavigate } from "react-router-dom"
 
 const Container = styled.div`
   width: 100%;
   height: auto;
-  padding-bottom: 40px;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 0.5px solid black;
+  border-radius:5px;
+  &:hover {
+    background-color: #0000004d;
+  }
   `
 
 const NameContainer = styled.div`
@@ -49,7 +56,6 @@ const HeartButton = styled.img`
 
 export default function Restaurant({ store }: { store: Store }){
   const [isClicked, setIsClicked] = useState<boolean>(false)  //사용자가 찜했는지 여부를 받아와 변수 초기화 필요
-
   useEffect(() => {
     console.log(isClicked)
   }, [isClicked])
@@ -98,8 +104,17 @@ export default function Restaurant({ store }: { store: Store }){
     return types[1]
   }
 
+  const navigate=useNavigate()
+  const showStoreDetail= (storeId:number) =>{
+    navigate('../matzipDetail',{
+      state:{
+        storeId:storeId
+      }
+    })
+  }
+
   return(
-    <Container>
+    <Container onClick={()=>showStoreDetail(store.id)}>
       <NameContainer>
         <Name>{ store.storeName }&nbsp;</Name>
       </NameContainer>

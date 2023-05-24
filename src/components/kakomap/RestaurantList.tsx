@@ -20,14 +20,13 @@ const RestaurantContainer = styled.div`
   height: 92%;
   `
 
-export default function RestaurantList({stores}:{stores:Store[]}){
-  let location = "광진구 군자동"
+export default function RestaurantList({stores,currentAddress}:{stores:Store[],currentAddress:string}){
 
 
   return(
     <Container>
       <District>
-        {location}
+        {currentAddress}
       </District>
 
       <RestaurantContainer>

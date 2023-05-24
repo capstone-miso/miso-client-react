@@ -12,11 +12,9 @@ interface State {
   options: ApexCharts.ApexOptions;
 }
 
-class ApexChart extends React.Component<Props, State> {
+class AttandenceChart extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-
-    
   }
 
   render() {
@@ -24,9 +22,9 @@ class ApexChart extends React.Component<Props, State> {
     this.state = {
       series: [
         {
-          name: "방문횟수",
-          data: [storeData?.keywordData.costUnder8000? storeData?.keywordData.costUnder8000:0, storeData?.keywordData.costUnder15000? storeData?.keywordData.costUnder15000:0,
-            storeData?.keywordData.costUnder25000? storeData?.keywordData.costUnder25000:0,storeData?.keywordData.costOver25000? storeData?.keywordData.costOver25000:0],
+            name:"방문횟수",
+          data: [storeData?.keywordData.smallGroup? storeData?.keywordData.smallGroup:0, storeData?.keywordData.mediumGroup? storeData?.keywordData.mediumGroup:0,
+            storeData?.keywordData.largeGroup? storeData?.keywordData.largeGroup:0,storeData?.keywordData.extraGroup? storeData?.keywordData.extraGroup:0],
         },
       ],
       options: {
@@ -60,13 +58,13 @@ class ApexChart extends React.Component<Props, State> {
           intersect: false,
         },
         xaxis: {
-          categories: ["8000이하", "15000이하","25000이하","25000이상"],
+          categories: ["5명 이하", "10명 이하","20명 이하","20 이상"],
         },
       },
     };
     return (
       <Stack mt="30px">
-        <Heading fontSize="lg">식사비용 통계</Heading>
+        <Heading fontSize="lg">인원수 통계</Heading>
         <Text fontSize="xs">#가성비맛집</Text>
         <div id="chart">
           <ReactApexChart
@@ -81,4 +79,4 @@ class ApexChart extends React.Component<Props, State> {
   }
 }
 
-export default ApexChart;
+export default AttandenceChart;
