@@ -9,6 +9,7 @@ import MuchAgainList from "./pages/muchAgainList";
 import MyAgainList from "./pages/myAgainList";
 import SimilarAgainList from "./pages/similarAgainList";
 import RestaurantMap from "./pages/RestaurantMap";
+import BestRestaurants from "./pages/BestRestaurants";
 
 // 네비게이션 바 나오는 페이지만 모아둔 곳
 function Entring() {
@@ -16,7 +17,7 @@ function Entring() {
     <>
       <BottomNavigation />
       <Routes>
-        <Route path="/test" element={<RestaurantMap />} />
+        <Route path="/restaurant-map" element={<RestaurantMap />} />
         <Route path="/matzipList" element={<Matziplist />} />
         <Route path="/matzipDetail" element={<MatzipDetail />} />
         <Route path="/againList" element={<AgainList />} />
@@ -24,6 +25,7 @@ function Entring() {
         <Route path="/similaragainList" element={<SimilarAgainList />} />
         <Route path="/personalpage" element={<PersonalPage />} />
         <Route path="/muchagainList" element={<MuchAgainList />}></Route>
+        <Route path="/best-restaurants" element={<BestRestaurants />}></Route>
       </Routes>
     </>
   );

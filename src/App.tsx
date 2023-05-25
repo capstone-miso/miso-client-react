@@ -21,13 +21,6 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/*" element={<AfterEntering />} />
           <Route path="/" element={<Main />} />
-          <Route path="/restaurant-map" element={<RestaurantMap />}></Route>
-          <Route path="/best-restaurants" element={<BestRestaurants />}></Route>
-          <Route path="/" element={<Main />}></Route>
-          <Route path="/matzipList" element={<Matziplist />}></Route>
-          <Route path="/matzipDetail" element={<MatzipDetail />}></Route>
-          <Route path="/againList" element={<AgainList />}></Route>
-          <Route path="/myagainList" element={<MyAgainList />}></Route>
           <Route
             path="/similaragainList"
             element={<SimilarAgainList />}
