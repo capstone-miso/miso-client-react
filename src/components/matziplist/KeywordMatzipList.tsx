@@ -1,5 +1,6 @@
 import { Flex, Stack } from "@chakra-ui/react";
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"
 import "./ImageWithText.css";
 
 function KeywordMatzipList() {
