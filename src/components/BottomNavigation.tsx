@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import "./BottomNavigation.css";
 
 const BottomNavigation: React.FC = () => {
-  const [activeNav, setActiveNav] = useState<string>("/test");
+  const [activeNav, setActiveNav] = useState<string>("/restaurant-map");
   const navigate = useNavigate();
 
   const handleNavClick = (path: string) => {
@@ -23,8 +23,8 @@ const BottomNavigation: React.FC = () => {
     <>
       <nav className="wrapper">
         <div
-          className={activeNav === "/test" ? "nav-link active" : "nav-link"}
-          onClick={() => handleNavClick("/test")}
+          className={activeNav === "/restaurant-map" ? "nav-link active" : "nav-link"}
+          onClick={() => handleNavClick("/restaurant-map")}
         >
           <div>
             <FontAwesomeIcon icon={faHome} />
