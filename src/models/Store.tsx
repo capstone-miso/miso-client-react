@@ -12,7 +12,7 @@ export interface Store{
   sector: string
 }
 
-export interface StoreRank{
+export interface StoreRanking{
   page: number,
   size: number,
   total: number,
@@ -22,7 +22,7 @@ export interface StoreRank{
   next: boolean,
   prevPage: string,
   nextPage: string,
-  dtoList: Store
+  dtoList: Store[]
 }
 
 export interface Location{

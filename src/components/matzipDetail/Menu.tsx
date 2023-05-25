@@ -1,9 +1,9 @@
 import { Card, CardBody, Heading, Stack, Text } from "@chakra-ui/react";
 import React from "react";
-import { storeDetail } from "../../pages/MatzipDetail";
+import { storeDetail } from "../../pages/matzipDetail";
 
 // api 정보 반영
-function MatzipMenu({storeData}:{storeData:storeDetail|null}) {
+function MatzipMenu({ storeData }: { storeData: storeDetail | null }) {
   interface Menu {
     mid: number;
     name: string;
