@@ -4,6 +4,9 @@ import AfterEntering from "./AfterEntering";
 import "./App.css";
 import theme from "./constants/theme";
 import Main from "./pages/main";
+import MuchAgainList from "./pages/muchAgainList";
+import OauthDetection from "./pages/OauthDetection";
+import SimilarAgainList from "./pages/similarAgainList";
 
 const App: React.FC = () => {
   return (

@@ -10,8 +10,9 @@ import {
   Text,
   Tr,
 } from "@chakra-ui/react";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Store } from "../../models/Store";
+import { getStoreList } from "../../services/StoreListApi";
 // import HeartButton from "../HeartButton";
 
 // interface PostProps {
@@ -36,9 +37,16 @@ const MatzipListContainer = () => {
   //   const res = await axios.post(/* ... */);
   //   setLike(!like);
   // };
-  const mapRef = useRef<any>();
-  let tempStores: Store[] = [];
-  const [stores, setStoreList] = useState<Store[]>(tempStores);
+  const [storeList, setStoreList] = useState<Store[]>([]);
+  const [stores, setStores] = useState<Store[]>([]);
+  const pageRef = useRef<number>(1);
+
+  useEffect(() => {
+    const setStoreList = async () => {
+      let storeList: Store[] = await getStoreList(pageRef.current, 10);
+      setStores([...stores, ...storeList]);
+    };
+  });
 
   interface Matzip {
     storeId: number;
