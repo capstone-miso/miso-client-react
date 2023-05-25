@@ -1,8 +1,11 @@
 import { Heading, Stack, Text } from "@chakra-ui/react";
 import React from "react";
 import ReactApexChart from "react-apexcharts";
+import { storeDetail } from "../../pages/MatzipDetail";
 
-interface ApexChartProps {}
+interface ApexChartProps {
+  storeData:storeDetail|null
+}
 
 interface ApexChartState {
   series: number[];
@@ -12,9 +15,16 @@ interface ApexChartState {
 class ApexChart extends React.Component<ApexChartProps, ApexChartState> {
   constructor(props: ApexChartProps) {
     super(props);
+  }
 
-    this.state = {
-      series: [60, 20, 15, 5],
+  render() {
+    const {storeData}=this.props
+    const spring:number=storeData?.keywordData.spring ? storeData.keywordData.spring:0
+    const summer:number=storeData?.keywordData.summer ? storeData.keywordData.summer:0
+    const fall:number=storeData?.keywordData.fall ? storeData.keywordData.fall:0
+    const winter:number=storeData?.keywordData.winter ? storeData.keywordData.winter:0
+    this.state=this.state = {
+      series: [spring, summer,fall,winter],
       options: {
         chart: {
           width: 380,
@@ -36,9 +46,6 @@ class ApexChart extends React.Component<ApexChartProps, ApexChartState> {
         ],
       },
     };
-  }
-
-  render() {
     return (
       <>
         <Stack mt="20px">
