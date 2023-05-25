@@ -10,8 +10,9 @@ import {
   Text,
   Tr,
 } from "@chakra-ui/react";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Store } from "../../models/Store";
+import { getStoreList } from "../../services/StoreListApi";
 // import HeartButton from "../HeartButton";
 
 // interface PostProps {
@@ -36,9 +37,20 @@ const MatzipListContainer = () => {
   //   const res = await axios.post(/* ... */);
   //   setLike(!like);
   // };
-  const mapRef = useRef<any>();
-  let tempStores: Store[] = [];
-  const [stores, setStoreList] = useState<Store[]>(tempStores);
+  const [storeList, setStoreList] = useState<Store[]>([]);
+  const [stores, setStores] = useState<Store[]>([]);
+  const pageRef = useRef<number>(1);
+
+  useEffect(() => {
+    const setStoreList = async () => {
+      let storeList: Store[] = await getStoreList(pageRef.current, 10);
+      setStores([...stores, ...storeList]);
+      console.log("hi!");
+      console.log(storeList);
+    };
+
+    setStoreList();
+  }, []);
 
   interface Matzip {
     storeId: number;
@@ -98,8 +110,8 @@ const MatzipListContainer = () => {
             <Table w="340px">
               <Tbody>
                 {/* <HeartButton like={like} onClick={toggleLike} /> */}
-                {stores.map((store) => (
-                  <Tr key={store.id}>
+                {stores.map((store, index) => (
+                  <Tr key={`${store.id}`}>
                     <Td>
                       <Image
                         boxSize="100px"
@@ -139,7 +151,7 @@ const MatzipListContainer = () => {
                       </Stack>
                     </Td>
                     <Td w="60px">
-                      <Text>like</Text>
+                      <Text>❤️</Text>
                     </Td>
                   </Tr>
                 ))}
