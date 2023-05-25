@@ -22,7 +22,12 @@ function MatzipDetailContainer({storeData,similarStores}:{storeData:storeDetail|
       <BasicInformation storeData={storeData}/>
       <MatzipMenu storeData={storeData}/>
       <MatzipStatistics storeData={storeData}/>
-      <SimilarSlider similarStores={similarStores}/>
+      {
+        similarStores.length==0?
+        <></>
+        :
+        <SimilarSlider similarStores={similarStores}/>
+      }
     </Flex>
   );
 }

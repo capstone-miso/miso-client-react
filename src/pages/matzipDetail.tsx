@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import MatzipDetailPage from "../components/matzipDetail/DetailContainer";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams,useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { AxiosResponse } from "axios";
 import { Store } from "../models/Store";
@@ -33,20 +33,21 @@ export interface storeDetail{
 }
 
 export default function MatzipDetail() {
-
-  const location=useLocation();
-  const state=location.state as {storeId:number}
-  const storeId=state.storeId;
+  const [searchParams, setSearchParams] = useSearchParams();
+  //onst location=useLocation();
+  //const {storeId}=useParams() as {storeId:string};
+  //const state=location.state as {storeId:number}
+  const storeId=searchParams.get('storeId');
   const [storeData, setData] = useState<storeDetail|null>(null);
   const [similarStores,setSimilarStores]=useState<Store[]>([]) 
   console.log(storeId)
 
-  const getStoreDetail=async (storeId:number)=>{
+  const getStoreDetail=async (storeId:string|null)=>{
     const response:AxiosResponse = await axios.get(`https://dishcovery.site/api/store/${storeId}`)
     setData(response.data)
   }
 
-  const getSimilarStores=async (storeId:number)=>{
+  const getSimilarStores=async (storeId:string|null)=>{
     const response:AxiosResponse = await axios.get(`https://dishcovery.site/api/store/${storeId}/similar`)
     setSimilarStores(response.data)
   }

@@ -105,11 +105,13 @@ export default function Restaurant({ store, ranking }: { store: Store, ranking: 
 
   const navigate=useNavigate()
   const showStoreDetail= (storeId:number) =>{
-    navigate('../matzipDetail',{
-      state:{
-        storeId:storeId
-      }
+    navigate({
+      pathname: "../matzipDetail",
+      search: `?storeId=${storeId}`,
+    },{
+      state:storeId
     })
+    navigate(0)
   }
 
   return(
