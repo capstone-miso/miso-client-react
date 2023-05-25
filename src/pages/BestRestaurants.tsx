@@ -180,7 +180,8 @@ export default function BestRestaurants(){
             <Restaurant
               key={`${store.id}-${index}`}
               {...stores[index]}
-              store={store}/>
+              store={store}
+              ranking={index + 1}/>
           ))}
         </Scroll>
       </RestaurantContainer>

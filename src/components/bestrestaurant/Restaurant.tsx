@@ -23,9 +23,8 @@ const NameContainer = styled.div`
   `
 
 const Name = styled.div`
-  font-weight: 700;
-  color: #0B60DF;
-  font-size: 18px;
+  font-weight: 600;
+  font-size: 1.3rem;
   `
 
 const Content = styled.div`
@@ -51,13 +50,13 @@ const HeartButtonContainer = styled.div`
 `
 
 const HeartButton = styled.img`
-  height: 50%;
+  height: 2.5rem;
 `
 
-export default function Restaurant({ store }: { store: Store }){
+export default function Restaurant({ store, ranking }: { store: Store, ranking: number }){
   const [isClicked, setIsClicked] = useState<boolean>(false)  //사용자가 찜했는지 여부를 받아와 변수 초기화 필요
   useEffect(() => {
-    console.log(isClicked)
+
   }, [isClicked])
 
   const getHeartButtonIcon = () => {
@@ -117,10 +116,6 @@ export default function Restaurant({ store }: { store: Store }){
 
   return(
     <Container>
-      <NameContainer  onClick={()=>showStoreDetail(store.id)}>
-        <Name>{ store.storeName }&nbsp;</Name>
-      </NameContainer>
-
       <img src={store.mainImage===null?
       "/default-image.png"
       :
@@ -130,7 +125,11 @@ export default function Restaurant({ store }: { store: Store }){
       onClick={()=>showStoreDetail(store.id)}/>
       
       <div style={{width: "100%", display: "flex"}}>
-        <div style={{width: "80%"}}  onClick={()=>showStoreDetail(store.id)}>      
+        <div style={{width: "80%"}}  onClick={()=>showStoreDetail(store.id)}>    
+          <NameContainer  onClick={()=>showStoreDetail(store.id)}>
+            <Name>{ ranking }. { store.storeName }&nbsp;</Name>
+          </NameContainer>
+
           <Content>
             <ImageContainer>
               <ContentImage src="./home-icon.png" />
@@ -139,6 +138,7 @@ export default function Restaurant({ store }: { store: Store }){
               { getCategory(store.category) }
             </div>
           </Content>
+
           <Content>
             <ImageContainer>
               <ContentImage src="./location-icon.png" />

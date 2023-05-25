@@ -6,16 +6,18 @@ import MyAgainListTable from "./MyAgainListTable";
 function MyAgainListContainer() {
   return (
     <>
-      <Header title="내가 또갈집" />
-      <Flex
-        justifyContent="center"
-        justifyItems="center"
-        alignContent="center"
-        alignItems="center"
-      >
-        <Stack maxW="390px" mt="85px">
-          <MyAgainListTable />
-        </Stack>
+      <Flex direction="column" alignContent="center" alignItems="center">
+        <Header title="내가 또갈집" />
+        <Flex
+          justifyContent="center"
+          justifyItems="center"
+          alignContent="center"
+          alignItems="center"
+        >
+          <Stack maxW="390px" mt="85px">
+            <MyAgainListTable />
+          </Stack>
+        </Flex>
       </Flex>
     </>
   );

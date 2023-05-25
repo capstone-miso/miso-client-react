@@ -6,16 +6,18 @@ import MuchAgainListTable from "./MuchAgainListTable";
 function MuchAgainListContainer() {
   return (
     <>
-      <Header title="많이 또갈집" />
-      <Flex
-        justifyContent="center"
-        justifyItems="center"
-        alignContent="center"
-        alignItems="center"
-      >
-        <Stack maxW="390px" mt="85px">
-          <MuchAgainListTable />
-        </Stack>
+      <Flex direction="column" alignContent="center" alignItems="center">
+        <Header title="많이 또갈집" />
+        <Flex
+          justifyContent="center"
+          justifyItems="center"
+          alignContent="center"
+          alignItems="center"
+        >
+          <Stack maxW="390px" mt="85px">
+            <MuchAgainListTable />
+          </Stack>
+        </Flex>
       </Flex>
     </>
   );
