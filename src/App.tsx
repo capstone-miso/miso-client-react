@@ -11,6 +11,7 @@ import MuchAgainList from "./pages/muchAgainList";
 import MyAgainList from "./pages/myAgainList";
 import SimilarAgainList from "./pages/similarAgainList";
 import MatzipDetail from "./pages/MatzipDetail";
+import OauthDetection from "./pages/OauthDetection";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             element={<SimilarAgainList />}
           ></Route>
           <Route path="/muchagainList" element={<MuchAgainList />}></Route>
+          <Route path="/auth" element={<OauthDetection />}></Route>
         </Routes>
       </BrowserRouter>
     </ChakraProvider>
