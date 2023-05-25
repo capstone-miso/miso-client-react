@@ -1,10 +1,11 @@
 import styled from 'styled-components'
-import Restaurant from '../components/bestrestaurant/Restaurant'
+import Restaurant from '../components/kakomap/Restaurant'
 import { Button } from "@chakra-ui/react"
 import { useState, useEffect, useRef } from "react"
 import { Store } from "../models/Store"
 import Scroll from 'react-infinite-scroll-component'
-
+import { useSearchParams } from 'react-router-dom'
+import axios from 'axios'
 const Container = styled.div`
   width: 100vw;
   height: 100vh;
@@ -68,39 +69,36 @@ const RestaurantContainer = styled.div`
   padding: 0 10px 0 10px;
 `
 
-export default function CategoryRestaurants({categoryType}:{categoryType:string}){
-  const [clickedButtonIndex, setClickedButtonIndex] = useState<number>(0);  //선택한 조회 유형
+export default function CategoryRestaurants(){
+  const [searchParams, setSearchParams] = useSearchParams();
+  const categoryType=searchParams.get('type');
   const [stores, setStores] = useState<Store[]>([]);
 
   const pageRef = useRef<number>(1);
   const scrollable = useRef<boolean>(true);
 
-//   const fetchData = () => {
-//     if (stores.length >= 50) {
-//       scrollable.current = false;
-//       return;
-//     }
+  const getStore=()=>{
+    axios.get(`https://dishcovery.site/api/store?category=${categoryType}&page=${pageRef.current}`,{
+      headers:{
+        Authorization:"Bearer " + localStorage.getItem("Authorization")
+      }
+    }).then((response)=>{
+            pageRef.current=pageRef.current+1
+            console.log(response.data)
+            setStores([...stores,...response.data.dtoList])
+        })
+  }
 
-//     setTimeout(() => {
-//       const setStoreRank = async () => {
-//         // const storeRanking: StoreRank = await getStoreRank('WINTER', pageRef.current, 10)
-//         // console.log(storeRanking)
-//         let storeList: Store[] = await getStoreRank('WINTER', pageRef.current, 10)
-//         setStores([...stores, ...storeList])
-//       }
+   const fetchData = () => {
+    setTimeout(() => {
+      getStore()
   
-//       setStoreRank()
-//     }, 2000);
-//   }
-  
-//   useEffect(() => {
-//     const setStoreRank = async () => {
-//       let storeList: Store[] = await getStoreRank('WINTER', pageRef.current, 10)
-//       setStores([...stores, ...storeList])
-//     }
+      }, 2000);
+    }
 
-//     setStoreRank()
-//   }, [])
+    useEffect(()=>{
+        getStore()
+    },[])
   
   return(
     <Container>
@@ -121,7 +119,7 @@ export default function CategoryRestaurants({categoryType}:{categoryType:string}
       <RestaurantContainer>
         <Scroll
         dataLength={stores.length} //반복되는 컴포넌트 개수
-        next={()=>{}}          //스크롤이 바닥에 닿은 경우 -> 데이터 추가
+        next={fetchData}          //스크롤이 바닥에 닿은 경우 -> 데이터 추가
         hasMore={scrollable.current}            //추가 데이터 유무
         loader={
           <h4 style={{ 
@@ -141,8 +139,7 @@ export default function CategoryRestaurants({categoryType}:{categoryType:string}
             <Restaurant
               key={`${store.id}-${index}`}
               {...stores[index]}
-              store={store}
-              ranking={index + 1}/>
+              store={store}/>
           ))}
         </Scroll>
       </RestaurantContainer>

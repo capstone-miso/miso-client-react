@@ -1,6 +1,6 @@
 import { Flex, Heading, Image, Stack, Text } from "@chakra-ui/react";
 import React from "react";
-
+import { useNavigate } from "react-router-dom";
 function FoodMatzipList() {
   interface FoodType {
     id: number;
@@ -54,6 +54,18 @@ function FoodMatzipList() {
       image: "https://ifh.cc/g/t2HaNw.jpg",
     },
   ];
+
+  const navigate=useNavigate()
+  const showCategoryList= (type:string) =>{
+    navigate({
+      pathname: "../Categories",
+      search: `?type=${type}`,
+    },{
+      state:type
+    })
+    navigate(0)
+  }
+
   return (
     <>
       {foodButton.map((FoodType) => (
@@ -65,7 +77,7 @@ function FoodMatzipList() {
           alignItems="center"
           key={FoodType.id}
         >
-          <Stack pt="45px" maxW="100%" direction="column">
+          <Stack pt="45px" maxW="100%" direction="column" onClick={()=>showCategoryList(FoodType.type)}>
             <Image
               src={FoodType.image}
               alt="Green double couch with wooden legs"
