@@ -1,7 +1,7 @@
 import { Heading, Stack, Text } from "@chakra-ui/react";
 import React from "react";
 import ReactApexChart from "react-apexcharts";
-import { storeDetail } from "../../pages/matzipDetail";
+import { storeDetail } from "../../pages/MatzipDetail";
 
 interface Props {
   storeData: storeDetail | null;

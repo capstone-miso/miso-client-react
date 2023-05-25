@@ -1,6 +1,6 @@
 import { Card, Heading, Image, Stack, Text } from "@chakra-ui/react";
 import React from "react";
-import { storeDetail } from "../../pages/matzipDetail";
+import { storeDetail } from "../../pages/MatzipDetail";
 import ImageSlider from "./ImageSlider";
 // api 정보 반영
 function BasicInformation({ storeData }: { storeData: storeDetail | null }) {

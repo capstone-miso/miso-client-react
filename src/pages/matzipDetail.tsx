@@ -34,9 +34,6 @@ export interface storeDetail{
 
 export default function MatzipDetail() {
   const [searchParams, setSearchParams] = useSearchParams();
-  //onst location=useLocation();
-  //const {storeId}=useParams() as {storeId:string};
-  //const state=location.state as {storeId:number}
   const storeId=searchParams.get('storeId');
   const [storeData, setData] = useState<storeDetail|null>(null);
   const [similarStores,setSimilarStores]=useState<Store[]>([]) 

@@ -1,5 +1,8 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import SimilarAgainList from "./pages/similarAgainList";
+import MuchAgainList from "./pages/muchAgainList";
+import OauthDetection from "./pages/OauthDetection";
 import AfterEntering from "./AfterEntering";
 import "./App.css";
 import theme from "./constants/theme";

@@ -1,6 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 import { Store } from "../../models/Store";
-import { storeDetail } from "../../pages/matzipDetail";
+import { storeDetail } from "../../pages/MatzipDetail";
 import BasicInformation from "./BasicInformation";
 import MatzipMenu from "./Menu";
 import SimilarSlider from "./SimilarSlider";

@@ -2,8 +2,7 @@ import styled from 'styled-components'
 import Restaurant from '../components/bestrestaurant/Restaurant'
 import { Button } from "@chakra-ui/react"
 import { useState, useEffect, useRef } from "react"
-import { getStoreRank } from "../services/RankAPI"
-import { Store, StoreRank } from "../models/Store"
+import { Store } from "../models/Store"
 import Scroll from 'react-infinite-scroll-component'
 
 const Container = styled.div`
@@ -76,32 +75,32 @@ export default function CategoryRestaurants({categoryType}:{categoryType:string}
   const pageRef = useRef<number>(1);
   const scrollable = useRef<boolean>(true);
 
-  const fetchData = () => {
-    if (stores.length >= 50) {
-      scrollable.current = false;
-      return;
-    }
+//   const fetchData = () => {
+//     if (stores.length >= 50) {
+//       scrollable.current = false;
+//       return;
+//     }
 
-    setTimeout(() => {
-      const setStoreRank = async () => {
-        // const storeRanking: StoreRank = await getStoreRank('WINTER', pageRef.current, 10)
-        // console.log(storeRanking)
-        let storeList: Store[] = await getStoreRank('WINTER', pageRef.current, 10)
-        setStores([...stores, ...storeList])
-      }
+//     setTimeout(() => {
+//       const setStoreRank = async () => {
+//         // const storeRanking: StoreRank = await getStoreRank('WINTER', pageRef.current, 10)
+//         // console.log(storeRanking)
+//         let storeList: Store[] = await getStoreRank('WINTER', pageRef.current, 10)
+//         setStores([...stores, ...storeList])
+//       }
   
-      setStoreRank()
-    }, 2000);
-  }
+//       setStoreRank()
+//     }, 2000);
+//   }
   
-  useEffect(() => {
-    const setStoreRank = async () => {
-      let storeList: Store[] = await getStoreRank('WINTER', pageRef.current, 10)
-      setStores([...stores, ...storeList])
-    }
+//   useEffect(() => {
+//     const setStoreRank = async () => {
+//       let storeList: Store[] = await getStoreRank('WINTER', pageRef.current, 10)
+//       setStores([...stores, ...storeList])
+//     }
 
-    setStoreRank()
-  }, [])
+//     setStoreRank()
+//   }, [])
   
   return(
     <Container>
@@ -122,7 +121,7 @@ export default function CategoryRestaurants({categoryType}:{categoryType:string}
       <RestaurantContainer>
         <Scroll
         dataLength={stores.length} //반복되는 컴포넌트 개수
-        next={fetchData}          //스크롤이 바닥에 닿은 경우 -> 데이터 추가
+        next={()=>{}}          //스크롤이 바닥에 닿은 경우 -> 데이터 추가
         hasMore={scrollable.current}            //추가 데이터 유무
         loader={
           <h4 style={{ 

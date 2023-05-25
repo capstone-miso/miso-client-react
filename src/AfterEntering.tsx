@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import BottomNavigation from "./components/BottomNavigation";
 import PersonalPage from "./components/personalPage/PersonalPage";
 import AgainList from "./pages/againList";
-import MatzipDetail from "./pages/matzipDetail";
+import MatzipDetail from "./pages/MatzipDetail";
 import Matziplist from "./pages/matziplist";
 import MuchAgainList from "./pages/muchAgainList";
 import MyAgainList from "./pages/myAgainList";
