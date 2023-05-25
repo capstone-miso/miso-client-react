@@ -5,25 +5,30 @@ import {
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
-import { Outlet } from "react-router";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Outlet, useLocation } from "react-router-dom";
 import "./BottomNavigation.css";
 
 const BottomNavigation: React.FC = () => {
-  const [activeNav, setActiveNav] = useState<string>("/restaurant-map");
-  const navigate = useNavigate();
+  const [activeNav, setActiveNav] = useState<string>("");
+  const location = useLocation();
+
+  useEffect(() => {
+    setActiveNav(location.pathname);
+  }, [location]);
 
   const handleNavClick = (path: string) => {
     setActiveNav(path);
-    navigate(path); // Navigate to the clicked path
+    window.location.href = path; // Navigate to the clicked path
   };
 
   return (
     <>
       <nav className="wrapper">
         <div
-          className={activeNav === "/restaurant-map" ? "nav-link active" : "nav-link"}
+          className={
+            activeNav === "/restaurant-map" ? "nav-link active" : "nav-link"
+          }
           onClick={() => handleNavClick("/restaurant-map")}
         >
           <div>

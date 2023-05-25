@@ -34,7 +34,7 @@ function MatzipMenu({ storeData }: { storeData: storeDetail | null }) {
                 {Menu.name}
               </Text>
               <Text color="gray.500" fontSize="xs">
-                {Menu.cost}
+                {Menu.cost}원
               </Text>
             </Stack>
           ))}
