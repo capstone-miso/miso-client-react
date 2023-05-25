@@ -1,15 +1,18 @@
 import { Flex } from "@chakra-ui/react";
+import { Store } from "../../models/Store";
+import { storeDetail } from "../../pages/matzipDetail";
 import BasicInformation from "./BasicInformation";
 import MatzipMenu from "./Menu";
-import MatzipStatistics from "./Statistics";
-import { useState } from "react";
-import axios, { AxiosDefaults, AxiosResponse } from "axios";
-import { storeDetail } from "../../pages/MatzipDetail";
-import { Store } from "../../models/Store";
 import SimilarSlider from "./SimilarSlider";
+import MatzipStatistics from "./Statistics";
 
-function MatzipDetailContainer({storeData,similarStores}:{storeData:storeDetail|null,similarStores:Store[]}) {
-  
+function MatzipDetailContainer({
+  storeData,
+  similarStores,
+}: {
+  storeData: storeDetail | null;
+  similarStores: Store[];
+}) {
   return (
     <Flex
       justifyContent="center"
@@ -19,10 +22,10 @@ function MatzipDetailContainer({storeData,similarStores}:{storeData:storeDetail|
       direction="column"
       pt="30px"
     >
-      <BasicInformation storeData={storeData}/>
-      <MatzipMenu storeData={storeData}/>
-      <MatzipStatistics storeData={storeData}/>
-      <SimilarSlider similarStores={similarStores}/>
+      <BasicInformation storeData={storeData} />
+      <MatzipMenu storeData={storeData} />
+      <MatzipStatistics storeData={storeData} />
+      <SimilarSlider similarStores={similarStores} />
     </Flex>
   );
 }

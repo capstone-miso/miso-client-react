@@ -1,10 +1,10 @@
 import { Heading, Stack, Text } from "@chakra-ui/react";
 import React from "react";
 import ReactApexChart from "react-apexcharts";
-import { storeDetail } from "../../pages/MatzipDetail";
+import { storeDetail } from "../../pages/matzipDetail";
 
 interface Props {
-  storeData:storeDetail|null
+  storeData: storeDetail | null;
 }
 
 interface State {
@@ -15,20 +15,27 @@ interface State {
 class ApexChart extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-
-    
   }
 
   render() {
-    const {storeData}=this.props
-    const times:number[]=[storeData?.visitedTime.under8 ? storeData?.visitedTime.under8:0,storeData?.visitedTime.hour9 ? storeData?.visitedTime.hour9:0
-      ,storeData?.visitedTime.hour10 ? storeData?.visitedTime.hour10:0,storeData?.visitedTime.hour11 ? storeData?.visitedTime.hour11:0
-      ,storeData?.visitedTime.hour12 ? storeData?.visitedTime.hour12:0,storeData?.visitedTime.hour13 ? storeData?.visitedTime.hour13:0
-      ,storeData?.visitedTime.hour14 ? storeData?.visitedTime.hour14:0,storeData?.visitedTime.hour15 ? storeData?.visitedTime.hour15:0
-      ,storeData?.visitedTime.hour16 ? storeData?.visitedTime.hour16:0,storeData?.visitedTime.hour17 ? storeData?.visitedTime.hour17:0
-      ,storeData?.visitedTime.hour18 ? storeData?.visitedTime.hour18:0,storeData?.visitedTime.hour19 ? storeData?.visitedTime.hour19:0
-      ,storeData?.visitedTime.hour20 ? storeData?.visitedTime.hour20:0,storeData?.visitedTime.hour21 ? storeData?.visitedTime.hour21:0
-      ,storeData?.visitedTime.after22 ? storeData?.visitedTime.after22:0]
+    const { storeData } = this.props;
+    const times: number[] = [
+      storeData?.visitedTime.under8 ? storeData?.visitedTime.under8 : 0,
+      storeData?.visitedTime.hour9 ? storeData?.visitedTime.hour9 : 0,
+      storeData?.visitedTime.hour10 ? storeData?.visitedTime.hour10 : 0,
+      storeData?.visitedTime.hour11 ? storeData?.visitedTime.hour11 : 0,
+      storeData?.visitedTime.hour12 ? storeData?.visitedTime.hour12 : 0,
+      storeData?.visitedTime.hour13 ? storeData?.visitedTime.hour13 : 0,
+      storeData?.visitedTime.hour14 ? storeData?.visitedTime.hour14 : 0,
+      storeData?.visitedTime.hour15 ? storeData?.visitedTime.hour15 : 0,
+      storeData?.visitedTime.hour16 ? storeData?.visitedTime.hour16 : 0,
+      storeData?.visitedTime.hour17 ? storeData?.visitedTime.hour17 : 0,
+      storeData?.visitedTime.hour18 ? storeData?.visitedTime.hour18 : 0,
+      storeData?.visitedTime.hour19 ? storeData?.visitedTime.hour19 : 0,
+      storeData?.visitedTime.hour20 ? storeData?.visitedTime.hour20 : 0,
+      storeData?.visitedTime.hour21 ? storeData?.visitedTime.hour21 : 0,
+      storeData?.visitedTime.after22 ? storeData?.visitedTime.after22 : 0,
+    ];
     this.state = {
       series: [
         {
