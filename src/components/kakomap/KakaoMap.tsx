@@ -4,6 +4,19 @@ import RestaurantMarker from "./RestaurantMarker"
 import Button from '@material-ui/core/Button';
 import axios, { AxiosResponse } from "axios";
 import { Store, Location } from "../../models/Store";
+import { atom, useRecoilState, useRecoilValue } from 'recoil';
+
+const CurrentLocation = atom<Location>({
+  key: 'CurrentLocation',
+  default: {
+    center: {
+      lat: 37.549605785399,
+      lng: 127.075150292867
+    },
+    errMsg: "",
+    isLoading: false
+  },
+});
 
 export default function KakaoMap({stores,setStoreList,setCurrentAddress}:{stores:Store[],setStoreList:Function,setCurrentAddress:Function}){
   const kakaoMap = {
@@ -13,15 +26,15 @@ export default function KakaoMap({stores,setStoreList,setCurrentAddress}:{stores
   const [level, setLevel] = useState<number>(3)
 
 
-  let [currentLocation, setCurrentLocation] =
-    useState<Location>({
-      center: {
-        lat: 37.549605785399,
-        lng: 127.075150292867
-      },
-      errMsg: "",
-      isLoading: false
-    })
+  let [currentLocation, setCurrentLocation] =useRecoilState<Location>(CurrentLocation)
+  //   useState<Location>({
+  //     center: {
+  //       lat: 37.549605785399,
+  //       lng: 127.075150292867
+  //     },
+  //     errMsg: "",
+  //     isLoading: false
+  //   })
 
   const mapRef = useRef<any>()
 
@@ -35,7 +48,10 @@ export default function KakaoMap({stores,setStoreList,setCurrentAddress}:{stores
 
 
   const LocateCurrentPosition = () => {
-    currentLocation.isLoading=true
+    setCurrentLocation((prev) => ({ 
+            ...prev,
+            isLoading: true
+          }))
     if (navigator.geolocation){
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -66,7 +82,7 @@ export default function KakaoMap({stores,setStoreList,setCurrentAddress}:{stores
   }
 
   useEffect(() => {
-    LocateCurrentPosition()
+    insertStores(0)
   }, [])
   
   const handleClick = (store: Store) => {
@@ -88,7 +104,7 @@ export default function KakaoMap({stores,setStoreList,setCurrentAddress}:{stores
     setIsClickSearch(false)
     setStoreList([])
     const pages:number[]=[]
-    for(var i=1;i<=mapRef.current.getLevel();i++){
+    for(var i=1;i<=level;i++){
       pages.push(i)
     }
     const promises=pages.map((page)=>searchStore(type,page))
