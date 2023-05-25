@@ -95,36 +95,40 @@ export default function BestRestaurants(){
   }
 
   let categoryType: string = "가격대";   //카테고리 페이지에서 넘어온 검색유형
-  let categories: string[] = [];
+  const categories = useRef<string[]>([]);
 
   const setRankType = () => {
     switch(categoryType){
       case '가격대':
-        categories = ["8,000원 이하", "15,000원 이하", "25,000원 이하", "25,000원 이상"]
+        categories.current = ["UNDER_COST_8000", "UNDER_COST_15000", "UNDER_COST_25000", "OVER_COST_25000"]
         break;
       case '계절':
-        categories = ["봄", "여름", "가을", "겨울"]
+        categories.current = ["봄", "여름", "가을", "겨울"]
         break;
       case '참석인원':
-        categories = ["5명 이하", "10명 이하", "20명 이하", "20명 이상"]
+        categories.current = ["5명 이하", "10명 이하", "20명 이하", "20명 이상"]
         break;
       default:
-        categories = ["아침", "점심", "저녁"]
-        break;
+        categories.current = ["아침", "점심", "저녁"]
     }
   }
 
   setRankType()
-  
-  useEffect(() => {
+
+  useEffect(()  => {
     const setStoreRank = async () => {
-      let storeList: Store[] = await getStoreRank('WINTER', pageRef.current, 10)
-      setStores([...stores, ...storeList])
+      console.log("클릭: ", categories)
+
+      let storeList: Store[] = await getStoreRank(categories.current[clickedButtonIndex], pageRef.current, 10)
+      setStores(storeList)
     }
 
+    console.log(categories.current[clickedButtonIndex])
+    console.log("클릭 후: ", categories)
+
     setStoreRank()
-  }, [])
-  
+  }, [clickedButtonIndex])
+
   return(
     <Container>
       <BackButton>
@@ -139,7 +143,7 @@ export default function BestRestaurants(){
       </TitleContainer>
 
     <ScrollingWrapper >
-      {categories.map((category, index) => (
+      {categories.current.map((category, index) => (
         <ButtonContainer
           key={index}>
           <Button
