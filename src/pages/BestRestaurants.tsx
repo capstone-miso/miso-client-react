@@ -2,8 +2,8 @@ import styled from 'styled-components'
 import Restaurant from '../components/bestrestaurant/Restaurant'
 import { Button } from "@chakra-ui/react"
 import { useState, useEffect, useRef } from "react"
-import { getStoreRank } from "../services/RankAPI"
-import { Store, StoreRank } from "../models/Store"
+import { getStoreRank, getStoreRanking, getNextStoreRanking } from "../services/RankingAPI"
+import { Store, StoreRanking } from "../models/Store"
 import Scroll from 'react-infinite-scroll-component'
 
 const Container = styled.div`
@@ -66,7 +66,7 @@ const ButtonContainer = styled.div`
 const RestaurantContainer = styled.div`
   width: 100%;
   height: 60%;
-  padding: 0 10px 0 10px;
+  padding: 1rem 1rem 0 1rem;
 `
 
 export default function BestRestaurants(){
@@ -76,21 +76,25 @@ export default function BestRestaurants(){
   const pageRef = useRef<number>(1);
   const scrollable = useRef<boolean>(true);
 
-  const fetchData = () => {
-    if (stores.length >= 50) {
-      scrollable.current = false;
-      return;
-    }
+  let nextPage = useRef<string>("");
 
+  const fetchData = () => {
     setTimeout(() => {
       const setStoreRank = async () => {
-        // const storeRanking: StoreRank = await getStoreRank('WINTER', pageRef.current, 10)
-        // console.log(storeRanking)
-        let storeList: Store[] = await getStoreRank('WINTER', pageRef.current, 10)
+        const storeRanking: StoreRanking = await getNextStoreRanking(nextPage.current)  //이전 리스트 조회때 받아왔던 다음 페이지 url을 통해 맛집 목록을 가져옴
+        
+        const storeList: Store[] = storeRanking.dtoList
+        nextPage.current = storeRanking.nextPage
+
         setStores([...stores, ...storeList])
+
+        if (nextPage.current == null) {
+          scrollable.current = false;
+        }
       }
   
       setStoreRank()
+
     }, 2000);
   }
 
@@ -115,18 +119,19 @@ export default function BestRestaurants(){
 
   setRankType()
 
-  useEffect(()  => {
+  useEffect(()  => {  //조회 카테고리 버튼 클릭시 -> 가게 목록을 처음부터 다시 불러옴
     const setStoreRank = async () => {
-      console.log("클릭: ", categories)
+      let storeList: StoreRanking = await getStoreRanking(categories.current[clickedButtonIndex], pageRef.current, 10)
+      setStores(storeList.dtoList)
 
-      let storeList: Store[] = await getStoreRank(categories.current[clickedButtonIndex], pageRef.current, 10)
-      setStores(storeList)
+      nextPage.current = storeList.nextPage   //다음에 불러올 맛집 목록 url
+      if (nextPage.current == null) {
+        scrollable.current = false;
+      }
     }
 
-    console.log(categories.current[clickedButtonIndex])
-    console.log("클릭 후: ", categories)
-
     setStoreRank()
+
   }, [clickedButtonIndex])
 
   return(
@@ -173,11 +178,7 @@ export default function BestRestaurants(){
             Loading...
           </h4>}   //로딩 스피너
         endMessage={
-            <h4 style={{ 
-            textAlign: "center",
-            padding: "10px 0 10px 0"}}>
-              End...
-            </h4>}
+            <></>}
         scrollableTarget={RestaurantContainer}
         >
           {stores.map((store, index) => (

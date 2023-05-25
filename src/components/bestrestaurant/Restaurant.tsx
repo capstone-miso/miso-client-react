@@ -4,13 +4,11 @@ import styled from 'styled-components'
 import HeartIcon from "../../assets/heart.png"
 import EmptyHeartIcon from "../../assets/emptyheart.png"
 import { useNavigate } from "react-router-dom"
+import HorizontalLine from "./HorizontalLine"
 
 const Container = styled.div`
   width: 100%;
   height: auto;
-  padding-bottom: 20px;
-  margin-bottom: 20px;
-  border-bottom: 0.5px solid black;
   border-radius:5px;
   // &:hover {
   //   background-color: #0000004d;
@@ -163,6 +161,10 @@ export default function Restaurant({ store, ranking }: { store: Store, ranking: 
             alt="찜하기" 
             onClick={() => setIsClicked(!isClicked)}/>
         </HeartButtonContainer>
+      </div>
+
+      <div style={{padding: "1rem 0 1.3rem 0"}}>
+        <HorizontalLine />
       </div>
     </Container>
   )             
