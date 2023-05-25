@@ -1,32 +1,42 @@
 import { Heading, Stack, Text } from "@chakra-ui/react";
 import React from "react";
 import ReactApexChart from "react-apexcharts";
-import { storeDetail } from "../../pages/MatzipDetail";
+import { storeDetail } from "../../pages/matzipDetail";
 
 interface Props {
-  storeData:storeDetail|null
+  storeData: storeDetail | null;
 }
 
 interface State {
-  series: { name:string,data: number[] }[];
+  series: { name: string; data: number[] }[];
   options: ApexCharts.ApexOptions;
 }
 
 class ApexChart extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-
-    
   }
 
   render() {
-    const {storeData}=this.props
+    const { storeData } = this.props;
     this.state = {
       series: [
         {
           name: "방문횟수",
-          data: [storeData?.keywordData.costUnder8000? storeData?.keywordData.costUnder8000:0, storeData?.keywordData.costUnder15000? storeData?.keywordData.costUnder15000:0,
-            storeData?.keywordData.costUnder25000? storeData?.keywordData.costUnder25000:0,storeData?.keywordData.costOver25000? storeData?.keywordData.costOver25000:0],
+          data: [
+            storeData?.keywordData.costUnder8000
+              ? storeData?.keywordData.costUnder8000
+              : 0,
+            storeData?.keywordData.costUnder15000
+              ? storeData?.keywordData.costUnder15000
+              : 0,
+            storeData?.keywordData.costUnder25000
+              ? storeData?.keywordData.costUnder25000
+              : 0,
+            storeData?.keywordData.costOver25000
+              ? storeData?.keywordData.costOver25000
+              : 0,
+          ],
         },
       ],
       options: {
@@ -60,7 +70,7 @@ class ApexChart extends React.Component<Props, State> {
           intersect: false,
         },
         xaxis: {
-          categories: ["8000이하", "15000이하","25000이하","25000이상"],
+          categories: ["8000이하", "15000이하", "25000이하", "25000이상"],
         },
       },
     };

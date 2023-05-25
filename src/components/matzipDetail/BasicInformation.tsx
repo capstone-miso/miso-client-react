@@ -1,21 +1,17 @@
 import { Card, Heading, Image, Stack, Text } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import { storeDetail } from "../../pages/MatzipDetail";
-import SimpleImageSlider from "react-simple-image-slider";
+import React from "react";
+import { storeDetail } from "../../pages/matzipDetail";
 import ImageSlider from "./ImageSlider";
 // api 정보 반영
-function BasicInformation({storeData}:{storeData:storeDetail|null}) {
-
+function BasicInformation({ storeData }: { storeData: storeDetail | null }) {
   const config = {
-    responseType: 'blob',
-    headers: {
-    }
+    responseType: "blob",
+    headers: {},
   };
-  console.log(storeData?.images)
+  console.log(storeData?.images);
 
   return (
     <>
-      
       <Stack>
         <ImageSlider slides={storeData?.images} />
         <Card
@@ -58,9 +54,9 @@ function BasicInformation({storeData}:{storeData:storeDetail|null}) {
                 mt="0.5"
               />
               <Stack>
-              {storeData?.onInfo.map((info)=>(
-                <Text fontSize="sm">{info}</Text>
-              ))}
+                {storeData?.onInfo.map((info) => (
+                  <Text fontSize="sm">{info}</Text>
+                ))}
               </Stack>
             </Stack>
             <Stack direction="row">
@@ -71,11 +67,11 @@ function BasicInformation({storeData}:{storeData:storeDetail|null}) {
                 mt="0.5"
               />
               <Stack>
-              {storeData?.offInfo.map((info)=>(
-                <Text fontSize="sm">{info}</Text>
-              ))}
+                {storeData?.offInfo.map((info) => (
+                  <Text fontSize="sm">{info}</Text>
+                ))}
               </Stack>
-              </Stack>
+            </Stack>
           </Stack>
         </Card>
       </Stack>

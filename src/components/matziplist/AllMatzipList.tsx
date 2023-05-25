@@ -10,8 +10,8 @@ import {
   Text,
   Tr,
 } from "@chakra-ui/react";
-// import axios from "axios";
-import React from "react";
+import React, { useRef, useState } from "react";
+import { Store } from "../../models/Store";
 // import HeartButton from "../HeartButton";
 
 // interface PostProps {
@@ -36,6 +36,9 @@ const MatzipListContainer = () => {
   //   const res = await axios.post(/* ... */);
   //   setLike(!like);
   // };
+  const mapRef = useRef<any>();
+  let tempStores: Store[] = [];
+  const [stores, setStoreList] = useState<Store[]>(tempStores);
 
   interface Matzip {
     storeId: number;
@@ -95,13 +98,13 @@ const MatzipListContainer = () => {
             <Table w="340px">
               <Tbody>
                 {/* <HeartButton like={like} onClick={toggleLike} /> */}
-                {matzipTable.map((Matzip) => (
-                  <Tr key={Matzip.storeId}>
+                {stores.map((store) => (
+                  <Tr key={store.id}>
                     <Td>
                       <Image
                         boxSize="100px"
-                        src={Matzip.image}
-                        alt={Matzip.storeName}
+                        src={store.mainImage}
+                        alt={store.storeName}
                         borderRadius="lg"
                         ml="-20px"
                       />
@@ -109,7 +112,7 @@ const MatzipListContainer = () => {
                     <Td>
                       <Flex>
                         <Heading ml="-95px" mb="10px" size="sm">
-                          {Matzip.storeName}
+                          {store.storeName}
                         </Heading>
                       </Flex>
                       <Stack ml="-95px" mt="5px">
@@ -121,7 +124,7 @@ const MatzipListContainer = () => {
                             mr="5px"
                             mt="4px"
                           />
-                          <Text fontSize="xs">{Matzip.category}</Text>
+                          <Text fontSize="xs">{store.category}</Text>
                         </Flex>
                         <Flex>
                           <Image
@@ -131,12 +134,12 @@ const MatzipListContainer = () => {
                             mr="5px"
                             mt="5px"
                           />
-                          <Text fontSize="xs">{Matzip.address}</Text>
+                          <Text fontSize="xs">{store.address}</Text>
                         </Flex>
                       </Stack>
                     </Td>
                     <Td w="60px">
-                      <Text>{Matzip.like}</Text>
+                      <Text>like</Text>
                     </Td>
                   </Tr>
                 ))}

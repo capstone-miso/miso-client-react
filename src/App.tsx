@@ -4,15 +4,6 @@ import AfterEntering from "./AfterEntering";
 import "./App.css";
 import theme from "./constants/theme";
 import Main from "./pages/main";
-import AgainList from "./pages/againList";
-import Matziplist from "./pages/matziplist";
-import RestaurantMap from './pages/RestaurantMap';
-import BestRestaurants from './pages/BestRestaurants';
-import MuchAgainList from "./pages/muchAgainList";
-import MyAgainList from "./pages/myAgainList";
-import SimilarAgainList from "./pages/similarAgainList";
-import MatzipDetail from "./pages/MatzipDetail";
-import OauthDetection from "./pages/OauthDetection";
 
 const App: React.FC = () => {
   return (
