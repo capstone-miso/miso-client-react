@@ -38,3 +38,8 @@ export interface MarkerLocation {
   location: any,
   setLocation: any
 }
+
+export interface SubKeyword {
+  korean: string,
+  english: string
+}

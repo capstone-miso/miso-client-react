@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import Restaurant from '../components/bestrestaurant/Restaurant'
+import Restaurant from '../components/bestrestaurant/RestaurantRanking'
 import { Button } from "@chakra-ui/react"
 import { useState, useEffect, useRef } from "react"
 import { Store } from "../models/Store"
