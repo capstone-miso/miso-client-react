@@ -1,45 +1,73 @@
-import {
-  Flex,
-  Heading,
-  Image,
-  Stack,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Text,
-  Tr,
-} from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import EmptyHeartIcon from "../../assets/emptyheart.png";
+import HeartIcon from "../../assets/heart.png";
 import { Store } from "../../models/Store";
 import { getStoreList } from "../../services/StoreListApi";
-// import HeartButton from "../HeartButton";
+import HorizontalLine from "../bestrestaurant/HorizontalLine";
 
-// interface PostProps {
-//   // Specify the types for props here if needed
-// }
-// const MatzipListContainer = (props: PostProps) => {
+const Container = styled.div`
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+`;
+
+const NameContainer = styled.div`
+  padding: 0px 0px 10px 0px;
+  display: flex;
+`;
+
+const Name = styled.div`
+  font-weight: 600;
+  font-size: 1.3rem;
+`;
+
+const Content = styled.div`
+  width: 100%;
+  vertical-align: middle;
+  display: inline-block;
+`;
+
+const ImageContainer = styled.div`
+  float: left;
+  padding: 0px 10px 0px 0px;
+`;
+
+const ContentImage = styled.img`
+  height: 18px;
+  vertical-align: middle;
+`;
+
+const HeartButtonContainer = styled.div`
+  width: 20%;
+  display: felx;
+  justify-content: flex-end;
+`;
+
+const HeartButton = styled.img`
+  height: 2.5rem;
+`;
 
 const MatzipListContainer = () => {
-  // const [like, setLike] = useState<boolean>(false);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const res = await axios.get(/* ... */);
-  //     if (res.data.type === "liked") {
-  //       setLike(true);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
-
-  // const toggleLike = async (e: React.MouseEvent<HTMLButtonElement>) => {
-  //   const res = await axios.post(/* ... */);
-  //   setLike(!like);
-  // };
   const [storeList, setStoreList] = useState<Store[]>([]);
   const [stores, setStores] = useState<Store[]>([]);
   const pageRef = useRef<number>(1);
+
+  const navigate = useNavigate();
+  const showStoreDetail = (storeId: number) => {
+    navigate(
+      {
+        pathname: "../matzipDetail",
+        search: `?storeId=${storeId}`,
+      },
+      {
+        state: storeId,
+      }
+    );
+    navigate(0);
+  };
 
   useEffect(() => {
     const setStoreList = async () => {
@@ -52,115 +80,118 @@ const MatzipListContainer = () => {
     setStoreList();
   }, []);
 
-  interface Matzip {
-    storeId: number;
-    image: string;
-    storeName: string;
-    category: string;
-    address: string;
-    like: string;
-  }
+  const [clickedMap, setClickedMap] = useState<Map<number, boolean>>(new Map());
 
-  const matzipTable: Matzip[] = [
-    {
-      storeId: 0,
-      image: "https://ifh.cc/g/HY2lWp.jpg",
-      storeName: "시홍쓰",
-      category: "중식",
-      address: "gd",
-      like: "❤️",
-    },
-    {
-      storeId: 1,
-      image: "https://ifh.cc/g/1qrGTs.jpg",
-      storeName: "대원칼국수",
-      category: "한식",
-      address: "",
-      like: "❤️",
-    },
-    {
-      storeId: 2,
-      image: "https://ifh.cc/g/dKD1wS.png",
-      storeName: "개미집투",
-      category: "한식",
-      address: "",
-      like: "❤️",
-    },
-    {
-      storeId: 3,
-      image: "https://ifh.cc/g/1qrGTs.jpg",
-      storeName: "오돌이생삼겹",
-      category: "한식",
-      address: "",
-      like: "❤️",
-    },
-  ];
+  const toggleHeart = (storeId: number) => {
+    const newClickedMap = new Map(clickedMap);
+    newClickedMap.set(storeId, !newClickedMap.get(storeId));
+    setClickedMap(newClickedMap);
+  };
+
+  const getHeartButtonIcon = (storeId: number) => {
+    return clickedMap.get(storeId) ? HeartIcon : EmptyHeartIcon;
+  };
+
+  const getCategory = (category: string): string => {
+    let types: string[] = category.split(" > ");
+
+    if (types.length === 2) {
+      return types[1];
+    }
+
+    if (types[1] === "퓨전요리") {
+      if (category.includes("한식")) {
+        return "한식";
+      } else {
+        return "일식";
+      }
+    }
+
+    if (category.includes("닭강정")) {
+      return "양식";
+    }
+
+    switch (types[1]) {
+      case "간식":
+      case "패스트푸드":
+        return types[2];
+      case "치킨":
+        return "양식";
+      case "아시아음식":
+        return "아시아음식(" + types[2] + ")";
+      case "뷔페":
+        return "한식";
+      case "술집":
+        return "주점";
+    }
+
+    return types[1];
+  };
 
   return (
     <>
-      <Flex
-        maxW="100%"
-        justifyContent="center"
-        justifyItems="center"
-        alignContent="center"
-        alignItems="center"
-      >
-        <TableContainer pt="30px" maxW="100%">
-          <Flex>
-            <Table w="340px">
-              <Tbody>
-                {/* <HeartButton like={like} onClick={toggleLike} /> */}
-                {stores.map((store, index) => (
-                  <Tr key={`${store.id}`}>
-                    <Td>
-                      <Image
-                        boxSize="100px"
-                        src={store.mainImage}
-                        alt={store.storeName}
-                        borderRadius="lg"
-                        ml="-20px"
-                      />
-                    </Td>
-                    <Td>
-                      <Flex>
-                        <Heading ml="-95px" mb="10px" size="sm">
-                          {store.storeName}
-                        </Heading>
-                      </Flex>
-                      <Stack ml="-95px" mt="5px">
-                        <Flex mb="-10px">
-                          <Image
-                            boxSize="12px"
-                            src="https://ifh.cc/g/QXRC8y.png"
-                            alt="종류"
-                            mr="5px"
-                            mt="4px"
-                          />
-                          <Text fontSize="xs">{store.category}</Text>
-                        </Flex>
-                        <Flex>
-                          <Image
-                            boxSize="12px"
-                            src="https://ifh.cc/g/Xjtdvd.png"
-                            alt="위치"
-                            mr="5px"
-                            mt="5px"
-                          />
-                          <Text fontSize="xs">{store.address}</Text>
-                        </Flex>
-                      </Stack>
-                    </Td>
-                    <Td w="60px">
-                      <Text>❤️</Text>
-                    </Td>
-                  </Tr>
-                ))}
-              </Tbody>
-            </Table>
-          </Flex>
-        </TableContainer>
-      </Flex>
-      <Stack mb="60px" />
+      {stores.map((store, index) => (
+        <Container key={`${store.id}`}>
+          <img
+            src={
+              store.mainImage === null ? "/default-image.png" : store.mainImage
+            }
+            style={{
+              objectFit: "cover",
+              width: "100%",
+              height: "15em",
+              paddingBottom: "10px",
+            }}
+            onClick={() => showStoreDetail(store.id)}
+          />
+
+          <div style={{ width: "100%", display: "flex" }}>
+            <div
+              style={{ width: "80%" }}
+              onClick={() => showStoreDetail(store.id)}
+            >
+              <NameContainer onClick={() => showStoreDetail(store.id)}>
+                <Name>{store.storeName}&nbsp;</Name>
+              </NameContainer>
+
+              <Content>
+                <ImageContainer>
+                  <ContentImage src="./home-icon.png" />
+                </ImageContainer>
+                <div>{getCategory(store.category)}</div>
+              </Content>
+
+              <Content>
+                <ImageContainer>
+                  <ContentImage src="./location-icon.png" />
+                </ImageContainer>
+                <div>{store.address}</div>
+              </Content>
+
+              {store.phone !== "" && (
+                <Content>
+                  <ImageContainer>
+                    <ContentImage src="./phone-icon.png" />
+                  </ImageContainer>
+                  <div>{store.phone}</div>
+                </Content>
+              )}
+            </div>
+            <HeartButtonContainer>
+              <HeartButton
+                src={getHeartButtonIcon(store.id)}
+                alt="찜하기"
+                onClick={() => toggleHeart(store.id)}
+              />
+            </HeartButtonContainer>
+          </div>
+
+          <div style={{ padding: "1rem 0 1.3rem 0" }}>
+            <HorizontalLine />
+          </div>
+        </Container>
+      ))}
+      <Stack mb="45px" />
     </>
   );
 };
