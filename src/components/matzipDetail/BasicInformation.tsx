@@ -13,19 +13,6 @@ function BasicInformation({ storeData }: { storeData: storeDetail | null }) {
   return (
     <>
       <Stack>
-        {/* <SimpleImageSlider
-          width="330px"
-          height="250px"
-          images={storeData?.images? storeData.images:[]}
-          //images={images}
-          navSize={30}
-          autoPlay={true}
-          showBullets={true}
-          showNavs={true}
-        /> */}
-        {/* <Image referrerPolicy="no-referrer" src="https://postfiles.pstatic.net/MjAyMzAxMDRfMjcy/MDAxNjcyNzk4MjY3NzYz.4-n7-LZtLvygq06mBhS7s9rHsAaicaeOZLsYLer5_jwg.qj1N8N5vRzee-rHi0yqQizwW4icLYLOLT7g77yHYxJkg.JPEG.nemcon/IMG_5908.JPG?type=w966"
-        width="330px"
-        height="250px"/> */}
         <ImageSlider slides={storeData?.images} />
         <Card
           variant="unstyled"

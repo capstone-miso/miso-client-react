@@ -17,10 +17,11 @@ export default function RestaurantMarker({ store, setCurrentLocation, level,inde
   }
   const navigate=useNavigate()
   const showStoreDetail= (storeId:number) =>{
-    navigate('../matzipDetail',{
-      state:{
-        storeId:storeId
-      }
+    navigate({
+      pathname: "../matzipDetail",
+      search: `?storeId=${storeId}`,
+    },{
+      state:storeId
     })
   }
 

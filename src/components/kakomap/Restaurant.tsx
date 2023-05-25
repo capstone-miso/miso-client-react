@@ -6,15 +6,12 @@ import EmptyHeartIcon from "../../assets/emptyheart.png"
 import { useNavigate } from "react-router-dom"
 
 const Container = styled.div`
-  width: 100%;
+  width: 330px;
   height: auto;
   padding-bottom: 20px;
   margin-bottom: 20px;
   border-bottom: 0.5px solid black;
   border-radius:5px;
-  &:hover {
-    background-color: #0000004d;
-  }
   `
 
 const NameContainer = styled.div`
@@ -106,16 +103,18 @@ export default function Restaurant({ store }: { store: Store }){
 
   const navigate=useNavigate()
   const showStoreDetail= (storeId:number) =>{
-    navigate('../matzipDetail',{
-      state:{
-        storeId:storeId
-      }
+    navigate({
+      pathname: "../matzipDetail",
+      search: `?storeId=${storeId}`,
+    },{
+      state:storeId
     })
+    navigate(0)
   }
 
   return(
-    <Container onClick={()=>showStoreDetail(store.id)}>
-      <NameContainer>
+    <Container>
+      <NameContainer  onClick={()=>showStoreDetail(store.id)}>
         <Name>{ store.storeName }&nbsp;</Name>
       </NameContainer>
 
@@ -124,10 +123,11 @@ export default function Restaurant({ store }: { store: Store }){
       :
       store.mainImage
       }
-      style={{objectFit: "cover", width: "100%", height: "15em", paddingBottom: "10px"}}/>
+      style={{objectFit: "cover", width: "100%", height: "15em", paddingBottom: "10px"}}
+      onClick={()=>showStoreDetail(store.id)}/>
       
       <div style={{width: "100%", display: "flex"}}>
-        <div style={{width: "80%"}}>      
+        <div style={{width: "80%"}}  onClick={()=>showStoreDetail(store.id)}>      
           <Content>
             <ImageContainer>
               <ContentImage src="./home-icon.png" />
