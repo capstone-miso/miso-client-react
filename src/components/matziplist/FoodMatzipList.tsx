@@ -101,7 +101,7 @@ function FoodMatzipList() {
           </Stack>
         </Flex>
       ))}
-      <Stack mb="60px" />
+      <Stack mb="45px" />
     </>
   );
 }

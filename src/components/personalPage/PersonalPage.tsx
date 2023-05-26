@@ -87,7 +87,7 @@ const PersonalPage: React.FC = () => {
         isCentered
       >
         <AlertDialogOverlay />
-        <AlertDialogContent zIndex="9999">
+        <AlertDialogContent>
           <AlertDialogHeader>정말 탈퇴하시겠습니까?</AlertDialogHeader>
           <AlertDialogCloseButton />
           <AlertDialogFooter>

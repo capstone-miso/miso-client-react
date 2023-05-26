@@ -6,17 +6,18 @@ import { Store } from "../models/Store"
 import Scroll from 'react-infinite-scroll-component'
 import { useSearchParams } from 'react-router-dom'
 import axios from 'axios'
+
 const Container = styled.div`
   width: 100vw;
   height: 100vh;
-`
+`;
 
 const BackButton = styled.div`
   height: 5%;
   display: felx;
   align-items: center;
   padding: 10px 0 0 10px;
-`
+`;
 
 const TitleContainer = styled.div`
   width: 100%;
@@ -24,7 +25,7 @@ const TitleContainer = styled.div`
   display: felx;
   justify-content: center;
   align-items: center;
-`
+`;
 
 const MainTitle = styled.div`
   font-size: 1.5em;
@@ -35,14 +36,14 @@ const MainTitle = styled.div`
   text-decoration: underline;
   text-underline-position: under;
   text-decoration-color: orange;
-`
+`;
 
 const SubTitle = styled.div`
   font-size: 1em;
   display: felx;
   justify-content: center;
   align-items: top;
-`
+`;
 
 const ScrollingWrapper = styled.div`
   height: 10%;
@@ -50,18 +51,18 @@ const ScrollingWrapper = styled.div`
   overflow-y: hidden;
   white-space: nowrap;
   -webkit-overflow-scrolling: touch;
-  ::-webkit-scrollbar{
-    display:none;
+  ::-webkit-scrollbar {
+    display: none;
   }
   padding: 0 10px;
   display: felx;
   justify-content: center;
-`
+`;
 
 const ButtonContainer = styled.div`
   padding: 10px 10px 10px 0;
   display: inline-block;
-`
+`;
 
 const RestaurantContainer = styled.div`
   width: 100%;
@@ -76,6 +77,7 @@ export default function CategoryRestaurants(){
 
   const pageRef = useRef<number>(1);
   const scrollable = useRef<boolean>(true);
+
 
   const getStore=()=>{
     axios.get(`https://dishcovery.site/api/store?category=${categoryType}&page=${pageRef.current}`,{
@@ -103,7 +105,7 @@ export default function CategoryRestaurants(){
   return(
     <Container>
       <BackButton>
-        <img src="./back-button.png" style={{width: "30px"}}/>
+        <img src="./back-button.png" style={{ width: "30px" }} />
       </BackButton>
 
       <TitleContainer>
@@ -113,8 +115,7 @@ export default function CategoryRestaurants(){
         </div>
       </TitleContainer>
 
-    <ScrollingWrapper >
-    </ScrollingWrapper>
+      <ScrollingWrapper></ScrollingWrapper>
 
       <RestaurantContainer>
         <Scroll
@@ -132,8 +133,9 @@ export default function CategoryRestaurants(){
             textAlign: "center",
             padding: "10px 0 10px 0"}}>
               End...
-            </h4>}
-        scrollableTarget={RestaurantContainer}
+            </h4>
+          }
+          scrollableTarget={RestaurantContainer}
         >
           {stores.map((store, index) => (
             <Restaurant
@@ -144,6 +146,5 @@ export default function CategoryRestaurants(){
         </Scroll>
       </RestaurantContainer>
     </Container>
-  )
-
+  );
 }

@@ -12,7 +12,7 @@ const Header = ({ title }: HeaderProps) => {
       // bgColor="blue"
       w="390px"
       h="85px"
-      zIndex="9998"
+      zIndex="1"
       display="left"
       direction="row"
       position="fixed"
