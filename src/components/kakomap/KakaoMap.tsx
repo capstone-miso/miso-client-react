@@ -137,6 +137,9 @@ export default function KakaoMap({stores,setStoreList,setCurrentAddress}:{stores
         lat:lat,
         lon:lng,
         category:category
+      },
+      headers:{
+        Authorization:"Bearer " + localStorage.getItem("Authorization") 
       }
     })
     return response.data.dtoList
@@ -144,7 +147,6 @@ export default function KakaoMap({stores,setStoreList,setCurrentAddress}:{stores
       return []
     }
   }
-  // const geocoder:kakao.maps.services.Geocoder=new kakao.maps.services.Geocoder()
 
   const [selectedIndex,setSelectedIndex]=useState<number>(-1)
 

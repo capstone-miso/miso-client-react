@@ -18,8 +18,6 @@ const ImageSlider = ({slides}:{slides:string[]|undefined}) => {
     return null;
   }
 
-  console.log(slides)
-
   return (
     <section className='slider'>
       <IoIosArrowBack className='left-arrow' onClick={prevSlide} />

@@ -26,9 +26,8 @@ const BottomNavigation: React.FC = () => {
     <>
       <nav className="wrapper">
         <div
-          className={
-            activeNav === "/restaurant-map" ? "nav-link active" : "nav-link"
-          }
+          style={{zIndex:20}} 
+          className={activeNav === "/restaurant-map" ? "nav-link active" : "nav-link"}
           onClick={() => handleNavClick("/restaurant-map")}
         >
           <div>

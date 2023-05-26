@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { Store } from "../../models/Store";
 
 interface Again {
   id: number;
@@ -21,13 +22,16 @@ type CardProps = {
   content: string;
   url: string;
   again: Again[];
+  stores:Store[]
 };
 
-const AgainListCard = ({ title, content, url, again }: CardProps) => {
+const AgainListCard = ({ title, content, url, again,stores }: CardProps) => {
   const navigate = useNavigate();
 
-  const handleClick = () => {
-    navigate(url);
+  const handleClick = (stores:Store[]) => {
+    navigate(url,{
+      state:{stores:stores}
+    });
   };
 
   return (
@@ -64,7 +68,7 @@ const AgainListCard = ({ title, content, url, again }: CardProps) => {
                     alignItems="right"
                     alignSelf="right"
                     mb="1"
-                    onClick={() => handleClick()}
+                    onClick={() => handleClick(stores)}
                   >
                     더보기
                   </Text>
@@ -76,7 +80,6 @@ const AgainListCard = ({ title, content, url, again }: CardProps) => {
                         direction={{ base: "column", sm: "row" }}
                         overflow="hidden"
                         w="95px"
-                        h="115px"
                         mr="1"
                         ml="1"
                         key={Again.id}

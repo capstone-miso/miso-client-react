@@ -1,8 +1,11 @@
-import { useRef, useState } from "react";
-import Scroll from "react-infinite-scroll-component";
-import styled from "styled-components";
-import Restaurant from "../components/bestrestaurant/Restaurant";
-import { Store } from "../models/Store";
+import styled from 'styled-components'
+import Restaurant from '../components/kakomap/Restaurant'
+import { Button } from "@chakra-ui/react"
+import { useState, useEffect, useRef } from "react"
+import { Store } from "../models/Store"
+import Scroll from 'react-infinite-scroll-component'
+import { useSearchParams } from 'react-router-dom'
+import axios from 'axios'
 
 const Container = styled.div`
   width: 100vw;
@@ -65,47 +68,41 @@ const RestaurantContainer = styled.div`
   width: 100%;
   height: 60%;
   padding: 0 10px 0 10px;
-`;
+`
 
-export default function CategoryRestaurants({
-  categoryType,
-}: {
-  categoryType: string;
-}) {
-  const [clickedButtonIndex, setClickedButtonIndex] = useState<number>(0); //선택한 조회 유형
+export default function CategoryRestaurants(){
+  const [searchParams, setSearchParams] = useSearchParams();
+  const categoryType=searchParams.get('type');
   const [stores, setStores] = useState<Store[]>([]);
 
   const pageRef = useRef<number>(1);
   const scrollable = useRef<boolean>(true);
 
-  //   const fetchData = () => {
-  //     if (stores.length >= 50) {
-  //       scrollable.current = false;
-  //       return;
-  //     }
 
-  //     setTimeout(() => {
-  //       const setStoreRank = async () => {
-  //         // const storeRanking: StoreRank = await getStoreRank('WINTER', pageRef.current, 10)
-  //         // console.log(storeRanking)
-  //         let storeList: Store[] = await getStoreRank('WINTER', pageRef.current, 10)
-  //         setStores([...stores, ...storeList])
-  //       }
+  const getStore=()=>{
+    axios.get(`https://dishcovery.site/api/store?category=${categoryType}&page=${pageRef.current}`,{
+      headers:{
+        Authorization:"Bearer " + localStorage.getItem("Authorization")
+      }
+    }).then((response)=>{
+            pageRef.current=pageRef.current+1
+            console.log(response.data)
+            setStores([...stores,...response.data.dtoList])
+        })
+  }
 
-  //       setStoreRank()
-  //     }, 2000);
-  //   }
+   const fetchData = () => {
+    setTimeout(() => {
+      getStore()
+  
+      }, 2000);
+    }
 
-  //   useEffect(() => {
-  //     const setStoreRank = async () => {
-  //       let storeList: Store[] = await getStoreRank('WINTER', pageRef.current, 10)
-  //       setStores([...stores, ...storeList])
-  //     }
-
-  //     setStoreRank()
-  //   }, [])
-
-  return (
+    useEffect(()=>{
+        getStore()
+    },[])
+  
+  return(
     <Container>
       <BackButton>
         <img src="./back-button.png" style={{ width: "30px" }} />
@@ -122,26 +119,19 @@ export default function CategoryRestaurants({
 
       <RestaurantContainer>
         <Scroll
-          dataLength={stores.length} //반복되는 컴포넌트 개수
-          next={() => {}} //스크롤이 바닥에 닿은 경우 -> 데이터 추가
-          hasMore={scrollable.current} //추가 데이터 유무
-          loader={
-            <h4
-              style={{
-                textAlign: "center",
-                padding: "10px 0 10px 0",
-              }}
-            >
-              Loading...
-            </h4>
-          } //로딩 스피너
-          endMessage={
-            <h4
-              style={{
-                textAlign: "center",
-                padding: "10px 0 10px 0",
-              }}
-            >
+        dataLength={stores.length} //반복되는 컴포넌트 개수
+        next={fetchData}          //스크롤이 바닥에 닿은 경우 -> 데이터 추가
+        hasMore={scrollable.current}            //추가 데이터 유무
+        loader={
+          <h4 style={{ 
+          textAlign: "center",
+          padding: "10px 0 10px 0"}}>
+            Loading...
+          </h4>}   //로딩 스피너
+        endMessage={
+            <h4 style={{ 
+            textAlign: "center",
+            padding: "10px 0 10px 0"}}>
               End...
             </h4>
           }
@@ -151,9 +141,7 @@ export default function CategoryRestaurants({
             <Restaurant
               key={`${store.id}-${index}`}
               {...stores[index]}
-              store={store}
-              ranking={index + 1}
-            />
+              store={store}/>
           ))}
         </Scroll>
       </RestaurantContainer>

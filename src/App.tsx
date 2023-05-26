@@ -15,11 +15,6 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/*" element={<AfterEntering />} />
           <Route path="/" element={<Main />} />
-          <Route
-            path="/similaragainList"
-            element={<SimilarAgainList />}
-          ></Route>
-          <Route path="/muchagainList" element={<MuchAgainList />}></Route>
           <Route path="/auth" element={<OauthDetection />}></Route>
         </Routes>
       </BrowserRouter>
