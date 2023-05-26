@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import HeartIcon from "../../assets/heart.png"
 import EmptyHeartIcon from "../../assets/emptyheart.png"
 import { useNavigate } from "react-router-dom"
+import axios from "axios";
 
 const Container = styled.div`
   width: 330px;
@@ -52,10 +53,7 @@ const HeartButton = styled.img`
 `
 
 export default function Restaurant({ store }: { store: Store }){
-  const [isClicked, setIsClicked] = useState<boolean>(false)  //사용자가 찜했는지 여부를 받아와 변수 초기화 필요
-  useEffect(() => {
-    console.log(isClicked)
-  }, [isClicked])
+  const [isClicked, setIsClicked] = useState<boolean>(store.preference)  //사용자가 찜했는지 여부를 받아와 변수 초기화 필요
 
   const getHeartButtonIcon = () => {
     if (isClicked){
@@ -112,12 +110,39 @@ export default function Restaurant({ store }: { store: Store }){
     navigate(0)
   }
 
+  const clickHeart=()=>{
+    if(!isClicked){
+      axios.post(`https://dishcovery.site/api/preference/${store.id}`,
+      {
+
+      },
+      {
+        headers:{
+          Authorization: "Bearer " + localStorage.getItem("Authorization")
+        }
+      }).then((res)=>{
+        if(res.status===201){
+
+          setIsClicked(true)
+        }
+      })
+    }
+    else{
+      axios.delete(`https://dishcovery.site/api/preference/${store.id}`,{
+        headers:{
+          Authorization: "Bearer " + localStorage.getItem("Authorization")
+      }
+      }).then((res)=>{
+        if(res.status===200){
+
+          setIsClicked(false)
+        }
+      })
+    }
+  }
+
   return(
     <Container>
-      <NameContainer  onClick={()=>showStoreDetail(store.id)}>
-        <Name>{ store.storeName }&nbsp;</Name>
-      </NameContainer>
-
       <img src={store.mainImage===null?
       "/default-image.png"
       :
@@ -127,7 +152,10 @@ export default function Restaurant({ store }: { store: Store }){
       onClick={()=>showStoreDetail(store.id)}/>
       
       <div style={{width: "100%", display: "flex"}}>
-        <div style={{width: "80%"}}  onClick={()=>showStoreDetail(store.id)}>      
+        <div style={{width: "80%"}}  onClick={()=>showStoreDetail(store.id)}>    
+          <NameContainer  onClick={()=>showStoreDetail(store.id)}>
+            <Name> { store.storeName }&nbsp;</Name>
+          </NameContainer>
           <Content>
             <ImageContainer>
               <ContentImage src="./home-icon.png" />
@@ -136,6 +164,7 @@ export default function Restaurant({ store }: { store: Store }){
               { getCategory(store.category) }
             </div>
           </Content>
+
           <Content>
             <ImageContainer>
               <ContentImage src="./location-icon.png" />
@@ -160,7 +189,7 @@ export default function Restaurant({ store }: { store: Store }){
           <HeartButton 
             src={getHeartButtonIcon()}
             alt="찜하기" 
-            onClick={() => setIsClicked(!isClicked)}/>
+            onClick={() =>clickHeart()}/>
         </HeartButtonContainer>
       </div>
     </Container>

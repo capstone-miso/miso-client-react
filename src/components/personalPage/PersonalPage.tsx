@@ -17,12 +17,26 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import Header from "../Header";
+import { useNavigate } from "react-router-dom";
+
 
 const PersonalPage: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isLogOut,setIsLogOut]=useState(false)
   const cancelRef = React.useRef<HTMLButtonElement | null>(null);
+  const logOutCancelRef= React.useRef<HTMLButtonElement | null>(null);
+  const navigate=useNavigate()
+
+  const logOut=()=>{
+    localStorage.removeItem("Authorization")
+    localStorage.removeItem("RefreshToken")
+    navigate({
+      pathname:"../"
+    })
+  }
+
   return (
     <>
       <Flex direction="column">
@@ -54,8 +68,8 @@ const PersonalPage: React.FC = () => {
                   <Switch ml="160px" id="email-alerts" />
                 </FormControl>
               </Card>
-              <Card w="330px" p="15px" m="10px">
-                <Text>로그아웃</Text>
+              <Card w="330px" p="15px" m="10px " onClick={()=>setIsLogOut(true)}>
+                <Text >로그아웃</Text>
               </Card>
               <Card w="330px" p="15px" m="10px" onClick={onOpen}>
                 <Text>회원탈퇴</Text>
@@ -81,6 +95,28 @@ const PersonalPage: React.FC = () => {
               취소
             </Button>
             <Button colorScheme="orange" ml={3}>
+              확인
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <AlertDialog
+        motionPreset="slideInBottom"
+        leastDestructiveRef={logOutCancelRef}
+        onClose={()=>setIsLogOut(false)}
+        isOpen={isLogOut}
+        isCentered
+      >
+        <AlertDialogOverlay />
+        <AlertDialogContent zIndex="9999">
+          <AlertDialogHeader>로그아웃 하시겠습니까?</AlertDialogHeader>
+          <AlertDialogCloseButton />
+          <AlertDialogFooter>
+            <Button ref={logOutCancelRef} onClick={()=>setIsLogOut(false)}>
+              취소
+            </Button>
+            <Button colorScheme="orange" ml={3} onClick={()=>logOut()}>
               확인
             </Button>
           </AlertDialogFooter>

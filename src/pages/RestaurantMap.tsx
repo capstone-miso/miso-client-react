@@ -77,6 +77,7 @@ export default function RestaurantMap(){
       </MapContainer>
 
       <Sheet 
+        style={{zIndex:10}}
         isOpen={isOpen}
         onClose={() => setOpen(false)}
         snapPoints={ snapPoints }

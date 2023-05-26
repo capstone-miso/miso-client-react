@@ -77,7 +77,7 @@ class ApexChart extends React.Component<Props, State> {
     return (
       <Stack mt="30px">
         <Heading fontSize="lg">식사비용 통계</Heading>
-        <Text fontSize="xs">#가성비맛집</Text>
+        {/* <Text fontSize="xs">#가성비맛집</Text> */}
         <div id="chart">
           <ReactApexChart
             options={this.state.options}
