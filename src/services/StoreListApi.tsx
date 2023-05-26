@@ -15,3 +15,8 @@ export const getStoreList = async (
 
   return stores.data.dtoList;
 };
+
+export const getNextStoreList = async (pageUrl: string): Promise<Store[]> => {
+  const stores = await axios.get(pageUrl);
+  return stores.data;
+};

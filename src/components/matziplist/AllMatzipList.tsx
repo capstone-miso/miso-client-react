@@ -50,6 +50,12 @@ const HeartButton = styled.img`
   height: 2.5rem;
 `;
 
+const RestaurantContainer = styled.div`
+  width: 100%;
+  height: 60%;
+  padding: 1rem 1rem 0 1rem;
+`;
+
 const MatzipListContainer = () => {
   const [storeList, setStoreList] = useState<Store[]>([]);
   const [stores, setStores] = useState<Store[]>([]);

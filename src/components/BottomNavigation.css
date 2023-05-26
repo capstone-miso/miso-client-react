@@ -6,6 +6,7 @@
     right: 0;
     /* width: 390px; */
     height: 45px;
+    z-index: 9999;
   }
   
   /* nav태그 아래의 자식들을 수평정렬하기 위한 설정 */
