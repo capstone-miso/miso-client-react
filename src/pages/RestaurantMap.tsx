@@ -83,10 +83,12 @@ export default function RestaurantMap(){
         initialSnap={ snapPoints.length -1}
         onSnap={snapIndex =>
             console.log('> Current snap point index:', snapIndex)
-          }>
+          }
+        style={{ marginBottom: "45px" }}>
           <Sheet.Container>
             <Sheet.Header/>
-            <Sheet.Content>
+            <Sheet.Content 
+              disableDrag={true}>
               <RestaurantList
               stores={stores}
               currentAddress={currentAddress} />
