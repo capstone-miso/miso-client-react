@@ -29,7 +29,7 @@ const Name = styled.div`
 const Content = styled.div`
   width: 100%;
   vertical-align: middle;
-  display: inline-block;
+  display: block;
 `
 
 const ImageContainer = styled.div`
