@@ -76,7 +76,7 @@ export default function RestaurantMap() {
         onSnap={snapIndex =>
             console.log('> Current snap point index:', snapIndex)
           }
-        style={{ marginBottom: "45px", zIndex: 10 }}>
+        style={{ marginBottom: "45px",zIndex:10 }}>
           <Sheet.Container>
             <Sheet.Header/>
             <Sheet.Content 
@@ -91,7 +91,6 @@ export default function RestaurantMap() {
             style={{background: "transparent"}} />
 
         <Sheet.Backdrop style={{ background: "transparent" }} />
-      </Sheet>
     </Container>
   );
 }

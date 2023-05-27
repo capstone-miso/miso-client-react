@@ -78,8 +78,8 @@ function BasicInformation({ storeData }: { storeData: storeDetail | null }) {
           overflow="hidden"
           w="330px"
         >
+          
           <Stack pl="4" mt="6" mb="6" spacing="1">
-
             <HStack>
             <Heading size="lg">{storeData?.storeName}</Heading>
             

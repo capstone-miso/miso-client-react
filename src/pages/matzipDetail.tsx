@@ -75,7 +75,7 @@ export interface storeDetail {
 
 export default function MatzipDetail() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const storeId = searchParams.get("storeId");
+  const storeId= searchParams.get("storeId");
   const [storeData, setData] = useState<storeDetail | null>(null);
   const [similarStores, setSimilarStores] = useState<Store[]>([]);
   console.log(storeId);
@@ -104,7 +104,7 @@ export default function MatzipDetail() {
   useEffect(() => {
     getStoreDetail(storeId);
     getSimilarStores(storeId);
-  }, []);
+  }, [searchParams]);
   return (
     <>
       <MatzipDetailPage storeData={storeData} similarStores={similarStores} />
