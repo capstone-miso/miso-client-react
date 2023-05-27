@@ -39,10 +39,11 @@ const MainTitle = styled.div`
 `
 
 const SubTitle = styled.div`
-  font-size: 1em;
+  font-size: 1rem;
   display: felx;
   justify-content: center;
   align-items: top;
+  color: #7a7a7a
 `
 
 const ScrollingWrapper = styled.div`
@@ -62,6 +63,7 @@ const ScrollingWrapper = styled.div`
 const ButtonContainer = styled.div`
   padding: 10px 10px 10px 0;
   display: inline-block;
+  -webkit-tap-highlight-color: transparent;
 `
 
 const RestaurantContainer = styled.div`
@@ -75,7 +77,7 @@ export default function BestRestaurants(){
   const [stores, setStores] = useState<Store[]>([]);
 
   const pageRef = useRef<number>(1);
-  const scrollable = useRef<boolean>(true);  //페이지 마지막에 도달하는 경우 스크롤 중지
+  const scrollable = useRef<boolean>(false);  //페이지 마지막에 도달하는 경우 스크롤 중지
 
   let nextPage = useRef<string>("");  //다음 페이지(다음 10개의 맛집 리스트)에 대한 url
 
@@ -110,10 +112,14 @@ export default function BestRestaurants(){
       let storeList: StoreRanking = await getStoreRanking(subKeywords.current[clickedButtonIndex].english, pageRef.current, 10)
       setStores(storeList.dtoList)
 
-      nextPage.current = storeList.nextPage   //다음에 불러올 맛집 목록 url
-      if (nextPage.current == null) {
+      if (storeList.total <= 10) {
         scrollable.current = false;
       }
+      else {
+        scrollable.current = true;
+      }
+
+      nextPage.current = storeList.nextPage   //다음에 불러올 맛집 목록 url
     }
 
     setStoreRank()
@@ -126,6 +132,27 @@ export default function BestRestaurants(){
     navigate(-1)
   }
 
+  const getSubTitle = () => {
+    let subTitle = '지금 가장 인기있는 맛집!'
+
+    switch(keyword.current){
+      case '가격대':
+        subTitle = '공무원도 인정한 가장 가성비 좋은 맛집'
+        break;
+      case '계절별':
+        subTitle = '계절별로 찾아보는 광진구청 맛집'
+        break;
+      case '시간대':
+        subTitle = '광진구청 공무원도 줄서서 먹는 베스트 맛집'
+        break;
+      case '방문자':
+        subTitle = '광진구청 공무원이 가장 많이 찾는 베스트 맛집'
+        break;
+    }
+
+    return subTitle
+  }
+
   return(
     <Container>
       <BackButton
@@ -136,7 +163,7 @@ export default function BestRestaurants(){
       <TitleContainer>
         <div>
           <MainTitle>#{keyword.current}</MainTitle>
-          <SubTitle>{keyword.current}로 찾아보는 맛집</SubTitle>
+          <SubTitle>{getSubTitle()}</SubTitle>
         </div>
       </TitleContainer>
 

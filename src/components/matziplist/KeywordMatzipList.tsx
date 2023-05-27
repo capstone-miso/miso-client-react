@@ -21,7 +21,7 @@ function KeywordMatzipList() {
   const getSubKeyword = (buttonId: number): SubKeyword[] => {
     switch(buttonId){
       case 0:
-        return [{korean: "8,000원 이하", english: "UNDER_COST_8000"}, {korean: "15,000원 이하", english: "UNDER_COST_8000"},
+        return [{korean: "8,000원 이하", english: "UNDER_COST_8000"}, {korean: "15,000원 이하", english: "UNDER_COST_15000"},
                 {korean: "25,000원 이하", english: "UNDER_COST_25000"}, {korean: "25,000원 이상", english: "OVER_COST_25000"}]
       case 1:
         return [{korean: "봄", english: "SPRING"}, {korean: "여름", english: "SUMMER"},

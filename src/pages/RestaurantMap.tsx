@@ -67,27 +67,30 @@ export default function RestaurantMap() {
         />
       </MapContainer>
 
-      <Sheet
+
+      <Sheet 
         isOpen={isOpen}
         onClose={() => setOpen(false)}
-        snapPoints={snapPoints}
-        initialSnap={snapPoints.length - 1}
-        onSnap={(snapIndex) =>
-          console.log("> Current snap point index:", snapIndex)
-        }
-        style={{ marginBottom: "45px", zIndex: "10" }}
-      >
-        <Sheet.Container>
-          <Sheet.Header />
-          <Sheet.Content disableDrag={true}>
-            <RestaurantList stores={stores} currentAddress={currentAddress} />
-          </Sheet.Content>
-        </Sheet.Container>
+        snapPoints={ snapPoints }
+        initialSnap={ snapPoints.length -1}
+        onSnap={snapIndex =>
+            console.log('> Current snap point index:', snapIndex)
+          }
+        style={{ marginBottom: "45px",zIndex:10 }}>
+          <Sheet.Container>
+            <Sheet.Header/>
+            <Sheet.Content 
+              disableDrag={true}>
+              <RestaurantList
+              stores={stores}
+              currentAddress={currentAddress} />
+            </Sheet.Content>
+          </Sheet.Container>
+
+          <Sheet.Backdrop
+            style={{background: "transparent"}} />
 
         <Sheet.Backdrop style={{ background: "transparent" }} />
-
-        <Sheet.Backdrop style={{ background: "transparent" }} />
-      </Sheet>
     </Container>
   );
 }

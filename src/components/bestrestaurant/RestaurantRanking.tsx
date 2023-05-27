@@ -5,6 +5,7 @@ import HeartIcon from "../../assets/heart.png"
 import EmptyHeartIcon from "../../assets/emptyheart.png"
 import { useNavigate } from "react-router-dom"
 import HorizontalLine from "./HorizontalLine"
+import { motion } from 'framer-motion'
 
 const Container = styled.div`
   width: 100%;
@@ -31,6 +32,16 @@ const Content = styled.div`
   display: inline-block;
 `
 
+const SubKeywordContainer = styled.div`
+  padding-top: 10px;
+  width: 100%;
+`
+
+const SubKeyword = styled.span`
+  color: orange;
+  padding-right: 10px;
+`
+
 const ImageContainer = styled.div`
   float: left;
   padding: 0px 10px 0px 0px;
@@ -45,6 +56,7 @@ const HeartButtonContainer = styled.div`
   width: 20%;
   display: felx;
   justify-content: flex-end;
+  -webkit-tap-highlight-color: transparent;
 `
 
 const HeartButton = styled.img`
@@ -158,12 +170,25 @@ export default function Restaurant({ store, ranking }: { store: Store, ranking: 
         </div>
         
         <HeartButtonContainer>  
-          <HeartButton 
-            src={getHeartButtonIcon()}
-            alt="찜하기" 
-            onClick={() => setIsClicked(!isClicked)}/>
+          <motion.button
+            whileTap={{ scale: 0.9 }}>
+            <HeartButton 
+              src={getHeartButtonIcon()}
+              alt="찜하기" 
+              onClick={() => setIsClicked(!isClicked)}/>
+          </motion.button>
         </HeartButtonContainer>
       </div>
+
+      <SubKeywordContainer>
+        {store.keywords.map((keyword, index) => ( 
+          index <= 3 &&
+          <SubKeyword
+            key={index}>
+            #{keyword}
+          </SubKeyword>
+        ))}
+      </SubKeywordContainer>
 
       <div style={{padding: "1rem 0 1.3rem 0"}}>
         <HorizontalLine />

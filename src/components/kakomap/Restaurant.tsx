@@ -12,8 +12,7 @@ const Container = styled.div`
   padding-bottom: 20px;
   margin-bottom: 20px;
   border-bottom: 0.5px solid black;
-  // border-radius: 5px;
-`;
+  `
 
 const NameContainer = styled.div`
   padding: 0px 0px 10px 0px;
@@ -29,8 +28,8 @@ const Name = styled.div`
 const Content = styled.div`
   width: 100%;
   vertical-align: middle;
-  display: inline-block;
-`;
+  display: block;
+`
 
 const ImageContainer = styled.div`
   float: left;
@@ -54,7 +53,6 @@ const HeartButton = styled.img`
 
 export default function Restaurant({ store }: { store: Store }) {
   const [isClicked, setIsClicked] = useState<boolean>(store.preference); //사용자가 찜했는지 여부를 받아와 변수 초기화 필요
-
   const getHeartButtonIcon = () => {
     if (isClicked) {
       return HeartIcon;
@@ -95,23 +93,18 @@ export default function Restaurant({ store }: { store: Store }) {
       case "술집":
         return "주점";
     }
-
     return types[1];
   };
 
-  const navigate = useNavigate();
-  const showStoreDetail = (storeId: number) => {
-    navigate(
-      {
-        pathname: "../matzipDetail",
-        search: `?storeId=${storeId}`,
-      },
-      {
-        state: storeId,
-      }
-    );
-    navigate(0);
-  };
+  const navigate=useNavigate()
+  const showStoreDetail= (storeId:number) =>{
+    navigate({
+      pathname: "../matzipDetail",
+      search: `?storeId=${storeId}`,
+    },{
+      state:storeId
+    })
+  }
 
   const clickHeart = () => {
     if (!isClicked) {
