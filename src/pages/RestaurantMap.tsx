@@ -1,10 +1,10 @@
-import KakaoMap from "../components/kakomap/KakaoMap";
-import { useEffect, useState, useRef } from "react";
-import Sheet from "react-modal-sheet";
-import { Store } from "../models/Store";
-import RestaurantList from "../components/kakomap/RestaurantList";
 import { Image } from "@chakra-ui/react";
+import { useRef, useState } from "react";
+import Sheet from "react-modal-sheet";
 import styled from "styled-components";
+import KakaoMap from "../components/kakomap/KakaoMap";
+import RestaurantList from "../components/kakomap/RestaurantList";
+import { Store } from "../models/Store";
 
 const Container = styled.div`
   width: 100vw;
@@ -67,30 +67,24 @@ export default function RestaurantMap() {
         />
       </MapContainer>
 
-
-      <Sheet 
-        style={{zIndex:10}}
+      <Sheet
         isOpen={isOpen}
         onClose={() => setOpen(false)}
-        snapPoints={ snapPoints }
-        initialSnap={ snapPoints.length -1}
-        onSnap={snapIndex =>
-            console.log('> Current snap point index:', snapIndex)
-          }
-        style={{ marginBottom: "45px" }}>
-          <Sheet.Container>
-            <Sheet.Header/>
-            <Sheet.Content 
-              disableDrag={true}>
-              <RestaurantList
-              stores={stores}
-              currentAddress={currentAddress} />
-            </Sheet.Content>
-          </Sheet.Container>
+        snapPoints={snapPoints}
+        initialSnap={snapPoints.length - 1}
+        onSnap={(snapIndex) =>
+          console.log("> Current snap point index:", snapIndex)
+        }
+        style={{ marginBottom: "45px", zIndex: "10" }}
+      >
+        <Sheet.Container>
+          <Sheet.Header />
+          <Sheet.Content disableDrag={true}>
+            <RestaurantList stores={stores} currentAddress={currentAddress} />
+          </Sheet.Content>
+        </Sheet.Container>
 
-          <Sheet.Backdrop
-            style={{background: "transparent"}} />
-        </Sheet>
+        <Sheet.Backdrop style={{ background: "transparent" }} />
 
         <Sheet.Backdrop style={{ background: "transparent" }} />
       </Sheet>

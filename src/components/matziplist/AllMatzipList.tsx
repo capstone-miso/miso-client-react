@@ -1,11 +1,12 @@
 import { Stack } from "@chakra-ui/react";
+import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
+import Scroll from "react-infinite-scroll-component";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import EmptyHeartIcon from "../../assets/emptyheart.png";
 import HeartIcon from "../../assets/heart.png";
 import { Store } from "../../models/Store";
-import { getStoreList } from "../../services/StoreListApi";
 import HorizontalLine from "../bestrestaurant/HorizontalLine";
 
 const Container = styled.div`
@@ -75,16 +76,16 @@ const MatzipListContainer = () => {
     navigate(0);
   };
 
-  useEffect(() => {
-    const setStoreList = async () => {
-      let storeList: Store[] = await getStoreList(pageRef.current, 10);
-      setStores([...stores, ...storeList]);
-      console.log("hi!");
-      console.log(storeList);
-    };
+  // useEffect(() => {
+  //   const setStoreList = async () => {
+  //     let storeList: Store[] = await getStoreList(pageRef.current, 10);
+  //     setStores([...stores, ...storeList]);
+  //     console.log("hi!");
+  //     console.log(storeList);
+  //   };
 
-    setStoreList();
-  }, []);
+  //   setStoreList();
+  // }, []);
 
   const [clickedMap, setClickedMap] = useState<Map<number, boolean>>(new Map());
 
@@ -134,69 +135,127 @@ const MatzipListContainer = () => {
     return types[1];
   };
 
+  const scrollable = useRef<boolean>(true);
+
+  const getNextStore = () => {
+    axios
+      .get(`https://dishcovery.site/api/store?page=${pageRef.current}`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("Authorization"),
+        },
+      })
+      .then((response) => {
+        pageRef.current = pageRef.current + 1;
+        console.log(response.data);
+        setStores([...stores, ...response.data.dtoList]);
+      });
+  };
+
+  const fetchData = () => {
+    setTimeout(() => {
+      getNextStore();
+    }, 2000);
+  };
+
+  useEffect(() => {
+    getNextStore();
+  }, []);
+
   return (
     <>
-      {stores.map((store, index) => (
-        <Container key={`${store.id}`}>
-          <img
-            src={
-              store.mainImage === null ? "/default-image.png" : store.mainImage
-            }
-            style={{
-              objectFit: "cover",
-              width: "100%",
-              height: "15em",
-              paddingBottom: "10px",
-            }}
-            onClick={() => showStoreDetail(store.id)}
-          />
-
-          <div style={{ width: "100%", display: "flex" }}>
-            <div
-              style={{ width: "80%" }}
-              onClick={() => showStoreDetail(store.id)}
+      <Stack mt="35px"></Stack>
+      <RestaurantContainer>
+        <Scroll
+          dataLength={stores.length} //반복되는 컴포넌트 개수
+          next={fetchData} //스크롤이 바닥에 닿은 경우 -> 데이터 추가
+          hasMore={scrollable.current} //추가 데이터 유무
+          loader={
+            <h4
+              style={{
+                textAlign: "center",
+                padding: "10px 0 10px 0",
+              }}
             >
-              <NameContainer onClick={() => showStoreDetail(store.id)}>
-                <Name>{store.storeName}&nbsp;</Name>
-              </NameContainer>
-
-              <Content>
-                <ImageContainer>
-                  <ContentImage src="./home-icon.png" />
-                </ImageContainer>
-                <div>{getCategory(store.category)}</div>
-              </Content>
-
-              <Content>
-                <ImageContainer>
-                  <ContentImage src="./location-icon.png" />
-                </ImageContainer>
-                <div>{store.address}</div>
-              </Content>
-
-              {store.phone !== "" && (
-                <Content>
-                  <ImageContainer>
-                    <ContentImage src="./phone-icon.png" />
-                  </ImageContainer>
-                  <div>{store.phone}</div>
-                </Content>
-              )}
-            </div>
-            <HeartButtonContainer>
-              <HeartButton
-                src={getHeartButtonIcon(store.id)}
-                alt="찜하기"
-                onClick={() => toggleHeart(store.id)}
+              Loading...
+            </h4>
+          } //로딩 스피너
+          endMessage={
+            <h4
+              style={{
+                textAlign: "center",
+                padding: "10px 0 10px 0",
+              }}
+            >
+              End...
+            </h4>
+          }
+          scrollableTarget={RestaurantContainer}
+        >
+          {stores.map((store, index) => (
+            <Container key={`${store.id}`}>
+              <img
+                src={
+                  store.mainImage === null
+                    ? "/default-image.png"
+                    : store.mainImage
+                }
+                style={{
+                  objectFit: "cover",
+                  width: "100%",
+                  height: "15em",
+                  paddingBottom: "10px",
+                }}
+                onClick={() => showStoreDetail(store.id)}
               />
-            </HeartButtonContainer>
-          </div>
 
-          <div style={{ padding: "1rem 0 1.3rem 0" }}>
-            <HorizontalLine />
-          </div>
-        </Container>
-      ))}
+              <div style={{ width: "100%", display: "flex" }}>
+                <div
+                  style={{ width: "80%" }}
+                  onClick={() => showStoreDetail(store.id)}
+                >
+                  <NameContainer onClick={() => showStoreDetail(store.id)}>
+                    <Name>{store.storeName}&nbsp;</Name>
+                  </NameContainer>
+
+                  <Content>
+                    <ImageContainer>
+                      <ContentImage src="./home-icon.png" />
+                    </ImageContainer>
+                    <div>{getCategory(store.category)}</div>
+                  </Content>
+
+                  <Content>
+                    <ImageContainer>
+                      <ContentImage src="./location-icon.png" />
+                    </ImageContainer>
+                    <div>{store.address}</div>
+                  </Content>
+
+                  {store.phone !== "" && (
+                    <Content>
+                      <ImageContainer>
+                        <ContentImage src="./phone-icon.png" />
+                      </ImageContainer>
+                      <div>{store.phone}</div>
+                    </Content>
+                  )}
+                </div>
+                <HeartButtonContainer>
+                  <HeartButton
+                    src={getHeartButtonIcon(store.id)}
+                    alt="찜하기"
+                    onClick={() => toggleHeart(store.id)}
+                  />
+                </HeartButtonContainer>
+              </div>
+
+              <div style={{ padding: "1rem 0 1.3rem 0" }}>
+                <HorizontalLine />
+              </div>
+            </Container>
+          ))}
+        </Scroll>
+      </RestaurantContainer>
       <Stack mb="45px" />
     </>
   );
