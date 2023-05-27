@@ -104,6 +104,7 @@ export default function Restaurant({ store }: { store: Store }) {
     },{
       state:storeId
     })
+    navigate(0)
   }
 
   const clickHeart = () => {

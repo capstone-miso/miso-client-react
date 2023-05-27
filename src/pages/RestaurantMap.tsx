@@ -91,6 +91,7 @@ export default function RestaurantMap() {
             style={{background: "transparent"}} />
 
         <Sheet.Backdrop style={{ background: "transparent" }} />
+      </Sheet>
     </Container>
   );
 }

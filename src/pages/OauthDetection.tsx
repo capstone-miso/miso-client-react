@@ -18,6 +18,7 @@ const OauthDetection=()=>{
         navigate({
           pathname: "../restaurant-map",
         })
+        localStorage.setItem("path","/restaurant-map")
       }
 
     axios.get("https://dishcovery.site/api/preference",
