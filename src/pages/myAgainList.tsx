@@ -1,12 +1,17 @@
 import React from "react";
-import MyAgainList from "../components/againList/MyAgainListContainer";
+import MyAgainListContainer from "../components/againList/MyAgainListContainer";
+import { useLocation } from "react-router-dom";
+import { Store } from "../models/Store";
 
-function myAgainList() {
+function MyAgainList() {
+  const location=useLocation();
+  const stores=location.state.stores
+
   return (
     <>
-      <MyAgainList />
+      <MyAgainListContainer stores={stores}/>
     </>
   );
 }
 
-export default myAgainList;
+export default MyAgainList;

@@ -1,10 +1,11 @@
 import styled from 'styled-components'
-import Restaurant from '../components/bestrestaurant/Restaurant'
+import Restaurant from '../components/bestrestaurant/RestaurantRanking'
 import { Button } from "@chakra-ui/react"
 import { useState, useEffect, useRef } from "react"
-import { getStoreRank, getStoreRanking, getNextStoreRanking } from "../services/RankingAPI"
-import { Store, StoreRanking } from "../models/Store"
+import { getStoreRanking, getNextStoreRanking } from "../services/RankingAPI"
+import { Store, StoreRanking, SubKeyword } from "../models/Store"
 import Scroll from 'react-infinite-scroll-component'
+import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 
 const Container = styled.div`
   width: 100vw;
@@ -66,7 +67,7 @@ const ButtonContainer = styled.div`
 const RestaurantContainer = styled.div`
   width: 100%;
   height: 60%;
-  padding: 1rem 1rem 0 1rem;
+  padding: 1rem 1rem 45px 1rem;
 `
 
 export default function BestRestaurants(){
@@ -74,9 +75,9 @@ export default function BestRestaurants(){
   const [stores, setStores] = useState<Store[]>([]);
 
   const pageRef = useRef<number>(1);
-  const scrollable = useRef<boolean>(true);
+  const scrollable = useRef<boolean>(true);  //페이지 마지막에 도달하는 경우 스크롤 중지
 
-  let nextPage = useRef<string>("");
+  let nextPage = useRef<string>("");  //다음 페이지(다음 10개의 맛집 리스트)에 대한 url
 
   const fetchData = () => {
     setTimeout(() => {
@@ -98,30 +99,15 @@ export default function BestRestaurants(){
     }, 2000);
   }
 
-  let categoryType: string = "가격대";   //카테고리 페이지에서 넘어온 검색유형
-  const categories = useRef<string[]>([]);
-
-  const setRankType = () => {
-    switch(categoryType){
-      case '가격대':
-        categories.current = ["UNDER_COST_8000", "UNDER_COST_15000", "UNDER_COST_25000", "OVER_COST_25000"]
-        break;
-      case '계절':
-        categories.current = ["봄", "여름", "가을", "겨울"]
-        break;
-      case '참석인원':
-        categories.current = ["5명 이하", "10명 이하", "20명 이하", "20명 이상"]
-        break;
-      default:
-        categories.current = ["아침", "점심", "저녁"]
-    }
-  }
-
-  setRankType()
+  const { state } = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
+  
+  const keyword = useRef<string>(searchParams.get('keyword'))
+  const subKeywords = useRef<SubKeyword[]>(state);
 
   useEffect(()  => {  //조회 카테고리 버튼 클릭시 -> 가게 목록을 처음부터 다시 불러옴
     const setStoreRank = async () => {
-      let storeList: StoreRanking = await getStoreRanking(categories.current[clickedButtonIndex], pageRef.current, 10)
+      let storeList: StoreRanking = await getStoreRanking(subKeywords.current[clickedButtonIndex].english, pageRef.current, 10)
       setStores(storeList.dtoList)
 
       nextPage.current = storeList.nextPage   //다음에 불러올 맛집 목록 url
@@ -134,43 +120,50 @@ export default function BestRestaurants(){
 
   }, [clickedButtonIndex])
 
+  const navigate = useNavigate()
+  
+  const backToMatzipList = () => {
+    navigate(-1)
+  }
+
   return(
     <Container>
-      <BackButton>
+      <BackButton
+        onClick={backToMatzipList}>
         <img src="./back-button.png" style={{width: "30px"}}/>
       </BackButton>
 
       <TitleContainer>
         <div>
-          <MainTitle>#{categoryType}</MainTitle>
-          <SubTitle>{categoryType}로 찾아보는 맛집</SubTitle>
+          <MainTitle>#{keyword.current}</MainTitle>
+          <SubTitle>{keyword.current}로 찾아보는 맛집</SubTitle>
         </div>
       </TitleContainer>
 
-    <ScrollingWrapper >
-      {categories.current.map((category, index) => (
-        <ButtonContainer
-          key={index}>
-          <Button
-            variant='outline'
-            borderRadius='3xl'
-            _hover={{ bg: 'orange', textColor: 'white', borderColor: 'orange' }}
-            bg={index == clickedButtonIndex ? 'orange' : 'white'}
-            borderColor={index == clickedButtonIndex ? 'orange' : '#b3b3b3'}
-            fontWeight='semibold'
-            onClick={() => setClickedButtonIndex(index)}
-            textColor={index == clickedButtonIndex ? 'white' : 'black'}>
-            {category}
-          </Button>
-        </ButtonContainer>
-      ))}
-    </ScrollingWrapper>
+      <ScrollingWrapper >
+        {subKeywords.current.map((subKeyword, index) => (
+          <ButtonContainer
+            key={index}>
+            <Button
+              variant='outline'
+              borderRadius='3xl'
+              _hover={{ bg: 'orange', textColor: 'white', borderColor: 'orange' }}
+              bg={index == clickedButtonIndex ? 'orange' : 'white'}
+              borderColor={index == clickedButtonIndex ? 'orange' : '#b3b3b3'}
+              fontWeight='semibold'
+              onClick={() => setClickedButtonIndex(index)}
+              textColor={index == clickedButtonIndex ? 'white' : 'black'}>
+              {subKeyword.korean}
+            </Button>
+          </ButtonContainer>
+        ))}
+      </ScrollingWrapper>
 
       <RestaurantContainer>
         <Scroll
-        dataLength={stores.length} //반복되는 컴포넌트 개수
-        next={fetchData}          //스크롤이 바닥에 닿은 경우 -> 데이터 추가
-        hasMore={scrollable.current}            //추가 데이터 유무
+        dataLength={stores.length}   //반복되는 컴포넌트 개수
+        next={fetchData}             //스크롤이 바닥에 닿은 경우 -> 데이터 추가
+        hasMore={scrollable.current} //추가 데이터 유무
         loader={
           <h4 style={{ 
           textAlign: "center",

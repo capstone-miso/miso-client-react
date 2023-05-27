@@ -5,25 +5,32 @@ import {
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
-import { Outlet } from "react-router";
+import React, { useEffect, useState } from "react";
+import { Outlet, useLocation } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { SelectedPath } from "../Atoms";
 import { useNavigate } from "react-router-dom";
 import "./BottomNavigation.css";
 
-const BottomNavigation: React.FC = () => {
-  const [activeNav, setActiveNav] = useState<string>("/restaurant-map");
-  const navigate = useNavigate();
+// const SelectedPath = atom<string>({
+//   key: 'SelectedPath',
+//   default: "/restaurant-map"
+// });
 
+const BottomNavigation: React.FC = () => {
+  let [selectedPath,setSelectedPath]=useRecoilState<string>(SelectedPath);
+  const navigate=useNavigate();
   const handleNavClick = (path: string) => {
-    setActiveNav(path);
-    navigate(path); // Navigate to the clicked path
+    setSelectedPath(path)
+    navigate(`..${path}`) 
   };
 
   return (
     <>
       <nav className="wrapper">
         <div
-          className={activeNav === "/restaurant-map" ? "nav-link active" : "nav-link"}
+          style={{zIndex:20}} 
+          className={selectedPath === "/restaurant-map" ? "nav-link active" : "nav-link"}
           onClick={() => handleNavClick("/restaurant-map")}
         >
           <div>
@@ -32,7 +39,7 @@ const BottomNavigation: React.FC = () => {
         </div>
         <div
           className={
-            activeNav === "/matzipList" ? "nav-link active" : "nav-link"
+            selectedPath === "/matzipList" ? "nav-link active" : "nav-link"
           }
           onClick={() => handleNavClick("/matzipList")}
         >
@@ -42,7 +49,7 @@ const BottomNavigation: React.FC = () => {
         </div>
         <div
           className={
-            activeNav === "/againList" ? "nav-link active" : "nav-link"
+            selectedPath === "/againList" ? "nav-link active" : "nav-link"
           }
           onClick={() => handleNavClick("/againList")}
         >
@@ -52,7 +59,7 @@ const BottomNavigation: React.FC = () => {
         </div>
         <div
           className={
-            activeNav === "/personalpage" ? "nav-link active" : "nav-link"
+            selectedPath === "/personalpage" ? "nav-link active" : "nav-link"
           }
           onClick={() => handleNavClick("/personalpage")}
         >

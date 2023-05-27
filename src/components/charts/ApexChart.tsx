@@ -58,7 +58,7 @@ class ApexChart extends React.Component<ApexChartProps, ApexChartState> {
       <>
         <Stack mt="20px">
           <Heading fontSize="lg">계절별 방문자 비율</Heading>
-          <Text fontSize="xs">#봄에많이찾는</Text>
+          {/* <Text fontSize="xs">#봄에많이찾는</Text> */}
           <div id="chart">
             <ReactApexChart
               options={this.state.options}

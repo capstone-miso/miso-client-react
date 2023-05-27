@@ -10,52 +10,57 @@ import {
   Text,
   Tr,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useRef, useState } from "react";
+import { Store } from "../../models/Store";
+import Restaurant from "../kakomap/Restaurant";
+import styled from "styled-components";
+import Scroll from 'react-infinite-scroll-component'
+import axios from "axios";
 
-function MyAgainListTable() {
-  interface MyMatzip {
-    id: number;
-    image: string;
-    storeName: string;
-    category: string;
-    address: string;
-    like: string;
+
+const ScrollingWrapper = styled.div`
+  height: 10%;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  ::-webkit-scrollbar{
+    display:none;
+  }
+  padding: 0 10px;
+  display: felx;
+  justify-content: center;
+`
+
+const RestaurantContainer = styled.div`
+  width: 100%;
+  height: 60%;
+  padding: 0 10px 0 10px;
+`
+
+function MyAgainListTable({stores}:{stores:Store[]}) {
+  const [storeList, setStoreList] = useState<Store[]>([...stores]);
+  const pageRef = useRef<number>(2);
+  const scrollable = useRef<boolean>(true);
+
+  const getStore=()=>{
+    axios.get(`https://dishcovery.site/api/preference?page=${pageRef.current}`,{
+      headers:{
+        Authorization:"Bearer " + localStorage.getItem("Authorization")
+      }
+    }).then((response)=>{
+            pageRef.current=pageRef.current+1
+            console.log(response.data)
+            setStoreList([...storeList,...response.data.dtoList])
+        })
   }
 
-  const matzipTable: MyMatzip[] = [
-    {
-      id: 0,
-      image: "https://ifh.cc/g/HY2lWp.jpg",
-      storeName: "시홍쓰",
-      category: "중식",
-      address: "?",
-      like: "❤️",
-    },
-    {
-      id: 1,
-      image: "https://ifh.cc/g/1qrGTs.jpg",
-      storeName: "오돌이생삼겹",
-      category: "한식",
-      address: "?",
-      like: "❤️",
-    },
-    {
-      id: 2,
-      image: "https://ifh.cc/g/dKD1wS.png",
-      storeName: "개미집투",
-      category: "한식",
-      address: "?",
-      like: "❤️",
-    },
-    {
-      id: 3,
-      image: "https://ifh.cc/g/1qrGTs.jpg",
-      storeName: "오돌이생삼겹",
-      category: "한식",
-      address: "?",
-      like: "❤️",
-    },
-  ];
+   const fetchData = () => {
+    setTimeout(() => {
+      getStore()
+  
+      }, 2000);
+    }
 
   return (
     <>
@@ -69,46 +74,36 @@ function MyAgainListTable() {
         <TableContainer maxW="100%">
           <Table w="350px">
             <Tbody>
-              {matzipTable.map((MyMatzip) => (
-                <Tr key={MyMatzip.id}>
-                  <Td>
-                    <Image
-                      boxSize="100px"
-                      src={MyMatzip.image}
-                      alt={MyMatzip.storeName}
-                      borderRadius="lg"
-                    />
-                  </Td>
-                  <Td>
-                    <Heading size="sm">{MyMatzip.storeName}</Heading>
-                    <Stack mt="5px">
-                      <Flex mb="-10px">
-                        <Image
-                          boxSize="12px"
-                          src="https://ifh.cc/g/QXRC8y.png"
-                          alt="종류"
-                          mr="5px"
-                          mt="4px"
-                        />
-                        <Text fontSize="xs">{MyMatzip.category}</Text>
-                      </Flex>
-                      <Flex>
-                        <Image
-                          boxSize="12px"
-                          src="https://ifh.cc/g/Xjtdvd.png"
-                          alt="위치"
-                          mr="5px"
-                          mt="5px"
-                        />
-                        <Text fontSize="xs" mt="2px">
-                          {MyMatzip.address}
-                        </Text>
-                      </Flex>
-                    </Stack>
-                  </Td>
-                  <Td>{MyMatzip.like}</Td>
-                </Tr>
-              ))}
+            <ScrollingWrapper >
+    </ScrollingWrapper>
+
+      <RestaurantContainer>
+        <Scroll
+        dataLength={storeList.length} //반복되는 컴포넌트 개수
+        next={fetchData}          //스크롤이 바닥에 닿은 경우 -> 데이터 추가
+        hasMore={scrollable.current}            //추가 데이터 유무
+        loader={
+          <h4 style={{ 
+          textAlign: "center",
+          padding: "10px 0 10px 0"}}>
+            Loading...
+          </h4>}   //로딩 스피너
+        endMessage={
+            <h4 style={{ 
+            textAlign: "center",
+            padding: "10px 0 10px 0"}}>
+              End...
+            </h4>}
+        scrollableTarget={RestaurantContainer}
+        >
+          {storeList.map((store, index) => (
+            <Restaurant
+              key={`${store.id}-${index}`}
+              {...stores[index]}
+              store={store}/>
+          ))}
+        </Scroll>
+      </RestaurantContainer>
             </Tbody>
           </Table>
         </TableContainer>

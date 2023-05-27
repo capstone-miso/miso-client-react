@@ -2,8 +2,8 @@ import { Flex, Stack } from "@chakra-ui/react";
 import React from "react";
 import Header from "../Header";
 import SimilarAgainListTable from "./SimilarAgainListTable";
-
-function SimilarAgainListContainer() {
+import { Store } from "../../models/Store";
+function SimilarAgainListContainer({stores}:{stores:Store[]}) {
   return (
     <>
       <Flex direction="column" alignContent="center" alignItems="center">
@@ -15,7 +15,7 @@ function SimilarAgainListContainer() {
           alignItems="center"
         >
           <Stack maxW="390px" mt="85px">
-            <SimilarAgainListTable />
+            <SimilarAgainListTable stores={stores} />
           </Stack>
         </Flex>
       </Flex>

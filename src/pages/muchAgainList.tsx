@@ -1,12 +1,16 @@
 import React from "react";
-import MuchAgainList from "../components/againList/MuchAgainListContainer";
+import MuchAgainListContainer from "../components/againList/MuchAgainListContainer";
+import { useLocation} from "react-router-dom";
+import { Store } from "../models/Store";
 
-function muchAgainList() {
+function MuchAgainList() {
+  const location=useLocation();
+  const stores=location.state.stores
   return (
     <>
-      <MuchAgainList />
+      <MuchAgainListContainer stores={stores}/>
     </>
   );
 }
 
-export default muchAgainList;
+export default MuchAgainList;
