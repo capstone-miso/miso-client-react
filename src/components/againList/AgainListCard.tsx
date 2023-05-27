@@ -22,22 +22,23 @@ type CardProps = {
   content: string;
   url: string;
   again: Again[];
-  stores:Store[]
+  stores: Store[];
 };
 
-const AgainListCard = ({ title, content, url, again,stores }: CardProps) => {
+const AgainListCard = ({ title, content, url, again, stores }: CardProps) => {
   const navigate = useNavigate();
 
-  const handleClick = (stores:Store[]) => {
-    navigate(url,{
-      state:{stores:stores}
+  const handleClick = (stores: Store[]) => {
+    navigate(url, {
+      state: { stores: stores },
     });
   };
 
   return (
     <>
       <Flex
-        w="390px"
+        // w="390px"
+        maxW="100%"
         justifyContent="center"
         justifyItems="center"
         alignContent="center"
@@ -50,7 +51,8 @@ const AgainListCard = ({ title, content, url, again,stores }: CardProps) => {
           display="left"
           direction={{ base: "column", sm: "row" }}
           overflow="hidden"
-          w="390px"
+          // w="390px"
+          maxW="100%"
           mt="20px"
           mb="20px"
           ml="10"
