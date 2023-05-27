@@ -5,6 +5,8 @@ import HeartIcon from "../../assets/heart.png"
 import EmptyHeartIcon from "../../assets/emptyheart.png"
 import { useNavigate } from "react-router-dom"
 import axios from "axios";
+import { useResetRecoilState } from "recoil";
+import { SelectedPath } from "../../Atoms";
 
 const Container = styled.div`
   width: 330px;
@@ -12,7 +14,6 @@ const Container = styled.div`
   padding-bottom: 20px;
   margin-bottom: 20px;
   border-bottom: 0.5px solid black;
-  border-radius:5px;
   `
 
 const NameContainer = styled.div`
@@ -49,12 +50,12 @@ const HeartButtonContainer = styled.div`
 `
 
 const HeartButton = styled.img`
-  height: 50%;
+  height: 30px;
 `
 
 export default function Restaurant({ store }: { store: Store }){
   const [isClicked, setIsClicked] = useState<boolean>(store.preference)  //사용자가 찜했는지 여부를 받아와 변수 초기화 필요
-
+  const resetSelectedPath=useResetRecoilState(SelectedPath)
   const getHeartButtonIcon = () => {
     if (isClicked){
       return HeartIcon  
@@ -107,7 +108,6 @@ export default function Restaurant({ store }: { store: Store }){
     },{
       state:storeId
     })
-    navigate(0)
   }
 
   const clickHeart=()=>{

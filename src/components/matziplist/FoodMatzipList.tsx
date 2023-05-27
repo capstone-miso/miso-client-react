@@ -46,13 +46,6 @@ function FoodMatzipList() {
       emoticon: "https://ifh.cc/g/Otttna.png",
       image: "https://ifh.cc/g/JjAk23.jpg",
     },
-    {
-      id: 5,
-      type: "기타",
-      content: "다른 맛집은 또 뭐가 있을까?",
-      emoticon: "https://ifh.cc/g/oh7zs2.png",
-      image: "https://ifh.cc/g/t2HaNw.jpg",
-    },
   ];
 
   const navigate=useNavigate()
@@ -63,7 +56,6 @@ function FoodMatzipList() {
     },{
       state:type
     })
-    navigate(0)
   }
 
   return (

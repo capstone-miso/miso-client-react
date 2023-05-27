@@ -20,9 +20,12 @@ const Statistics = ({ storeData }: { storeData: storeDetail | null }) => {
           <Heading size="md" mb="2">
             키워드
           </Heading>
+          <Text fontSize="xs" mb="5px">
+            공무원 업무추진비내역을 바탕으로 추출한 키워드
+          </Text>
           {storeData?.keywords.map((keyword) => (
-            <Text as="b" fontSize="sm">
-              #{keyword}
+            <Text as="b" color="white" fontSize="sm" backgroundColor="orange" padding="2px" pl="5px" pr="5px" mr="3px" borderRadius="4px">
+              #{keyword}  
             </Text>
           ))}
           <Chart storeData={storeData} />

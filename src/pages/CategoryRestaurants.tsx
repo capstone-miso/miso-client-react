@@ -25,6 +25,8 @@ const TitleContainer = styled.div`
   display: felx;
   justify-content: center;
   align-items: center;
+  border-bottom:2px solid orange;
+  margin-bottom:20px
 `;
 
 const MainTitle = styled.div`
@@ -43,6 +45,8 @@ const SubTitle = styled.div`
   display: felx;
   justify-content: center;
   align-items: top;
+  margin-top:10px;
+  margin-bottom:10px;
 `;
 
 const ScrollingWrapper = styled.div`
@@ -68,7 +72,11 @@ const RestaurantContainer = styled.div`
   width: 100%;
   height: 60%;
   padding: 0 10px 0 10px;
-`
+`;
+
+const highlightText=styled.span`
+  color:orange;
+`;
 
 export default function CategoryRestaurants(){
   const [searchParams, setSearchParams] = useSearchParams();
@@ -100,7 +108,7 @@ export default function CategoryRestaurants(){
 
     useEffect(()=>{
         getStore()
-    },[])
+    },[searchParams])
   
   return(
     <Container>
@@ -111,11 +119,9 @@ export default function CategoryRestaurants(){
       <TitleContainer>
         <div>
           <MainTitle>{categoryType}</MainTitle>
-          <SubTitle>{categoryType} 맛집</SubTitle>
+          <SubTitle><span style={{color:"orange",fontWeight:"bold"}}>공무원</span>들이 찾는 <span style={{color:"orange",fontWeight:"bold"}}>{categoryType}</span> 맛집</SubTitle>
         </div>
       </TitleContainer>
-
-      <ScrollingWrapper></ScrollingWrapper>
 
       <RestaurantContainer>
         <Scroll
@@ -136,6 +142,7 @@ export default function CategoryRestaurants(){
             </h4>
           }
           scrollableTarget={RestaurantContainer}
+          style={{display:"flex",flexDirection:"column",alignItems:"center"}}
         >
           {stores.map((store, index) => (
             <Restaurant
