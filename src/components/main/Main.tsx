@@ -22,10 +22,13 @@ function Main() {
         align="center"
         background={Colors.orange[300]}
       >
-        <Image mt="230px" w="480px" src={DishCovery} alt="로고" />
+        <Image mt="220px" w="480px" src={DishCovery} alt="로고" />
+        <Text mt="5px" as="b" fontSize="md" color="white">
+          :: 공무원 맛집 추천 앱 ::
+        </Text>
         <KakaoButton />
         <Text
-          mt="50px"
+          mt="30px"
           as="b"
           fontSize="md"
           color="white"

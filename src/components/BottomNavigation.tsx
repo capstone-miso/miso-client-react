@@ -10,24 +10,33 @@ import { Outlet, useLocation } from "react-router-dom";
 import "./BottomNavigation.css";
 
 const BottomNavigation: React.FC = () => {
-  const [activeNav, setActiveNav] = useState<string>("");
+  const [activeNav, setActiveNav] = useState<string>("/restaurant-map");
   const location = useLocation();
+  let prev = "";
 
   useEffect(() => {
     setActiveNav(location.pathname);
   }, [location]);
 
   const handleNavClick = (path: string) => {
-    setActiveNav(path);
+    console.log(path);
+    if (path.includes("/matzipDetail")) {
+      setActiveNav(prev);
+    } else {
+      setActiveNav(path);
+    }
     window.location.href = path; // Navigate to the clicked path
+    prev = path;
   };
 
   return (
     <>
       <nav className="wrapper">
         <div
-          style={{zIndex:20}} 
-          className={activeNav === "/restaurant-map" ? "nav-link active" : "nav-link"}
+          style={{ zIndex: 20 }}
+          className={
+            activeNav === "/restaurant-map" ? "nav-link active" : "nav-link"
+          }
           onClick={() => handleNavClick("/restaurant-map")}
         >
           <div>

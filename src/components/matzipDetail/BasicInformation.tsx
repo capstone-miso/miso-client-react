@@ -1,73 +1,89 @@
-import { Card, HStack, Heading, Image, Stack, Text } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import { Card, Heading, HStack, Image, Stack, Text } from "@chakra-ui/react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import BackButton from "../../assets/back-button.png";
+import EmptyHeartIcon from "../../assets/emptyheart.png";
+import HeartIcon from "../../assets/heart.png";
 import { storeDetail } from "../../pages/MatzipDetail";
 import ImageSlider from "./ImageSlider";
-import styled from 'styled-components'
-import axios from "axios";
-import { useState } from "react";
-import HeartIcon from "../../assets/heart.png"
-import EmptyHeartIcon from "../../assets/emptyheart.png"
 // api 정보 반영
 
 const HeartButtonContainer = styled.div`
   width: 8%;
   display: felx;
   justify-content: flex-end;
-  `
+`;
 
-  const HeartButton = styled.img`
+const HeartButton = styled.img`
   height: 20%;
-  `
+`;
 function BasicInformation({ storeData }: { storeData: storeDetail | null }) {
+  const navigate = useNavigate();
+  const onClickBackButton = () => {
+    navigate(-1);
+  };
 
-  const [isClicked, setIsClicked] = useState<boolean|undefined>(storeData?.preference)
-  useEffect(()=>{
-    if(storeData?.preference===true){
-      setIsClicked(true)
+  const [isClicked, setIsClicked] = useState<boolean | undefined>(
+    storeData?.preference
+  );
+  useEffect(() => {
+    if (storeData?.preference === true) {
+      setIsClicked(true);
     }
-  },[storeData?.preference])
+  }, [storeData?.preference]);
   const getHeartButtonIcon = () => {
-    if (isClicked){
-      return HeartIcon  
+    if (isClicked) {
+      return HeartIcon;
     }
-    
-    return EmptyHeartIcon
-  }
 
-  const clickHeart=()=>{
-    if(!isClicked){
-      axios.post(`https://dishcovery.site/api/preference/${storeData?.id}`,
-      {
+    return EmptyHeartIcon;
+  };
 
-      },
-      {
-        headers:{
-          Authorization: "Bearer " + localStorage.getItem("Authorization")
-        }
-      }).then((res)=>{
-        if(res.status===201){
-
-          setIsClicked(true)
-        }
-      })
+  const clickHeart = () => {
+    if (!isClicked) {
+      axios
+        .post(
+          `https://dishcovery.site/api/preference/${storeData?.id}`,
+          {},
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("Authorization"),
+            },
+          }
+        )
+        .then((res) => {
+          if (res.status === 201) {
+            setIsClicked(true);
+          }
+        });
+    } else {
+      axios
+        .delete(`https://dishcovery.site/api/preference/${storeData?.id}`, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("Authorization"),
+          },
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            setIsClicked(false);
+          }
+        });
     }
-    else{
-      axios.delete(`https://dishcovery.site/api/preference/${storeData?.id}`,{
-        headers:{
-          Authorization: "Bearer " + localStorage.getItem("Authorization")
-      }
-      }).then((res)=>{
-        if(res.status===200){
-
-          setIsClicked(false)
-        }
-      })
-    }
-  }
+  };
 
   return (
     <>
       <Stack>
+        <Image
+          boxSize="20px"
+          src={BackButton}
+          alt="뒤로가기"
+          mb="20px"
+          ml="-10px"
+          onClick={onClickBackButton}
+        />
         <ImageSlider slides={storeData?.images} />
         <Card
           variant="unstyled"
@@ -79,18 +95,17 @@ function BasicInformation({ storeData }: { storeData: storeDetail | null }) {
           w="330px"
         >
           <Stack pl="4" mt="6" mb="6" spacing="1">
-
             <HStack>
-            <Heading size="lg">{storeData?.storeName}</Heading>
-            
-            <HeartButtonContainer>  
-          <HeartButton 
-            src={getHeartButtonIcon()}
-            alt="찜하기" 
-            onClick={() =>clickHeart()}/>
-        </HeartButtonContainer>
+              <Heading size="lg">{storeData?.storeName}</Heading>
 
-        </HStack>
+              <HeartButtonContainer>
+                <HeartButton
+                  src={getHeartButtonIcon()}
+                  alt="찜하기"
+                  onClick={() => clickHeart()}
+                />
+              </HeartButtonContainer>
+            </HStack>
 
             <Text color="gray.600" fontSize="xs">
               {storeData?.category}

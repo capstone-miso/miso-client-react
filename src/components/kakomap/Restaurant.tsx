@@ -12,7 +12,7 @@ const Container = styled.div`
   padding-bottom: 20px;
   margin-bottom: 20px;
   border-bottom: 0.5px solid black;
-  // border-radius:5px;
+  // border-radius: 5px;
 `;
 
 const NameContainer = styled.div`
@@ -49,7 +49,7 @@ const HeartButtonContainer = styled.div`
 `;
 
 const HeartButton = styled.img`
-  height: 50%;
+  height: 30px;
 `;
 
 export default function Restaurant({ store }: { store: Store }) {

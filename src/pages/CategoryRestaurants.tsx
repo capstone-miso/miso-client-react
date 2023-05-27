@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import Scroll from "react-infinite-scroll-component";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import Restaurant from "../components/kakomap/Restaurant";
 import { Store } from "../models/Store";
@@ -77,6 +77,11 @@ export default function CategoryRestaurants() {
   const pageRef = useRef<number>(1);
   const scrollable = useRef<boolean>(true);
 
+  const navigate = useNavigate();
+  const onClickBackButton = () => {
+    navigate(-1);
+  };
+
   const getStore = () => {
     axios
       .get(
@@ -107,7 +112,11 @@ export default function CategoryRestaurants() {
   return (
     <Container>
       <BackButton>
-        <img src="./back-button.png" style={{ width: "30px" }} />
+        <img
+          src="./back-button.png"
+          style={{ width: "30px" }}
+          onClick={onClickBackButton}
+        />
       </BackButton>
 
       <TitleContainer>
