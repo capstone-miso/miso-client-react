@@ -91,7 +91,7 @@ export default function CategoryRestaurants(){
         })
   }
 
-   const fetchData = () => {
+  const fetchData = () => {
     setTimeout(() => {
       getStore()
   

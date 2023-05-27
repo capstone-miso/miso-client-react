@@ -75,7 +75,7 @@ export default function BestRestaurants(){
   const [stores, setStores] = useState<Store[]>([]);
 
   const pageRef = useRef<number>(1);
-  const scrollable = useRef<boolean>(true);  //페이지 마지막에 도달하는 경우 스크롤 중지
+  const scrollable = useRef<boolean>(false);  //페이지 마지막에 도달하는 경우 스크롤 중지
 
   let nextPage = useRef<string>("");  //다음 페이지(다음 10개의 맛집 리스트)에 대한 url
 
@@ -110,10 +110,16 @@ export default function BestRestaurants(){
       let storeList: StoreRanking = await getStoreRanking(subKeywords.current[clickedButtonIndex].english, pageRef.current, 10)
       setStores(storeList.dtoList)
 
-      nextPage.current = storeList.nextPage   //다음에 불러올 맛집 목록 url
-      if (nextPage.current == null) {
+      console.log(storeList.total)
+
+      if (storeList.total <= 10) {
         scrollable.current = false;
       }
+      else {
+        scrollable.current = true;
+      }
+
+      nextPage.current = storeList.nextPage   //다음에 불러올 맛집 목록 url
     }
 
     setStoreRank()
