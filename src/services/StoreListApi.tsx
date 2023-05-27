@@ -16,7 +16,11 @@ export const getStoreList = async (
   return stores.data.dtoList;
 };
 
-export const getNextStoreList = async (pageUrl: string): Promise<Store[]> => {
-  const stores = await axios.get(pageUrl);
+export const getNextStoreList = async (page: number): Promise<Store[]> => {
+  const stores = await axios.get(API.ALL_LIST_PAGE, {
+    params: {
+      page: page,
+    },
+  });
   return stores.data;
 };

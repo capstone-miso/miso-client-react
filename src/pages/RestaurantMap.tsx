@@ -1,10 +1,10 @@
-import KakaoMap from "../components/kakomap/KakaoMap";
-import { useEffect, useState, useRef } from "react";
-import Sheet from "react-modal-sheet";
-import { Store } from "../models/Store";
-import RestaurantList from "../components/kakomap/RestaurantList";
 import { Image } from "@chakra-ui/react";
+import { useRef, useState } from "react";
+import Sheet from "react-modal-sheet";
 import styled from "styled-components";
+import KakaoMap from "../components/kakomap/KakaoMap";
+import RestaurantList from "../components/kakomap/RestaurantList";
+import { Store } from "../models/Store";
 
 const Container = styled.div`
   width: 100vw;
