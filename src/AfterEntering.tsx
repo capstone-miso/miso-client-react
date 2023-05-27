@@ -2,15 +2,15 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import BottomNavigation from "./components/BottomNavigation";
 import PersonalPage from "./components/personalPage/PersonalPage";
-import AgainList from "./pages/againList";
+import AgainList from "./pages/AgainList";
 import BestRestaurants from "./pages/BestRestaurants";
 import CategoryRestaurants from "./pages/CategoryRestaurants";
 import MatzipDetail from "./pages/MatzipDetail";
-import Matziplist from "./pages/matziplist";
-import MuchAgainList from "./pages/muchAgainList";
-import MyAgainList from "./pages/myAgainList";
+import Matziplist from "./pages/MatzipList";
+import MuchAgainList from "./pages/MuchAgainList";
+import MyAgainList from "./pages/MyAgainList";
 import RestaurantMap from "./pages/RestaurantMap";
-import SimilarAgainList from "./pages/similarAgainList";
+import SimilarAgainList from "./pages/SimilarAgainList";
 
 // 네비게이션 바 나오는 페이지만 모아둔 곳
 function Entring() {

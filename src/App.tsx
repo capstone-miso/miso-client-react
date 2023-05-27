@@ -3,10 +3,10 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AfterEntering from "./AfterEntering";
 import "./App.css";
 import theme from "./constants/theme";
-import Main from "./pages/main";
-import MuchAgainList from "./pages/muchAgainList";
+import Main from "./pages/Main";
+import MuchAgainList from "./pages/MuchAgainList";
 import OauthDetection from "./pages/OauthDetection";
-import SimilarAgainList from "./pages/similarAgainList";
+import SimilarAgainList from "./pages/SimilarAgainList";
 
 const App: React.FC = () => {
   return (
