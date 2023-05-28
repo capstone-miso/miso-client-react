@@ -72,6 +72,10 @@ const RestaurantContainer = styled.div`
   padding: 1rem 1rem 45px 1rem;
 `
 
+const HighlighText = styled.span`
+  color: orange;
+`
+
 export default function BestRestaurants(){
   const [clickedButtonIndex, setClickedButtonIndex] = useState<number>(0);  //선택한 조회 유형
   const [stores, setStores] = useState<Store[]>([]);
@@ -133,24 +137,18 @@ export default function BestRestaurants(){
   }
 
   const getSubTitle = () => {
-    let subTitle = '지금 가장 인기있는 맛집!'
-
     switch(keyword.current){
       case '가격대':
-        subTitle = '공무원도 인정한 가장 가성비 좋은 맛집'
-        break;
+        return <SubTitle><HighlighText>공무원</HighlighText>도 인정한 가장 가성비 좋은 맛집</SubTitle>
       case '계절별':
-        subTitle = '계절별로 찾아보는 광진구청 맛집'
-        break;
+        return <SubTitle>계절별로 찾아보는 <HighlighText>광진구청</HighlighText> 맛집</SubTitle>
       case '시간대':
-        subTitle = '광진구청 공무원도 줄서서 먹는 베스트 맛집'
-        break;
+        return <SubTitle><HighlighText>광진구청 공무원</HighlighText>도 줄서서 먹는 베스트 맛집</SubTitle>
       case '방문자':
-        subTitle = '광진구청 공무원이 가장 많이 찾는 베스트 맛집'
-        break;
+        return <SubTitle><HighlighText>광진구청 공무원</HighlighText>이 가장 많이 찾는 베스트 맛집</SubTitle>
+      default:
+        return <SubTitle>지금 가장 인기있는 맛집!</SubTitle>
     }
-
-    return subTitle
   }
 
   return(
@@ -163,7 +161,7 @@ export default function BestRestaurants(){
       <TitleContainer>
         <div>
           <MainTitle>#{keyword.current}</MainTitle>
-          <SubTitle>{getSubTitle()}</SubTitle>
+          {getSubTitle()}
         </div>
       </TitleContainer>
 

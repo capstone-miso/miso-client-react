@@ -6,6 +6,7 @@ import EmptyHeartIcon from "../../assets/emptyheart.png"
 import { useNavigate } from "react-router-dom"
 import HorizontalLine from "./HorizontalLine"
 import { motion } from 'framer-motion'
+import axios from "axios";
 
 const Container = styled.div`
   width: 100%;
@@ -68,6 +69,38 @@ export default function Restaurant({ store, ranking }: { store: Store, ranking: 
   useEffect(() => {
 
   }, [isClicked])
+
+  const clickHeart = () => {
+    if (!isClicked) {
+      axios
+        .post(
+          `https://dishcovery.site/api/preference/${store.id}`,
+          {},
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("Authorization"),
+            },
+          }
+        )
+        .then((res) => {
+          if (res.status === 201) {
+            setIsClicked(true);
+          }
+        });
+    } else {
+      axios
+        .delete(`https://dishcovery.site/api/preference/${store.id}`, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("Authorization"),
+          },
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            setIsClicked(false);
+          }
+        });
+    }
+  };
 
   const getHeartButtonIcon = () => {
     if (isClicked){
@@ -175,7 +208,7 @@ export default function Restaurant({ store, ranking }: { store: Store, ranking: 
             <HeartButton 
               src={getHeartButtonIcon()}
               alt="찜하기" 
-              onClick={() => setIsClicked(!isClicked)}/>
+              onClick={() => clickHeart()}/>
           </motion.button>
         </HeartButtonContainer>
       </div>

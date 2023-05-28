@@ -25,15 +25,50 @@ export default function RestaurantMarker({ store, setCurrentLocation, level,inde
     })
   }
 
+  const getCategory = (category: string): string => {
+    let types: string[] = category.split(' > ')
+    
+    if (types.length == 2) {
+      return types[1]
+    }
+
+    if (types[1] == "퓨전요리"){
+      if (category.includes("한식")) {
+        return "한식"
+      }
+      else {
+        return "일식"
+      }
+    }
+
+    if (category.includes("닭강정")) {
+      return "양식"
+    }
+
+    switch (types[1]){
+      case "간식": case "패스트푸드":
+        return types[2]
+      case "치킨":
+        return "양식"
+      case "아시아음식":
+        return "아시아음식(" + types[2] +  ")"
+      case "뷔페":
+        return "한식"
+      case "술집":
+        return "주점"
+    }
+
+    return types[1]
+  }
 
   return (
 
     <>
-      
       {level && level<=2 ? 
 
         selectedIndex===index?
-        <CustomOverlayMap 
+        <CustomOverlayMap
+          zIndex={100}
           position={{ lat: store.lat+0.0001*level, lng: store.lon }}
         >
           <div style={{display:"flex",flexDirection:"column",alignItems:"center"}} onClick={()=>showStoreDetail(store.id)}>
@@ -47,7 +82,7 @@ export default function RestaurantMarker({ store, setCurrentLocation, level,inde
               </div>
               <div style={{height:"40px",paddingTop:"2px"}}>
                 <p style={{fontSize:"17px", fontWeight:"bold",color:"white"}}>{store.storeName}</p>
-                <p style={{fontSize:"12px",fontWeight:"bold",color:"white"}}>{store.category}</p>
+                <p style={{fontSize:"12px",fontWeight:"bold",color:"white"}}>{getCategory(store.category)}</p>
               </div>
               <div style={{width:"20px"}}>
                 
@@ -77,6 +112,7 @@ export default function RestaurantMarker({ store, setCurrentLocation, level,inde
         }}></MapMarker>
       :
       <MapMarker
+        // zIndex={1}
         position={{ lat: store.lat, lng: store.lon }}
         onClick={() => {setCurrentLocation((prev: any) => ({ 
           center: {
