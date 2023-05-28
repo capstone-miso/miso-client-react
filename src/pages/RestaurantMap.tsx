@@ -32,6 +32,7 @@ export default function RestaurantMap() {
   const [stores, setStoreList] = useState<Store[]>(tempStores);
   const [currentAddress, setCurrentAddress] = useState<string>("");
   const currentSnapPoint = useRef<number>(1);
+  const [sortType,setSortType]=useState<string>("distance")
 
   const getSnapPoints = (): any => {
     let snapPoints = [];
@@ -52,6 +53,7 @@ export default function RestaurantMap() {
     }
   };
 
+
   return (
     <Container>
       <Title onClick={showMapzipList}>
@@ -64,6 +66,7 @@ export default function RestaurantMap() {
           stores={stores}
           setStoreList={setStoreList}
           setCurrentAddress={setCurrentAddress}
+          sortType={sortType}
         />
       </MapContainer>
 
@@ -83,7 +86,8 @@ export default function RestaurantMap() {
               disableDrag={true}>
               <RestaurantList
               stores={stores}
-              currentAddress={currentAddress} />
+              currentAddress={currentAddress}
+              setSortType={setSortType} />
             </Sheet.Content>
           </Sheet.Container>
 

@@ -3,8 +3,11 @@ import { useEffect, useRef, useState } from "react";
 import Scroll from "react-infinite-scroll-component";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
-import Restaurant from "../components/kakomap/Restaurant";
+import Restaurant from '../components/bestrestaurant/RestaurantRanking'
 import { Store } from "../models/Store";
+import Dropdown from 'react-dropdown';
+import 'react-dropdown/style.css';
+import '../components/DropDown.css'
 
 const Container = styled.div`
   width: 100vw;
@@ -48,36 +51,17 @@ const SubTitle = styled.div`
   margin-bottom:10px;
 `;
 
-const ScrollingWrapper = styled.div`
-  height: 10%;
-  overflow-x: scroll;
-  overflow-y: hidden;
-  white-space: nowrap;
-  -webkit-overflow-scrolling: touch;
-  ::-webkit-scrollbar {
-    display: none;
-  }
-  padding: 0 10px;
-  display: felx;
-  justify-content: center;
-`;
-
-const ButtonContainer = styled.div`
-  padding: 10px 10px 10px 0;
-  display: inline-block;
-`;
-
 const RestaurantContainer = styled.div`
   width: 100%;
   height: 60%;
   padding: 0 10px 0 10px;
 `;
 
+
 export default function CategoryRestaurants() {
   const [searchParams, setSearchParams] = useSearchParams();
   const categoryType = searchParams.get("type");
   const [stores, setStores] = useState<Store[]>([]);
-
   const pageRef = useRef<number>(1);
   const scrollable = useRef<boolean>(true);
 
@@ -86,10 +70,17 @@ export default function CategoryRestaurants() {
     navigate(-1);
   };
 
+
+  const options = [
+    '거리순', '좋아요순', '방문순','매출순'
+  ];
+  const defaultOption = options[0];
+
+  const [sortType,setSortType]=useState<string>("distance")
   const getStore = () => {
     axios
       .get(
-        `https://dishcovery.site/api/store?category=${categoryType}&page=${pageRef.current}`,
+        `https://dishcovery.site/api/store?category=${categoryType}&page=${pageRef.current}&sort=${sortType}`,
         {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("Authorization"),
@@ -97,9 +88,13 @@ export default function CategoryRestaurants() {
         }
       )
       .then((response) => {
-        pageRef.current = pageRef.current + 1;
-        console.log(response.data);
+        if(pageRef.current==1){
+          setStores(response.data.dtoList)
+        }
+        else{
         setStores([...stores, ...response.data.dtoList]);
+        }
+        pageRef.current = pageRef.current + 1;
       });
   };
 
@@ -109,9 +104,25 @@ export default function CategoryRestaurants() {
     }, 2000);
   };
 
+  const handleDropDownChange=(type:string)=>{
+    if(type=="거리순"){
+      setSortType("distance")
+    }
+    else if(type=="좋아요순"){
+      setSortType("preference")
+    }
+    else if(type=="방문순"){
+      setSortType("visit")
+    }
+    else{
+      setSortType("sales")
+    }
+  }
+
   useEffect(()=>{
-      getStore()
-  },[searchParams])
+    pageRef.current=1
+    getStore()
+  },[sortType])
   
   return(
     <Container>
@@ -129,7 +140,10 @@ export default function CategoryRestaurants() {
           <SubTitle><span style={{color:"orange",fontWeight:"bold"}}>공무원</span>들이 찾는 <span style={{color:"orange",fontWeight:"bold"}}>{categoryType}</span> 맛집</SubTitle>
         </div>
       </TitleContainer>
-
+        <div style={{display:"flex",justifyContent:"right"}}>
+          <Dropdown className="sort_select_dropdown" onChange={(selected)=>(handleDropDownChange(selected.value))} options={options} value={defaultOption} placeholder="Select an option" />
+        </div>
+  
       <RestaurantContainer>
         <Scroll
           dataLength={stores.length} //반복되는 컴포넌트 개수
@@ -163,6 +177,7 @@ export default function CategoryRestaurants() {
               key={`${store.id}-${index}`}
               {...stores[index]}
               store={store}
+              ranking={index+1}
             />
           ))}
         </Scroll>

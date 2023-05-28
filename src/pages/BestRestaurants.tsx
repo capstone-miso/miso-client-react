@@ -6,7 +6,9 @@ import { getStoreRanking, getNextStoreRanking } from "../services/RankingAPI"
 import { Store, StoreRanking, SubKeyword } from "../models/Store"
 import Scroll from 'react-infinite-scroll-component'
 import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
-
+import Dropdown from 'react-dropdown';
+import 'react-dropdown/style.css';
+import '../components/DropDown.css'
 const Container = styled.div`
   width: 100vw;
   height: 100vh;
@@ -58,6 +60,8 @@ const ScrollingWrapper = styled.div`
   padding: 0 10px;
   display: felx;
   justify-content: center;
+  border-bottom:2px solid orange;
+  margin-bottom:20px
 `
 
 const ButtonContainer = styled.div`
@@ -103,13 +107,13 @@ export default function BestRestaurants(){
 
   const { state } = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
-  
+  const [sortType,setSortType]=useState<string>("distance")
   const keyword = useRef<string>(searchParams.get('keyword'))
   const subKeywords = useRef<SubKeyword[]>(state);
 
   useEffect(()  => {  //조회 카테고리 버튼 클릭시 -> 가게 목록을 처음부터 다시 불러옴
     const setStoreRank = async () => {
-      let storeList: StoreRanking = await getStoreRanking(subKeywords.current[clickedButtonIndex].english, pageRef.current, 10)
+      let storeList: StoreRanking = await getStoreRanking(subKeywords.current[clickedButtonIndex].english, pageRef.current, 10,sortType)
       setStores(storeList.dtoList)
 
       if (storeList.total <= 10) {
@@ -124,7 +128,22 @@ export default function BestRestaurants(){
 
     setStoreRank()
 
-  }, [clickedButtonIndex])
+  }, [clickedButtonIndex,sortType])
+
+  const handleDropDownChange=(type:string)=>{
+    if(type=="거리순"){
+      setSortType("distance")
+    }
+    else if(type=="좋아요순"){
+      setSortType("preference")
+    }
+    else if(type=="방문순"){
+      setSortType("visit")
+    }
+    else{
+      setSortType("sales")
+    }
+  }
 
   const navigate = useNavigate()
   
@@ -152,6 +171,11 @@ export default function BestRestaurants(){
 
     return subTitle
   }
+
+  const options = [
+    '거리순', '좋아요순', '방문순','매출순'
+  ];
+  const defaultOption = options[0];
 
   return(
     <Container>
@@ -185,6 +209,10 @@ export default function BestRestaurants(){
           </ButtonContainer>
         ))}
       </ScrollingWrapper>
+
+      <div style={{display:"flex",justifyContent:"right"}}>
+          <Dropdown className="sort_select_dropdown" onChange={(selected)=>(handleDropDownChange(selected.value))} options={options} value={defaultOption} placeholder="Select an option" />
+        </div>
 
       <RestaurantContainer>
         <Scroll

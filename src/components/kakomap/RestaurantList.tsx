@@ -1,7 +1,9 @@
 import { Store } from "../../models/Store";
 import styled from 'styled-components'
-import Restaurant from './Restaurant'
-
+import Restaurant from "../bestrestaurant/RestaurantRanking";
+import Dropdown from 'react-dropdown';
+import 'react-dropdown/style.css';
+import '../DropDown.css'
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -10,7 +12,7 @@ const Container = styled.div`
 
 const District = styled.div`
   width: 100%;
-  height: 8%;
+  height: 5%;
   font-weight: 700;
   font-size: 18px;
   `
@@ -20,21 +22,44 @@ const RestaurantContainer = styled.div`
   height: 92%;
   `
 
-export default function RestaurantList({stores,currentAddress}:{stores:Store[],currentAddress:string}){
+  const options = [
+    '거리순', '좋아요순', '방문순','매출순'
+  ];
+  const defaultOption = options[0];
 
+export default function RestaurantList({stores,currentAddress,setSortType}:{stores:Store[],currentAddress:string,setSortType:Function}){
+
+  const handleDropDownChange=(type:string)=>{
+    if(type=="거리순"){
+      setSortType("distance")
+    }
+    else if(type=="좋아요순"){
+      setSortType("preference")
+    }
+    else if(type=="방문순"){
+      setSortType("visit")
+    }
+    else{
+      setSortType("sales")
+    }
+  }
 
   return(
     <Container>
       <District>
         {currentAddress}
       </District>
+      <div style={{display:"flex",justifyContent:"left"}}>
+          <Dropdown className="sort_select_dropdown" onChange={(selected)=>(handleDropDownChange(selected.value))} options={options} value={defaultOption} placeholder="Select an option" />
+        </div>
 
       <RestaurantContainer>
         {stores.map((store, index) => (
           <Restaurant
             key={`${store.id}`}
             {...stores[index]}
-            store={store}/>
+            store={store}
+            ranking={index+1}/>
         ))}
       </RestaurantContainer>
       

@@ -51,6 +51,16 @@ const HeartButton = styled.img`
   height: 30px;
 `;
 
+const SubKeywordContainer = styled.div`
+  padding-top: 10px;
+  width: 100%;
+`
+
+const SubKeyword = styled.span`
+  color: orange;
+  padding-right: 10px;
+`
+
 export default function Restaurant({ store }: { store: Store }) {
   const [isClicked, setIsClicked] = useState<boolean>(store.preference); //사용자가 찜했는지 여부를 받아와 변수 초기화 필요
   const getHeartButtonIcon = () => {
@@ -188,7 +198,18 @@ export default function Restaurant({ store }: { store: Store }) {
             onClick={() => clickHeart()}
           />
         </HeartButtonContainer>
+
+      
       </div>
+      <SubKeywordContainer>
+        {store.keywords.map((keyword, index) => ( 
+          index <= 3 &&
+          <SubKeyword
+            key={index}>
+            #{keyword}
+          </SubKeyword>
+        ))}
+      </SubKeywordContainer>
     </Container>
   );
 }

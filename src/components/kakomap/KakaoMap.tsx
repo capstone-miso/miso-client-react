@@ -4,7 +4,7 @@ import RestaurantMarker from "./RestaurantMarker"
 import Button from '@material-ui/core/Button';
 import axios, { AxiosResponse } from "axios";
 import { Store, Location } from "../../models/Store";
-import { atom, useRecoilState, useRecoilValue } from 'recoil';
+import { atom, useRecoilState } from 'recoil';
 
 const CurrentLocation = atom<Location>({
   key: 'CurrentLocation',
@@ -18,24 +18,13 @@ const CurrentLocation = atom<Location>({
   },
 });
 
-export default function KakaoMap({stores,setStoreList,setCurrentAddress}:{stores:Store[],setStoreList:Function,setCurrentAddress:Function}){
+export default function KakaoMap({stores,setStoreList,setCurrentAddress,sortType}:{stores:Store[],setStoreList:Function,setCurrentAddress:Function,sortType:string}){
   const kakaoMap = {
     width: "100%",
     height: "100%"
   }
   const [level, setLevel] = useState<number>(3)
-
-
   let [currentLocation, setCurrentLocation] =useRecoilState<Location>(CurrentLocation)
-  //   useState<Location>({
-  //     center: {
-  //       lat: 37.549605785399,
-  //       lng: 127.075150292867
-  //     },
-  //     errMsg: "",
-  //     isLoading: false
-  //   })
-
   const mapRef = useRef<any>()
 
   const onClusterclick = (_target: any, cluster: any) => {
@@ -46,6 +35,9 @@ export default function KakaoMap({stores,setStoreList,setCurrentAddress}:{stores
   const [isClickSearch,setIsClickSearch]=useState<boolean>(false)
   const [selectedTap,setSelectedTap]=useState<String>(" 전 체 ")
 
+  useEffect(()=>{
+    insertStores(0)
+  },[sortType])
 
   const LocateCurrentPosition = () => {
     setCurrentLocation((prev) => ({ 
@@ -81,19 +73,12 @@ export default function KakaoMap({stores,setStoreList,setCurrentAddress}:{stores
     }
   }
 
-  useEffect(() => {
-    insertStores(0)
-  }, [])
-  
-  const handleClick = (store: Store) => {
-    console.log(store);
-  };
-
   const detectLevel=(map:kakao.maps.Map)=>{
     if(map.getLevel()>2){
       setSelectedIndex(-1)
     }
   }
+
 
   const insertStores=async (type:number)=>{
     const items=await getStores(type)
@@ -136,7 +121,8 @@ export default function KakaoMap({stores,setStoreList,setCurrentAddress}:{stores
         page:page,
         lat:lat,
         lon:lng,
-        category:category
+        category:category,
+        sort:sortType
       },
       headers:{
         Authorization:"Bearer " + localStorage.getItem("Authorization") 
