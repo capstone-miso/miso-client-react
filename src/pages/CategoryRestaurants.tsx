@@ -1,3 +1,4 @@
+import { Spinner } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import Scroll from "react-infinite-scroll-component";
@@ -24,8 +25,8 @@ const TitleContainer = styled.div`
   display: felx;
   justify-content: center;
   align-items: center;
-  border-bottom:2px solid orange;
-  margin-bottom:20px
+  border-bottom: 2px solid orange;
+  margin-bottom: 20px;
 `;
 
 const MainTitle = styled.div`
@@ -44,8 +45,8 @@ const SubTitle = styled.div`
   display: felx;
   justify-content: center;
   align-items: top;
-  margin-top:10px;
-  margin-bottom:10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 `;
 
 const ScrollingWrapper = styled.div`
@@ -109,11 +110,11 @@ export default function CategoryRestaurants() {
     }, 2000);
   };
 
-  useEffect(()=>{
-      getStore()
-  },[searchParams])
-  
-  return(
+  useEffect(() => {
+    getStore();
+  }, [searchParams]);
+
+  return (
     <Container>
       <BackButton>
         <img
@@ -126,7 +127,14 @@ export default function CategoryRestaurants() {
       <TitleContainer>
         <div>
           <MainTitle>{categoryType}</MainTitle>
-          <SubTitle><span style={{color:"orange",fontWeight:"bold"}}>공무원</span>들이 찾는 <span style={{color:"orange",fontWeight:"bold"}}>{categoryType}</span> 맛집</SubTitle>
+          <SubTitle>
+            <span style={{ color: "orange", fontWeight: "bold" }}>공무원</span>
+            들이 찾는{" "}
+            <span style={{ color: "orange", fontWeight: "bold" }}>
+              {categoryType}
+            </span>{" "}
+            맛집
+          </SubTitle>
         </div>
       </TitleContainer>
 
@@ -142,7 +150,13 @@ export default function CategoryRestaurants() {
                 padding: "10px 0 10px 0",
               }}
             >
-              Loading...
+              <Spinner
+                thickness="4px"
+                speed="0.65s"
+                emptyColor="gray.200"
+                color="orange.300"
+                size="xl"
+              />
             </h4>
           } //로딩 스피너
           endMessage={
@@ -156,7 +170,11 @@ export default function CategoryRestaurants() {
             </h4>
           }
           scrollableTarget={RestaurantContainer}
-          style={{display:"flex",flexDirection:"column",alignItems:"center"}}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
         >
           {stores.map((store, index) => (
             <Restaurant

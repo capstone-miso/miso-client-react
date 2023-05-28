@@ -1,23 +1,23 @@
-import styled from 'styled-components'
-import Restaurant from '../components/bestrestaurant/RestaurantRanking'
-import { Button } from "@chakra-ui/react"
-import { useState, useEffect, useRef } from "react"
-import { getStoreRanking, getNextStoreRanking } from "../services/RankingAPI"
-import { Store, StoreRanking, SubKeyword } from "../models/Store"
-import Scroll from 'react-infinite-scroll-component'
-import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
+import { Button, Spinner } from "@chakra-ui/react";
+import { useEffect, useRef, useState } from "react";
+import Scroll from "react-infinite-scroll-component";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import styled from "styled-components";
+import Restaurant from "../components/bestrestaurant/RestaurantRanking";
+import { Store, StoreRanking, SubKeyword } from "../models/Store";
+import { getNextStoreRanking, getStoreRanking } from "../services/RankingAPI";
 
 const Container = styled.div`
   width: 100vw;
   height: 100vh;
-`
+`;
 
 const BackButton = styled.div`
   height: 5%;
   display: felx;
   align-items: center;
   padding: 10px 0 0 10px;
-`
+`;
 
 const TitleContainer = styled.div`
   width: 100%;
@@ -25,7 +25,7 @@ const TitleContainer = styled.div`
   display: felx;
   justify-content: center;
   align-items: center;
-`
+`;
 
 const MainTitle = styled.div`
   font-size: 1.5em;
@@ -36,15 +36,15 @@ const MainTitle = styled.div`
   text-decoration: underline;
   text-underline-position: under;
   text-decoration-color: orange;
-`
+`;
 
 const SubTitle = styled.div`
   font-size: 1rem;
   display: felx;
   justify-content: center;
   align-items: top;
-  color: #7a7a7a
-`
+  color: #7a7a7a;
+`;
 
 const ScrollingWrapper = styled.div`
   height: 10%;
@@ -52,112 +52,115 @@ const ScrollingWrapper = styled.div`
   overflow-y: hidden;
   white-space: nowrap;
   -webkit-overflow-scrolling: touch;
-  ::-webkit-scrollbar{
-    display:none;
+  ::-webkit-scrollbar {
+    display: none;
   }
   padding: 0 10px;
   display: felx;
   justify-content: center;
-`
+`;
 
 const ButtonContainer = styled.div`
   padding: 10px 10px 10px 0;
   display: inline-block;
   -webkit-tap-highlight-color: transparent;
-`
+`;
 
 const RestaurantContainer = styled.div`
   width: 100%;
   height: 60%;
   padding: 1rem 1rem 45px 1rem;
-`
+`;
 
-export default function BestRestaurants(){
-  const [clickedButtonIndex, setClickedButtonIndex] = useState<number>(0);  //선택한 조회 유형
+export default function BestRestaurants() {
+  const [clickedButtonIndex, setClickedButtonIndex] = useState<number>(0); //선택한 조회 유형
   const [stores, setStores] = useState<Store[]>([]);
 
   const pageRef = useRef<number>(1);
-  const scrollable = useRef<boolean>(false);  //페이지 마지막에 도달하는 경우 스크롤 중지
+  const scrollable = useRef<boolean>(false); //페이지 마지막에 도달하는 경우 스크롤 중지
 
-  let nextPage = useRef<string>("");  //다음 페이지(다음 10개의 맛집 리스트)에 대한 url
+  let nextPage = useRef<string>(""); //다음 페이지(다음 10개의 맛집 리스트)에 대한 url
 
   const fetchData = () => {
     setTimeout(() => {
       const setStoreRank = async () => {
-        const storeRanking: StoreRanking = await getNextStoreRanking(nextPage.current)  //이전 리스트 조회때 받아왔던 다음 페이지 url을 통해 맛집 목록을 가져옴
-        
-        const storeList: Store[] = storeRanking.dtoList
-        nextPage.current = storeRanking.nextPage
+        const storeRanking: StoreRanking = await getNextStoreRanking(
+          nextPage.current
+        ); //이전 리스트 조회때 받아왔던 다음 페이지 url을 통해 맛집 목록을 가져옴
 
-        setStores([...stores, ...storeList])
+        const storeList: Store[] = storeRanking.dtoList;
+        nextPage.current = storeRanking.nextPage;
+
+        setStores([...stores, ...storeList]);
 
         if (nextPage.current == null) {
           scrollable.current = false;
         }
-      }
-  
-      setStoreRank()
+      };
 
+      setStoreRank();
     }, 2000);
-  }
+  };
 
   const { state } = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
-  
-  const keyword = useRef<string>(searchParams.get('keyword'))
+
+  const keyword = useRef<string>(searchParams.get("keyword"));
   const subKeywords = useRef<SubKeyword[]>(state);
 
-  useEffect(()  => {  //조회 카테고리 버튼 클릭시 -> 가게 목록을 처음부터 다시 불러옴
+  useEffect(() => {
+    //조회 카테고리 버튼 클릭시 -> 가게 목록을 처음부터 다시 불러옴
     const setStoreRank = async () => {
-      let storeList: StoreRanking = await getStoreRanking(subKeywords.current[clickedButtonIndex].english, pageRef.current, 10)
-      setStores(storeList.dtoList)
+      let storeList: StoreRanking = await getStoreRanking(
+        subKeywords.current[clickedButtonIndex].english,
+        pageRef.current,
+        10
+      );
+      setStores(storeList.dtoList);
 
       if (storeList.total <= 10) {
         scrollable.current = false;
-      }
-      else {
+      } else {
         scrollable.current = true;
       }
 
-      nextPage.current = storeList.nextPage   //다음에 불러올 맛집 목록 url
-    }
+      nextPage.current = storeList.nextPage; //다음에 불러올 맛집 목록 url
+    };
 
-    setStoreRank()
+    setStoreRank();
+  }, [clickedButtonIndex]);
 
-  }, [clickedButtonIndex])
+  const navigate = useNavigate();
 
-  const navigate = useNavigate()
-  
   const backToMatzipList = () => {
-    navigate(-1)
-  }
+    navigate(-1);
+  };
 
   const getSubTitle = () => {
-    let subTitle = '지금 가장 인기있는 맛집!'
+    let subTitle = "지금 가장 인기있는 맛집!";
 
-    switch(keyword.current){
-      case '가격대':
-        subTitle = '공무원도 인정한 가장 가성비 좋은 맛집'
+    switch (keyword.current) {
+      case "가격대":
+        subTitle = "공무원도 인정한 가장 가성비 좋은 맛집";
         break;
-      case '계절별':
-        subTitle = '계절별로 찾아보는 광진구청 맛집'
+      case "계절별":
+        subTitle = "계절별로 찾아보는 광진구청 맛집";
         break;
-      case '시간대':
-        subTitle = '광진구청 공무원도 줄서서 먹는 베스트 맛집'
+      case "시간대":
+        subTitle = "광진구청 공무원도 줄서서 먹는 베스트 맛집";
         break;
-      case '방문자':
-        subTitle = '광진구청 공무원이 가장 많이 찾는 베스트 맛집'
+      case "방문자":
+        subTitle = "광진구청 공무원이 가장 많이 찾는 베스트 맛집";
         break;
     }
 
-    return subTitle
-  }
+    return subTitle;
+  };
 
-  return(
+  return (
     <Container>
-      <BackButton
-        onClick={backToMatzipList}>
-        <img src="./back-button.png" style={{width: "30px"}}/>
+      <BackButton onClick={backToMatzipList}>
+        <img src="./back-button.png" style={{ width: "30px" }} />
       </BackButton>
 
       <TitleContainer>
@@ -167,19 +170,23 @@ export default function BestRestaurants(){
         </div>
       </TitleContainer>
 
-      <ScrollingWrapper >
+      <ScrollingWrapper>
         {subKeywords.current.map((subKeyword, index) => (
-          <ButtonContainer
-            key={index}>
+          <ButtonContainer key={index}>
             <Button
-              variant='outline'
-              borderRadius='3xl'
-              _hover={{ bg: 'orange', textColor: 'white', borderColor: 'orange' }}
-              bg={index == clickedButtonIndex ? 'orange' : 'white'}
-              borderColor={index == clickedButtonIndex ? 'orange' : '#b3b3b3'}
-              fontWeight='semibold'
+              variant="outline"
+              borderRadius="3xl"
+              _hover={{
+                bg: "orange",
+                textColor: "white",
+                borderColor: "orange",
+              }}
+              bg={index == clickedButtonIndex ? "orange" : "white"}
+              borderColor={index == clickedButtonIndex ? "orange" : "#b3b3b3"}
+              fontWeight="semibold"
               onClick={() => setClickedButtonIndex(index)}
-              textColor={index == clickedButtonIndex ? 'white' : 'black'}>
+              textColor={index == clickedButtonIndex ? "white" : "black"}
+            >
               {subKeyword.korean}
             </Button>
           </ButtonContainer>
@@ -188,29 +195,38 @@ export default function BestRestaurants(){
 
       <RestaurantContainer>
         <Scroll
-        dataLength={stores.length}   //반복되는 컴포넌트 개수
-        next={fetchData}             //스크롤이 바닥에 닿은 경우 -> 데이터 추가
-        hasMore={scrollable.current} //추가 데이터 유무
-        loader={
-          <h4 style={{ 
-          textAlign: "center",
-          padding: "10px 0 10px 0"}}>
-            Loading...
-          </h4>}   //로딩 스피너
-        endMessage={
-            <></>}
-        scrollableTarget={RestaurantContainer}
+          dataLength={stores.length} //반복되는 컴포넌트 개수
+          next={fetchData} //스크롤이 바닥에 닿은 경우 -> 데이터 추가
+          hasMore={scrollable.current} //추가 데이터 유무
+          loader={
+            <h4
+              style={{
+                textAlign: "center",
+                padding: "10px 0 10px 0",
+              }}
+            >
+              <Spinner
+                thickness="4px"
+                speed="0.65s"
+                emptyColor="gray.200"
+                color="orange.300"
+                size="xl"
+              />
+            </h4>
+          } //로딩 스피너
+          endMessage={<></>}
+          scrollableTarget={RestaurantContainer}
         >
           {stores.map((store, index) => (
             <Restaurant
               key={`${store.id}-${index}`}
               {...stores[index]}
               store={store}
-              ranking={index + 1}/>
+              ranking={index + 1}
+            />
           ))}
         </Scroll>
       </RestaurantContainer>
     </Container>
-  )
-
+  );
 }
