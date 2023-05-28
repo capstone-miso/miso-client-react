@@ -9,7 +9,8 @@ function Main() {
   const navigate = useNavigate();
 
   const navigateToPage = () => {
-    navigate("/test");
+    localStorage.removeItem("Authorization")
+    navigate("/restaurant-map");
   };
 
   return (

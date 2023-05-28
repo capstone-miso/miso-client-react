@@ -116,23 +116,41 @@ export default function KakaoMap({stores,setStoreList,setCurrentAddress,sortType
     else if(type===2){
       category="디저트"
     }
-    try{const response= await axios.get("https://dishcovery.site/api/store",{
-      params:{
-        page:page,
-        lat:lat,
-        lon:lng,
-        category:category,
-        sort:sortType
-      },
-      headers:{
-        Authorization:"Bearer " + localStorage.getItem("Authorization") 
+    if(localStorage.getItem("Authorization")){
+      try{const response= await axios.get("https://dishcovery.site/api/store",{
+        params:{
+          page:page,
+          lat:lat,
+          lon:lng,
+          category:category,
+          sort:sortType
+        },
+        headers:{
+          Authorization:"Bearer " + localStorage.getItem("Authorization") 
+        }
+      })
+      return response.data.dtoList
+      } catch(e){
+        return []
       }
-    })
-    return response.data.dtoList
-    } catch(e){
-      return []
+    }
+    else{
+      try{const response= await axios.get("https://dishcovery.site/api/store",{
+        params:{
+          page:page,
+          lat:lat,
+          lon:lng,
+          category:category,
+          sort:sortType
+        }
+      })
+      return response.data.dtoList
+      } catch(e){
+        return []
+      }
     }
   }
+  
 
   const [selectedIndex,setSelectedIndex]=useState<number>(-1)
 

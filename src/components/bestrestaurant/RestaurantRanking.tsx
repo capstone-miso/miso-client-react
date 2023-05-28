@@ -7,7 +7,7 @@ import HeartIcon from "../../assets/heart.png";
 import { Store } from "../../models/Store";
 import axios from "axios";
 import HorizontalLine from "./HorizontalLine";
-
+import { LoginAlert } from "../LoginAlert";
 const Container = styled.div`
   width: 100%;
   height: auto;
@@ -45,7 +45,7 @@ const SubKeyword = styled.span`
 
 const ImageContainer = styled.div`
   float: left;
-  padding: 0px 10px 0px 0px;
+  padding: 3px 10px 0px 0px;
 `;
 
 const ContentImage = styled.img`
@@ -71,38 +71,43 @@ export default function Restaurant({
   store: Store;
   ranking: number;
 }) {
-  const [isClicked, setIsClicked] = useState<boolean>(false); //사용자가 찜했는지 여부를 받아와 변수 초기화 필요
+  const [isClicked, setIsClicked] = useState<boolean>(store.preference);; //사용자가 찜했는지 여부를 받아와 변수 초기화 필요
   useEffect(() => {}, [isClicked]);
-
+  const [isLogIn,setIsLogIn]=useState(false)
   const clickHeart = () => {
-    if (!isClicked) {
-      axios
-        .post(
-          `https://dishcovery.site/api/preference/${store.id}`,
-          {},
-          {
+    if(localStorage.getItem("Authorization")){
+      if (!isClicked) {
+        axios
+          .post(
+            `https://dishcovery.site/api/preference/${store.id}`,
+            {},
+            {
+              headers: {
+                Authorization: "Bearer " + localStorage.getItem("Authorization"),
+              },
+            }
+          )
+          .then((res) => {
+            if (res.status === 201) {
+              setIsClicked(true);
+            }
+          });
+      } else {
+        axios
+          .delete(`https://dishcovery.site/api/preference/${store.id}`, {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("Authorization"),
             },
-          }
-        )
-        .then((res) => {
-          if (res.status === 201) {
-            setIsClicked(true);
-          }
-        });
-    } else {
-      axios
-        .delete(`https://dishcovery.site/api/preference/${store.id}`, {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("Authorization"),
-          },
-        })
-        .then((res) => {
-          if (res.status === 200) {
-            setIsClicked(false);
-          }
-        });
+          })
+          .then((res) => {
+            if (res.status === 200) {
+              setIsClicked(false);
+            }
+          });
+      }
+    }
+    else{
+      setIsLogIn(true)
     }
   };
 
@@ -236,6 +241,10 @@ export default function Restaurant({
       <div style={{ padding: "1rem 0 1.3rem 0" }}>
         <HorizontalLine />
       </div>
+      <LoginAlert 
+      isLogIn={isLogIn}
+      setIsLogIn={setIsLogIn}/>
     </Container>
+    
   );
 }

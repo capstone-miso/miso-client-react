@@ -26,7 +26,8 @@ const MatzipListContainer = () => {
 
   const [sortType,setSortType]=useState<string>("distance")
   const getStore = () => {
-    axios
+    if(localStorage.getItem("Authorization")){
+      axios
       .get(
         `https://dishcovery.site/api/store?&page=${pageRef.current}&sort=${sortType}`,
         {
@@ -44,12 +45,27 @@ const MatzipListContainer = () => {
         }
         pageRef.current = pageRef.current + 1;
       });
+    }
+    else{
+      axios
+      .get(
+        `https://dishcovery.site/api/store?&page=${pageRef.current}&sort=${sortType}`)
+      .then((response) => {
+        if(pageRef.current==1){
+          setStores(response.data.dtoList)
+        }
+        else{
+        setStores([...stores, ...response.data.dtoList]);
+        }
+        pageRef.current = pageRef.current + 1;
+      });
+    }
   };
 
   const fetchData = () => {
     setTimeout(() => {
       getStore();
-    }, 2000);
+    }, 1000);
   };
 
   const handleDropDownChange=(type:string)=>{
