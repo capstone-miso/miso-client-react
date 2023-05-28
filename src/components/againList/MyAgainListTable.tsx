@@ -1,4 +1,4 @@
-import { Flex, Stack } from "@chakra-ui/react";
+import { Flex, Spinner, Stack } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useRef, useState } from "react";
 import Scroll from "react-infinite-scroll-component";
@@ -75,7 +75,13 @@ function MyAgainListTable({ stores }: { stores: Store[] }) {
                     padding: "10px 0 10px 0",
                   }}
                 >
-                  Loading...
+                  <Spinner
+                    thickness="4px"
+                    speed="0.65s"
+                    emptyColor="gray.200"
+                    color="orange.300"
+                    size="xl"
+                  />
                 </h4>
               } //로딩 스피너
               endMessage={

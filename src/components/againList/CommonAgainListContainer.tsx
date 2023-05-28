@@ -1,13 +1,23 @@
 import { Flex, Stack } from "@chakra-ui/react";
 import React from "react";
-import Header from "../Header";
-import SimilarAgainListTable from "./SimilarAgainListTable";
 import { Store } from "../../models/Store";
-function SimilarAgainListContainer({stores}:{stores:Store[]}) {
+import AgainListHeader from "../AgainListHeader";
+
+type CommonAgainListContainerProps = {
+  stores: Store[];
+  title: string;
+  Component: React.ComponentType<any>;
+};
+
+function CommonAgainListContainer({
+  stores,
+  title,
+  Component,
+}: CommonAgainListContainerProps) {
   return (
     <>
       <Flex direction="column" alignContent="center" alignItems="center">
-        <Header title="비슷한 또갈집" />
+        <AgainListHeader title={title} />
         <Flex
           justifyContent="center"
           justifyItems="center"
@@ -15,7 +25,7 @@ function SimilarAgainListContainer({stores}:{stores:Store[]}) {
           alignItems="center"
         >
           <Stack maxW="390px" mt="85px">
-            <SimilarAgainListTable stores={stores} />
+            <Component stores={stores} />
           </Stack>
         </Flex>
       </Flex>
@@ -23,4 +33,4 @@ function SimilarAgainListContainer({stores}:{stores:Store[]}) {
   );
 }
 
-export default SimilarAgainListContainer;
+export default CommonAgainListContainer;

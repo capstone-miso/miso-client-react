@@ -1,13 +1,18 @@
 import React from "react";
-import SimilarAgainListContainer from "../components/againList/SimilarAgainListContainer";
-import { Store } from "../models/Store";
 import { useLocation } from "react-router-dom";
+import CommonAgainListContainer from "../components/againList/CommonAgainListContainer";
+import SimilarAgainListTable from "../components/againList/SimilarAgainListTable";
+
 function SimilarAgainList() {
-  const location=useLocation();
-  const stores=location.state.stores
+  const location = useLocation();
+  const stores = location.state.stores;
   return (
     <>
-      <SimilarAgainListContainer stores={stores}/>
+      <CommonAgainListContainer
+        stores={stores}
+        title="비슷한 또갈집"
+        Component={SimilarAgainListTable}
+      />
     </>
   );
 }

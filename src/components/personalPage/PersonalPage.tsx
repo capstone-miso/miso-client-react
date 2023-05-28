@@ -8,34 +8,30 @@ import {
   Button,
   Card,
   Flex,
-  FormControl,
-  FormLabel,
   Heading,
   Image,
   Stack,
-  Switch,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-import Header from "../Header";
 import { useNavigate } from "react-router-dom";
-
+import Header from "../Header";
 
 const PersonalPage: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [isLogOut,setIsLogOut]=useState(false)
+  const [isLogOut, setIsLogOut] = useState(false);
   const cancelRef = React.useRef<HTMLButtonElement | null>(null);
-  const logOutCancelRef= React.useRef<HTMLButtonElement | null>(null);
-  const navigate=useNavigate()
+  const logOutCancelRef = React.useRef<HTMLButtonElement | null>(null);
+  const navigate = useNavigate();
 
-  const logOut=()=>{
-    localStorage.removeItem("Authorization")
-    localStorage.removeItem("RefreshToken")
+  const logOut = () => {
+    localStorage.removeItem("Authorization");
+    localStorage.removeItem("RefreshToken");
     navigate({
-      pathname:"../"
-    })
-  }
+      pathname: "../",
+    });
+  };
 
   return (
     <>
@@ -60,16 +56,13 @@ const PersonalPage: React.FC = () => {
               </Heading>
             </Flex>
             <Flex direction="column" alignContent="center" alignItems="center">
-              <Card w="330px" p="15px" m="10px">
-                <FormControl display="flex" alignItems="center">
-                  <FormLabel htmlFor="email-alerts" mb="0">
-                    푸시 알림 수신
-                  </FormLabel>
-                  <Switch ml="160px" id="email-alerts" />
-                </FormControl>
-              </Card>
-              <Card w="330px" p="15px" m="10px " onClick={()=>setIsLogOut(true)}>
-                <Text >로그아웃</Text>
+              <Card
+                w="330px"
+                p="15px"
+                m="10px "
+                onClick={() => setIsLogOut(true)}
+              >
+                <Text>로그아웃</Text>
               </Card>
               <Card w="330px" p="15px" m="10px" onClick={onOpen}>
                 <Text>회원탈퇴</Text>
@@ -104,7 +97,7 @@ const PersonalPage: React.FC = () => {
       <AlertDialog
         motionPreset="slideInBottom"
         leastDestructiveRef={logOutCancelRef}
-        onClose={()=>setIsLogOut(false)}
+        onClose={() => setIsLogOut(false)}
         isOpen={isLogOut}
         isCentered
       >
@@ -113,10 +106,10 @@ const PersonalPage: React.FC = () => {
           <AlertDialogHeader>로그아웃 하시겠습니까?</AlertDialogHeader>
           <AlertDialogCloseButton />
           <AlertDialogFooter>
-            <Button ref={logOutCancelRef} onClick={()=>setIsLogOut(false)}>
+            <Button ref={logOutCancelRef} onClick={() => setIsLogOut(false)}>
               취소
             </Button>
-            <Button colorScheme="orange" ml={3} onClick={()=>logOut()}>
+            <Button colorScheme="orange" ml={3} onClick={() => logOut()}>
               확인
             </Button>
           </AlertDialogFooter>

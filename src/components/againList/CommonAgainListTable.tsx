@@ -26,7 +26,7 @@ const RestaurantContainer = styled.div`
   padding: 0 10px 0 10px;
 `;
 
-function MuchAgainListTable({ stores }: { stores: Store[] }) {
+function CommonAgainListTable({ stores }: { stores: Store[] }) {
   const [storeList, setStoreList] = useState<Store[]>([...stores]);
   const pageRef = useRef<number>(2);
   const scrollable = useRef<boolean>(true);
@@ -114,4 +114,4 @@ function MuchAgainListTable({ stores }: { stores: Store[] }) {
   );
 }
 
-export default MuchAgainListTable;
+export default CommonAgainListTable;

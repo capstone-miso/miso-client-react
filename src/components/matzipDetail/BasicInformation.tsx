@@ -10,6 +10,10 @@ import { storeDetail } from "../../pages/MatzipDetail";
 import ImageSlider from "./ImageSlider";
 // api 정보 반영
 
+type PreferenceCount = {
+  count: string;
+};
+
 const HeartButtonContainer = styled.div`
   width: 8%;
   display: felx;
@@ -19,7 +23,10 @@ const HeartButtonContainer = styled.div`
 const HeartButton = styled.img`
   height: 20%;
 `;
-function BasicInformation({ storeData }: { storeData: storeDetail | null }) {
+function BasicInformation(
+  { storeData }: { storeData: storeDetail | null },
+  { count }: PreferenceCount
+) {
   const navigate = useNavigate();
   const onClickBackButton = () => {
     navigate(-1);
@@ -94,7 +101,6 @@ function BasicInformation({ storeData }: { storeData: storeDetail | null }) {
           overflow="hidden"
           w="330px"
         >
-          
           <Stack pl="4" mt="6" mb="6" spacing="1">
             <HStack>
               <Heading size="lg">{storeData?.storeName}</Heading>
@@ -153,6 +159,18 @@ function BasicInformation({ storeData }: { storeData: storeDetail | null }) {
                 {storeData?.offInfo.map((info) => (
                   <Text fontSize="sm">{info}</Text>
                 ))}
+              </Stack>
+            </Stack>
+            <Stack direction="row">
+              <Image
+                ml="1px"
+                boxSize="15px"
+                src={EmptyHeartIcon}
+                alt="운영시간"
+                mt="0.5"
+              />
+              <Stack>
+                <Text fontSize="sm"></Text>
               </Stack>
             </Stack>
           </Stack>

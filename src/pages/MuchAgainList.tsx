@@ -1,14 +1,18 @@
 import React from "react";
-import MuchAgainListContainer from "../components/againList/MuchAgainListContainer";
-import { useLocation} from "react-router-dom";
-import { Store } from "../models/Store";
+import { useLocation } from "react-router-dom";
+import CommonAgainListContainer from "../components/againList/CommonAgainListContainer";
+import MuchAgainListTable from "../components/againList/MuchAgainListTable";
 
 function MuchAgainList() {
-  const location=useLocation();
-  const stores=location.state.stores
+  const location = useLocation();
+  const stores = location.state.stores;
   return (
     <>
-      <MuchAgainListContainer stores={stores}/>
+      <CommonAgainListContainer
+        stores={stores}
+        title="많이 또갈집"
+        Component={MuchAgainListTable}
+      />
     </>
   );
 }
