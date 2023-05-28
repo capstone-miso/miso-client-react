@@ -32,6 +32,7 @@ export default function RestaurantMap() {
   const [stores, setStoreList] = useState<Store[]>(tempStores);
   const [currentAddress, setCurrentAddress] = useState<string>("");
   const currentSnapPoint = useRef<number>(1);
+  const [sortType,setSortType]=useState<string>("distance")
 
   const getSnapPoints = (): any => {
     let snapPoints = [];
@@ -52,6 +53,7 @@ export default function RestaurantMap() {
     }
   };
 
+
   return (
     <Container>
       <Title onClick={showMapzipList}>
@@ -64,28 +66,35 @@ export default function RestaurantMap() {
           stores={stores}
           setStoreList={setStoreList}
           setCurrentAddress={setCurrentAddress}
+          sortType={sortType}
         />
       </MapContainer>
 
       <Sheet
         isOpen={isOpen}
         onClose={() => setOpen(false)}
-        snapPoints={snapPoints}
-        initialSnap={snapPoints.length - 1}
-        onSnap={(snapIndex) =>
-          console.log("> Current snap point index:", snapIndex)
-        }
-        style={{ marginBottom: "45px", zIndex: 10 }}
-      >
-        <Sheet.Container>
-          <Sheet.Header />
-          <Sheet.Content disableDrag={true}>
-            <RestaurantList stores={stores} currentAddress={currentAddress} />
-          </Sheet.Content>
-        </Sheet.Container>
+        snapPoints={ snapPoints }
+        initialSnap={ snapPoints.length -1}
+        onSnap={snapIndex =>
+            console.log('> Current snap point index:', snapIndex)
+          }
+        style={{ marginBottom: "45px",zIndex:10 }}>
+          <Sheet.Container>
+            <Sheet.Header/>
+            <Sheet.Content 
+              disableDrag={true}>
+              <RestaurantList
+              stores={stores}
+              currentAddress={currentAddress}
+              setSortType={setSortType} />
+            </Sheet.Content>
+          </Sheet.Container>
+
+          <Sheet.Backdrop
+            style={{background: "transparent"}} />
 
         <Sheet.Backdrop style={{ background: "transparent" }} />
-        </Sheet>
+      </Sheet>
     </Container>
   );
 }

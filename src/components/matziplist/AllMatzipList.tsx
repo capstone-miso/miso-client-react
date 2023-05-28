@@ -4,115 +4,83 @@ import React, { useEffect, useRef, useState } from "react";
 import Scroll from "react-infinite-scroll-component";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Restaurant from "../../components/kakomap/Restaurant";
+import Restaurant from "../bestrestaurant/RestaurantRanking";
 import { Store } from "../../models/Store";
+import 'react-dropdown/style.css';
+import '../DropDown.css'
+import Dropdown from 'react-dropdown';
 
 const RestaurantContainer = styled.div`
   width: 100%;
   height: 60%;
-  margin-left: 15px;
-  margin-right: 15px;
 `;
 
 const MatzipListContainer = () => {
   const [stores, setStores] = useState<Store[]>([]);
   const pageRef = useRef<number>(1);
 
-  const [isClicked, setIsClicked] = useState<boolean>(false); //사용자가 찜했는지 여부를 받아와 변수 초기화 필요
-  useEffect(() => {}, [isClicked]);
+  const options = [
+    '거리순', '좋아요순', '방문순','매출순'
+  ];
+  const defaultOption = options[0];
 
-  const navigate = useNavigate();
-  const showStoreDetail = (storeId: number) => {
-    navigate(
-      {
-        pathname: "../matzipDetail",
-        search: `?storeId=${storeId}`,
-      },
-      {
-        state: storeId,
-      }
-    );
-    navigate(0);
-  };
-
-  // useEffect(() => {
-  //   const setStoreList = async () => {
-  //     let storeList: Store[] = await getStoreList(pageRef.current, 10);
-  //     setStores([...stores, ...storeList]);
-  //     console.log("hi!");
-  //     console.log(storeList);
-  //   };
-
-  //   setStoreList();
-  // }, []);
-
-  const [clickedMap, setClickedMap] = useState<Map<number, boolean>>(new Map());
-
-  const getCategory = (category: string): string => {
-    let types: string[] = category.split(" > ");
-
-    if (types.length === 2) {
-      return types[1];
-    }
-
-    if (types[1] === "퓨전요리") {
-      if (category.includes("한식")) {
-        return "한식";
-      } else {
-        return "일식";
-      }
-    }
-
-    if (category.includes("닭강정")) {
-      return "양식";
-    }
-
-    switch (types[1]) {
-      case "간식":
-      case "패스트푸드":
-        return types[2];
-      case "치킨":
-        return "양식";
-      case "아시아음식":
-        return "아시아음식(" + types[2] + ")";
-      case "뷔페":
-        return "한식";
-      case "술집":
-        return "주점";
-    }
-
-    return types[1];
-  };
-
-  const scrollable = useRef<boolean>(true);
-
-  const getNextStore = () => {
+  const [sortType,setSortType]=useState<string>("distance")
+  const getStore = () => {
     axios
-      .get(`https://dishcovery.site/api/store?page=${pageRef.current}`, {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("Authorization"),
-        },
-      })
+      .get(
+        `https://dishcovery.site/api/store?&page=${pageRef.current}&sort=${sortType}`,
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("Authorization"),
+          },
+        }
+      )
       .then((response) => {
-        pageRef.current = pageRef.current + 1;
-        console.log(response.data);
+        if(pageRef.current==1){
+          setStores(response.data.dtoList)
+        }
+        else{
         setStores([...stores, ...response.data.dtoList]);
+        }
+        pageRef.current = pageRef.current + 1;
       });
   };
 
   const fetchData = () => {
     setTimeout(() => {
-      getNextStore();
+      getStore();
     }, 2000);
   };
 
-  useEffect(() => {
-    getNextStore();
-  }, []);
+  const handleDropDownChange=(type:string)=>{
+    if(type=="거리순"){
+      setSortType("distance")
+    }
+    else if(type=="좋아요순"){
+      setSortType("preference")
+    }
+    else if(type=="방문순"){
+      setSortType("visit")
+    }
+    else{
+      setSortType("sales")
+    }
+  }
+
+  useEffect(()=>{
+    pageRef.current=1
+    getStore()
+  },[sortType])
+  
+
+  const scrollable = useRef<boolean>(true);
 
   return (
     <>
-      <Stack mt="45px"></Stack>
+      <Stack mt="55px"></Stack>
+      <div style={{display:"flex",justifyContent:"right"}}>
+          <Dropdown className="sort_select_dropdown" onChange={(selected)=>(handleDropDownChange(selected.value))} options={options} value={defaultOption} placeholder="Select an option" />
+        </div>
       <RestaurantContainer>
         <Scroll
           dataLength={stores.length} //반복되는 컴포넌트 개수
@@ -145,12 +113,14 @@ const MatzipListContainer = () => {
             </h4>
           }
           scrollableTarget={RestaurantContainer}
+          style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}
         >
           {stores.map((store, index) => (
             <Restaurant
               key={`${store.id}-${index}`}
               {...stores[index]}
               store={store}
+              ranking={index+1}
             />
           ))}
         </Scroll>

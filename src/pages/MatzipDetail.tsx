@@ -101,9 +101,18 @@ export default function MatzipDetail() {
     setSimilarStores(response.data)
   }
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth" // 부드럽게 스크롤링되도록 설정 (선택적)
+    });
+  };
+  
+
   useEffect(() => {
     getStoreDetail(storeId);
     getSimilarStores(storeId);
+    scrollToTop()
   }, [searchParams]);
   return (
     <>
