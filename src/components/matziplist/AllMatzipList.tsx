@@ -112,7 +112,7 @@ const MatzipListContainer = () => {
 
   return (
     <>
-      <Stack mt="35px"></Stack>
+      <Stack mt="45px"></Stack>
       <RestaurantContainer>
         <Scroll
           dataLength={stores.length} //반복되는 컴포넌트 개수

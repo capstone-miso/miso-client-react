@@ -12,7 +12,7 @@ const Container = styled.div`
   padding-bottom: 20px;
   margin-bottom: 20px;
   border-bottom: 0.5px solid black;
-  `
+`;
 
 const NameContainer = styled.div`
   padding: 0px 0px 10px 0px;
@@ -29,7 +29,7 @@ const Content = styled.div`
   width: 100%;
   vertical-align: middle;
   display: block;
-`
+`;
 
 const ImageContainer = styled.div`
   float: left;
@@ -96,15 +96,18 @@ export default function Restaurant({ store }: { store: Store }) {
     return types[1];
   };
 
-  const navigate=useNavigate()
-  const showStoreDetail= (storeId:number) =>{
-    navigate({
-      pathname: "../matzipDetail",
-      search: `?storeId=${storeId}`,
-    },{
-      state:storeId
-    })
-  }
+  const navigate = useNavigate();
+  const showStoreDetail = (storeId: number) => {
+    navigate(
+      {
+        pathname: "../matzipDetail",
+        search: `?storeId=${storeId}`,
+      },
+      {
+        state: storeId,
+      }
+    );
+  };
 
   const clickHeart = () => {
     if (!isClicked) {
@@ -178,6 +181,13 @@ export default function Restaurant({ store }: { store: Store }) {
               <div>{store.phone}</div>
             </Content>
           )}
+
+          <Content>
+            <ImageContainer>
+              <ContentImage src={EmptyHeartIcon} />
+            </ImageContainer>
+            <div>{store.preferenceCount}</div>
+          </Content>
         </div>
 
         <HeartButtonContainer>
