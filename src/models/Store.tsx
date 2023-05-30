@@ -11,6 +11,7 @@ export interface Store {
   sector: string;
   mainImage: string;
   preference: boolean;
+  categoryGroup:string;
 }
 
 export interface StoreRanking {

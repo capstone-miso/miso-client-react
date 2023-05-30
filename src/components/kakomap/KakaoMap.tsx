@@ -87,40 +87,6 @@ export default function KakaoMap({
     }
   };
 
-  const LocateDongPosition = () => {
-    setCurrentLocation((prev) => ({
-      ...prev,
-      isLoading: true,
-    }));
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setCurrentLocation((prev) => ({
-            ...prev,
-            center: {
-              lat: position.coords.latitude, //위도
-              lng: position.coords.longitude, //경도
-            },
-            isLoading: false,
-          }));
-        },
-        (err) => {
-          setCurrentLocation((prev) => ({
-            ...prev,
-            errMsg: err.message,
-            isLoading: false,
-          }));
-        }
-      );
-    } else {
-      setCurrentLocation((prev) => ({
-        ...prev,
-        errMsg: "현재 위치를 불러올 수 없습니다.",
-        isLoading: false,
-      }));
-    }
-  };
-
   const detectLevel = (map: kakao.maps.Map) => {
     if (map.getLevel() > 2) {
       setSelectedIndex(-1);
@@ -349,7 +315,7 @@ export default function KakaoMap({
         </Button>
 
         </div>
-      )}
+      }
     </>
   );
 }
