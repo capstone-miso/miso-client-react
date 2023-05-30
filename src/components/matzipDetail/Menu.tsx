@@ -28,13 +28,13 @@ function MatzipMenu({ storeData }: { storeData: storeDetail | null }) {
           <Heading size="md" mb="2">
             대표메뉴
           </Heading>
-          {storeData?.menus.map((Menu) => (
-            <Stack key={Menu.mid}>
+          {storeData?.menuInfo.menuList.map((Menu, index) => (
+            <Stack key={index}>
               <Text mt="8px" mb="-10px" as="b" fontSize="sm">
-                {Menu.name}
+                {Menu.menu}
               </Text>
               <Text color="gray.500" fontSize="xs">
-                {Menu.cost}원
+                {Menu.price}원
               </Text>
             </Stack>
           ))}

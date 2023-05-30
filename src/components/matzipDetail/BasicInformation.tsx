@@ -91,7 +91,7 @@ function BasicInformation(
           ml="-10px"
           onClick={onClickBackButton}
         />
-        <ImageSlider slides={storeData?.images} />
+        <ImageSlider slides={storeData?.photoList} />
         <Card
           variant="unstyled"
           alignContent="left"
@@ -143,7 +143,7 @@ function BasicInformation(
                 mt="0.5"
               />
               <Stack>
-                {storeData?.onInfo.map((info) => (
+                {storeData?.storeInfo.openHour.map((info) => (
                   <Text fontSize="sm">{info}</Text>
                 ))}
               </Stack>
@@ -156,7 +156,7 @@ function BasicInformation(
                 mt="0.5"
               />
               <Stack>
-                {storeData?.offInfo.map((info) => (
+                {storeData?.storeInfo.offDays.map((info) => (
                   <Text fontSize="sm">{info}</Text>
                 ))}
               </Stack>

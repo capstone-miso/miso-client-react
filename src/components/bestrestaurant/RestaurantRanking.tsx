@@ -1,3 +1,4 @@
+import axios from "axios";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -5,7 +6,6 @@ import styled from "styled-components";
 import EmptyHeartIcon from "../../assets/emptyheart.png";
 import HeartIcon from "../../assets/heart.png";
 import { Store } from "../../models/Store";
-import axios from "axios";
 import HorizontalLine from "./HorizontalLine";
 
 const Container = styled.div`
@@ -45,7 +45,7 @@ const SubKeyword = styled.span`
 
 const ImageContainer = styled.div`
   float: left;
-  padding: 0px 10px 0px 0px;
+  padding: 3px 10px 0px 0px;
 `;
 
 const ContentImage = styled.img`
@@ -220,8 +220,9 @@ export default function Restaurant({
           <motion.button whileTap={{ scale: 0.9 }}>
             <HeartButton
               src={getHeartButtonIcon()}
-              alt="찜하기" 
-              onClick={() => clickHeart()}/>
+              alt="찜하기"
+              onClick={() => clickHeart()}
+            />
           </motion.button>
         </HeartButtonContainer>
       </div>
