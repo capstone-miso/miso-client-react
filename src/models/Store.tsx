@@ -1,16 +1,16 @@
 export interface Store {
   id: number;
   storeName: string;
-  lat: number;
-  lon: number;
   address: string;
   phone: string;
+  lat: number;
+  lon: number;
   category: string;
   keywords: string[];
+  preferenceCount: number;
+  sector: string;
   mainImage: string;
   preference: boolean;
-  sector: string;
-  preferenceCount: string;
 }
 
 export interface StoreRanking {

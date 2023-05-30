@@ -165,7 +165,6 @@ export default function KakaoMap({stores,setStoreList,setCurrentAddress,sortType
           isLoading: false
         })}
       >
-        <ZoomControl />
 
         <MarkerClusterer
           averageCenter={true} // 평균 위치를 클러스터 마커 위치로 설정
@@ -204,13 +203,13 @@ export default function KakaoMap({stores,setStoreList,setCurrentAddress,sortType
       </Map>
       
       <div
-        style={{position: "fixed", top: "9%", left: "2%", zIndex: "10"}}>
+        style={{position: "fixed", top: "105px", left: "20px", zIndex: "10"}}>
         {currentLocation.isLoading===true ?
           <Button
             variant="contained"
             onClick={LocateCurrentPosition}
             startIcon={<img src={"./current-location.png"} alt="cafeImage" width="30px"/>}
-            style={{background: "orange", fontWeight: "700", borderRadius: "50px"}}>
+            style={{background: "orange", fontWeight: "700", borderRadius: "50px", fontFamily: "Noto_Sans_KR_Regular"}}>
             이동중입니다...
           </Button>
           :
@@ -218,7 +217,7 @@ export default function KakaoMap({stores,setStoreList,setCurrentAddress,sortType
           variant="contained"
           onClick={LocateCurrentPosition}
           startIcon={<img src={"./current-location.png"} alt="cafeImage" width="30px"/>}
-          style={{background: "white", fontWeight: "700", borderRadius: "50px"}}>
+          style={{background: "white", fontWeight: "700", borderRadius: "50px", fontFamily: "Noto_Sans_KR_Regular"}}>
           내 위치로
         </Button>
         }
@@ -226,7 +225,7 @@ export default function KakaoMap({stores,setStoreList,setCurrentAddress,sortType
       {
         isClickSearch ?
           <>
-        <div style={{position: "fixed", top: "9%", left: "71%", zIndex: "10"}}>
+        <div style={{position: "fixed", top: "105px", right: "20px", zIndex: "10"}}>
         <Button
           variant="contained"
           onClick={()=>setIsClickSearch(false)}
@@ -235,42 +234,42 @@ export default function KakaoMap({stores,setStoreList,setCurrentAddress,sortType
         </Button>
       </div>
 
-      <div style={{position: "fixed", top: "16%", left: "71%", zIndex: "10"}}>
+      <div style={{position: "fixed", top: "157px", right: "20px", zIndex: "10"}}>
         <Button
           variant="contained"
           onClick={()=>
             {insertStores(0)
             setSelectedTap(" 전 체 ")}}
-          style={{backgroundColor:"white",height:"42px",fontWeight: "700", borderRadius: "50px"}}>
+          style={{backgroundColor:"white",height:"42px",fontWeight: "700", borderRadius: "50px", fontFamily: "Noto_Sans_KR_Regular"}}>
           &nbsp;전&nbsp;체&nbsp;
         </Button>
       </div>
-      <div style={{position: "fixed", top: "23%", left: "71%", zIndex: "10"}}>
+      <div style={{position: "fixed", top: "209px", right: "20px", zIndex: "10"}}>
         <Button
           variant="contained"
           onClick={()=>{
             insertStores(1)
             setSelectedTap("음식점")}}
-          style={{backgroundColor:"white",height:"42px",fontWeight: "700", borderRadius: "50px"}}>
+          style={{backgroundColor:"white",height:"42px",fontWeight: "700", borderRadius: "50px", fontFamily: "Noto_Sans_KR_Regular"}}>
           음식점
         </Button>
       </div>
-      <div style={{position: "fixed", top: "30%", left: "71%", zIndex: "10"}}>
+      <div style={{position: "fixed", top: "261px", right: "20px", zIndex: "10"}}>
         <Button
           variant="contained"
           onClick={()=>{setSelectedTap(" 카 페 ")
           insertStores(2)
         }}
-          style={{backgroundColor:"white",height:"42px",fontWeight: "700", borderRadius: "50px"}}>
+          style={{backgroundColor:"white",height:"42px",fontWeight: "700", borderRadius: "50px", fontFamily: "Noto_Sans_KR_Regular"}}>
           &nbsp;카&nbsp;페&nbsp;
         </Button>
       </div></>
         :
-        <div style={{position: "fixed", top: "9%", left: "71%", zIndex: "10"}}>
+        <div style={{position: "fixed", top: "105px", right: "20px", zIndex: "10"}}>
         <Button
           variant="contained"
           onClick={()=>setIsClickSearch(true)}
-          style={{backgroundColor:"white",height:"42px",fontWeight: "700", borderRadius: "50px"}}>
+          style={{backgroundColor:"white",height:"42px",fontWeight: "700", borderRadius: "50px", fontFamily: "Noto_Sans_KR_Regular"}}>
           {selectedTap}
         </Button>
       </div>

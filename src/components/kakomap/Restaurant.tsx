@@ -23,12 +23,14 @@ const Name = styled.div`
   font-weight: 700;
   color: #0b60df;
   font-size: 18px;
+  font-family: "Noto_Sans_KR_Bold";
 `;
 
 const Content = styled.div`
   width: 100%;
   vertical-align: middle;
   display: block;
+  font-family: "Noto_Sans_KR_Regular";
 `;
 
 const ImageContainer = styled.div`

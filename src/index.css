@@ -11,3 +11,24 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+:root {
+	--font-IBMPlexSansKR: "IBM_Plex_Sans_KR";
+	--font-NotoSansKR: "Noto_Sans_KR";
+}
+
+@font-face {
+	font-family: "IBM_Plex_Sans_KR";
+	src: url(./assets/fonts/IBM_Plex_Sans_KR/IBMPlexSansKR-Bold.ttf);
+}
+
+@font-face {
+	font-family: "Noto_Sans_KR_Bold";
+	src: url(./assets/fonts/Noto_Sans_KR/NotoSansKR-Bold.otf);
+}
+
+@font-face {
+	font-family: "Noto_Sans_KR_Regular";
+	src: url(./assets/fonts/Noto_Sans_KR/NotoSansKR-Regular.otf);
+}
+

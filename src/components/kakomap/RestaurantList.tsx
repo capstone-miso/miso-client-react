@@ -13,8 +13,10 @@ const Container = styled.div`
 const District = styled.div`
   width: 100%;
   height: 5%;
-  font-weight: 700;
-  font-size: 18px;
+  font-weight: 700;  
+  font-size: 1.3rem;
+  font-family: "Noto_Sans_KR_Bold";
+  margin: 0 0 30px 0;
 `;
 
 const RestaurantContainer = styled.div`
