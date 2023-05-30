@@ -15,7 +15,7 @@ function MatzipMenu({ storeData }: { storeData: storeDetail | null }) {
       <Stack>
         <CardBody>
           <Heading size="md" mb="4">
-            대중교통
+            교통편
           </Heading>
           <Stack>
             <Stack direction="row">
@@ -49,6 +49,20 @@ function MatzipMenu({ storeData }: { storeData: storeDetail | null }) {
                   {storeData?.storeInfo.findway.bus.busNames.map((info) => (
                     <Text fontSize="sm">{info} </Text>
                   ))}
+                </Text>
+              )}
+            </Stack>
+            <Stack direction="row">
+              <Image
+                boxSize="15px"
+                src="https://cdn-icons-png.flaticon.com/512/706/706401.png"
+                alt="주차장"
+                mt="0.5"
+              />
+              {storeData?.storeInfo.findway.parkingZone !== null && (
+                <Text mt="8px" mb="-2px" fontSize="sm">
+                  {storeData?.storeInfo.findway.parkingZone.parkingName}
+                  <Text>{storeData?.storeInfo.findway.parkingZone.address}</Text>
                 </Text>
               )}
             </Stack>

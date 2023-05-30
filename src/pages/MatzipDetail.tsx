@@ -32,6 +32,12 @@ export interface storeDetail {
         distance: number;
         busNames: string[];
       };
+      parkingZone: {
+        parkingName: string;
+        address: string;
+        lon: number;
+        lat: number;
+      }
     };
     menuInfo: {
       menuCount: number;
