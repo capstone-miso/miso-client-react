@@ -2,7 +2,6 @@ import axios from 'axios'
 import { API } from '../config'
 import { Store, StoreRanking, SubKeyword } from "../models/Store"
 
-
 export const getStoreRanking = async (
   keyWord: string,
   page: number,
@@ -34,7 +33,6 @@ export const getStoreRanking = async (
     });
     return stores.data;
   }
-
 };
 
 export const getNextStoreRanking = async (

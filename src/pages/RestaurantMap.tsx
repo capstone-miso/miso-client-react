@@ -5,6 +5,7 @@ import styled from "styled-components";
 import KakaoMap from "../components/kakomap/KakaoMap";
 import RestaurantList from "../components/kakomap/RestaurantList";
 import { Store } from "../models/Store";
+import Header from "../components/Header"
 
 const Container = styled.div`
   width: 100vw;
@@ -13,12 +14,20 @@ const Container = styled.div`
 
 const Title = styled.div`
   width: 100%;
-  height: 7%;
+  height: 85px;
   display: flex;
   align-items: center;
-  font-weight: 700;
-  font-size: x-large;
+  font-size: 30px;
+  font-family: "Noto_Sans_KR_Bold"
 `;
+
+const Rectangle = styled.div`
+  width: 7px;
+  height: 1em;
+  margin: 0px 5px 0px 0px;
+  background: orange;
+  margin: 0 5px 0 20px;
+`
 
 const MapContainer = styled.div`
   width: 100%;
@@ -53,12 +62,10 @@ export default function RestaurantMap() {
     }
   };
 
-
   return (
     <Container>
       <Title onClick={showMapzipList}>
-        <Image w="50px" h="30px" src="https://ifh.cc/g/Q55dgG.png" alt="선" />
-        맛집 지도
+        <Header title={"맛집 지도"}/>
       </Title>
 
       <MapContainer onClick={showMapzipList}>

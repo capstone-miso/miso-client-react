@@ -238,7 +238,6 @@ export default function KakaoMap({
           })
         }
       >
-        <ZoomControl />
 
         <MarkerClusterer
           averageCenter={true} // 평균 위치를 클러스터 마커 위치로 설정
@@ -277,150 +276,80 @@ export default function KakaoMap({
           ))}
         </MarkerClusterer>
       </Map>
-
-      <div style={{ position: "fixed", top: "9%", left: "2%", zIndex: "10" }}>
-        {currentLocation.isLoading === true ? (
+      
+      <div
+        style={{position: "fixed", top: "105px", left: "20px", zIndex: "10"}}>
+        {currentLocation.isLoading===true ?
           <Button
             variant="contained"
             onClick={LocateCurrentPosition}
-            startIcon={
-              <img
-                src={"./current-location.png"}
-                alt="cafeImage"
-                width="30px"
-              />
-            }
-            style={{
-              background: "orange",
-              fontWeight: "700",
-              borderRadius: "50px",
-            }}
-          >
+            startIcon={<img src={"./current-location.png"} alt="cafeImage" width="30px"/>}
+            style={{background: "orange", fontWeight: "700", borderRadius: "50px", fontFamily: "Noto_Sans_KR_Regular"}}>
             이동중입니다...
           </Button>
-        ) : (
-          <Button
-            variant="contained"
-            onClick={LocateCurrentPosition}
-            startIcon={
-              <img
-                src={"./current-location.png"}
-                alt="cafeImage"
-                width="30px"
-              />
-            }
-            style={{
-              background: "white",
-              fontWeight: "700",
-              borderRadius: "50px",
-            }}
-          >
-            내 위치로
-          </Button>
-        )}
+          :
+          <Button 
+          variant="contained"
+          onClick={LocateCurrentPosition}
+          startIcon={<img src={"./current-location.png"} alt="cafeImage" width="30px"/>}
+          style={{background: "white", fontWeight: "700", borderRadius: "50px", fontFamily: "Noto_Sans_KR_Regular"}}>
+          내 위치로
+        </Button>
+        }
       </div>
-      {isClickSearch ? (
-        <>
-          <div
-            style={{ position: "fixed", top: "9%", left: "71%", zIndex: "10" }}
-          >
-            <Button
-              variant="contained"
-              onClick={() => setIsClickSearch(false)}
-              style={{
-                backgroundColor: "orange",
-                height: "42px",
-                fontWeight: "700",
-                borderRadius: "50px",
-              }}
-            >
-              &nbsp;&nbsp;&nbsp;X&nbsp;&nbsp;&nbsp;
-            </Button>
-          </div>
+      {
+        isClickSearch ?
+          <>
+        <div style={{position: "fixed", top: "105px", right: "20px", zIndex: "10"}}>
+        <Button
+          variant="contained"
+          onClick={()=>setIsClickSearch(false)}
+          style={{backgroundColor:"orange",height:"42px",fontWeight: "700", borderRadius: "50px"}}>
+          &nbsp;&nbsp;&nbsp;X&nbsp;&nbsp;&nbsp;
+        </Button>
+      </div>
 
-          <div
-            style={{ position: "fixed", top: "16%", left: "71%", zIndex: "10" }}
-          >
-            <Button
-              variant="contained"
-              onClick={() => {
-                insertStores(0);
-                setSelectedTap(" 전 체 ");
-              }}
-              style={{
-                backgroundColor: "white",
-                height: "42px",
-                fontWeight: "700",
-                borderRadius: "50px",
-              }}
-            >
-              &nbsp;전&nbsp;체&nbsp;
-            </Button>
-          </div>
-          <div
-            style={{ position: "fixed", top: "23%", left: "71%", zIndex: "10" }}
-          >
-            <Button
-              variant="contained"
-              onClick={() => {
-                insertStores(1);
-                setSelectedTap("음식점");
-              }}
-              style={{
-                backgroundColor: "white",
-                height: "42px",
-                fontWeight: "700",
-                borderRadius: "50px",
-              }}
-            >
-              음식점
-            </Button>
-          </div>
-          <div
-            style={{ position: "fixed", top: "30%", left: "71%", zIndex: "10" }}
-          >
-            <Button
-              variant="contained"
-              onClick={() => {
-                setSelectedTap(" 카 페 ");
-                insertStores(2);
-              }}
-              style={{
-                backgroundColor: "white",
-                height: "42px",
-                fontWeight: "700",
-                borderRadius: "50px",
-              }}
-            >
-              &nbsp;카&nbsp;페&nbsp;
-            </Button>
-          </div>
-        </>
-      ) : (
-        <div
-          style={{ position: "fixed", top: "9%", left: "71%", zIndex: "10" }}
-        >
-          <Button
-            variant="contained"
-            onClick={() => setIsClickSearch(true)}
-            style={{
-              backgroundColor: "white",
-              height: "42px",
-              fontWeight: "700",
-              borderRadius: "50px",
-            }}
-          >
-            {selectedTap}
-          </Button>
+      <div style={{position: "fixed", top: "157px", right: "20px", zIndex: "10"}}>
+        <Button
+          variant="contained"
+          onClick={()=>
+            {insertStores(0)
+            setSelectedTap(" 전 체 ")}}
+          style={{backgroundColor:"white",height:"42px",fontWeight: "700", borderRadius: "50px", fontFamily: "Noto_Sans_KR_Regular"}}>
+          &nbsp;전&nbsp;체&nbsp;
+        </Button>
+      </div>
+      <div style={{position: "fixed", top: "209px", right: "20px", zIndex: "10"}}>
+        <Button
+          variant="contained"
+          onClick={()=>{
+            insertStores(1)
+            setSelectedTap("음식점")}}
+          style={{backgroundColor:"white",height:"42px",fontWeight: "700", borderRadius: "50px", fontFamily: "Noto_Sans_KR_Regular"}}>
+          음식점
+        </Button>
+      </div>
+      <div style={{position: "fixed", top: "261px", right: "20px", zIndex: "10"}}>
+        <Button
+          variant="contained"
+          onClick={()=>{setSelectedTap(" 카 페 ")
+          insertStores(2)
+        }}
+          style={{backgroundColor:"white",height:"42px",fontWeight: "700", borderRadius: "50px", fontFamily: "Noto_Sans_KR_Regular"}}>
+          &nbsp;카&nbsp;페&nbsp;
+        </Button>
+      </div></>
+        :
+        <div style={{position: "fixed", top: "105px", right: "20px", zIndex: "10"}}>
+        <Button
+          variant="contained"
+          onClick={()=>setIsClickSearch(true)}
+          style={{backgroundColor:"white",height:"42px",fontWeight: "700", borderRadius: "50px", fontFamily: "Noto_Sans_KR_Regular"}}>
+          {selectedTap}
+        </Button>
+
         </div>
       )}
-      {/* <button 
-        // colorScheme='blue'
-        style={{position: "fixed", top: "9%", left: "2%", width: "30%", zIndex: "10"}}
-        onClick={LocateCurrentPosition}>
-        leftIcon={<Image src={"./cafe.png"} alt="cafeImage" layout="fill"/>}
-          현재 위치
-      </button> */}
     </>
   );
 }

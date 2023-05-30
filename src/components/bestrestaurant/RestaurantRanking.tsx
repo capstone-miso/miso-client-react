@@ -23,14 +23,15 @@ const NameContainer = styled.div`
 `;
 
 const Name = styled.div`
-  font-weight: 600;
   font-size: 1.3rem;
+  font-family: "Noto_Sans_KR_Bold";
 `;
 
 const Content = styled.div`
   width: 100%;
   vertical-align: middle;
   display: inline-block;
+  font-family: "Noto_Sans_KR_Regular";
 `;
 
 const SubKeywordContainer = styled.div`
