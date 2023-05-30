@@ -1,9 +1,11 @@
-import { Card, CardBody, Heading, Image, Stack, Text } from "@chakra-ui/react";
+import { Card, CardBody, Heading, Image, Stack, Text, position } from "@chakra-ui/react";
 import React from "react";
 import { storeDetail } from "../../pages/MatzipDetail";
+import { StaticMap } from "react-kakao-maps-sdk";
 
 // api 정보 반영
 function MatzipMenu({ storeData }: { storeData: storeDetail | null }) {
+
   return (
     <Card
       direction={{ base: "column", sm: "row" }}
@@ -18,6 +20,29 @@ function MatzipMenu({ storeData }: { storeData: storeDetail | null }) {
             교통편
           </Heading>
           <Stack>
+            {
+              storeData?.lat&&storeData.lon&&(
+                <StaticMap // 지도를 표시할 Container
+            center={{
+              // 지도의 중심좌표
+              lat: storeData.lat,
+              lng: storeData.lon
+            }}
+            style={{
+              // 지도의 크기
+              width: "280px",
+              height: "280px",
+            }}
+            marker={{
+              position:{
+                lat: storeData.lat,
+                lng: storeData.lon
+              }}
+            }
+            level={3} // 지도의 확대 레벨
+          />
+              )
+            }
             <Stack direction="row">
               <Image
                 boxSize="15px"
