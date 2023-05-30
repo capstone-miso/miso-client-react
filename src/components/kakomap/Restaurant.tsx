@@ -33,7 +33,7 @@ const Content = styled.div`
 
 const ImageContainer = styled.div`
   float: left;
-  padding: 0px 10px 0px 0px;
+  padding: 3px 10px 0px 0px;
 `;
 
 const ContentImage = styled.img`
@@ -118,40 +118,46 @@ export default function Restaurant({ store }: { store: Store }) {
   }
 
   const clickHeart = () => {
-    if (!isClicked) {
-      axios
-        .post(
-          `https://dishcovery.site/api/preference/${store.id}`,
-          {},
-          {
+    if(localStorage.getItem("Authorization")){
+      if (!isClicked) {
+        axios
+          .post(
+            `https://dishcovery.site/api/preference/${store.id}`,
+            {},
+            {
+              headers: {
+                Authorization: "Bearer " + localStorage.getItem("Authorization"),
+              },
+            }
+          )
+          .then((res) => {
+            if (res.status === 201) {
+              setIsClicked(true);
+            }
+          });
+      } else {
+        axios
+          .delete(`https://dishcovery.site/api/preference/${store.id}`, {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("Authorization"),
             },
-          }
-        )
-        .then((res) => {
-          if (res.status === 201) {
-            setIsClicked(true);
-          }
-        });
-    } else {
-      axios
-        .delete(`https://dishcovery.site/api/preference/${store.id}`, {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("Authorization"),
-          },
-        })
-        .then((res) => {
-          if (res.status === 200) {
-            setIsClicked(false);
-          }
-        });
+          })
+          .then((res) => {
+            if (res.status === 200) {
+              setIsClicked(false);
+            }
+          });
+      }
+    }
+    else{
+      console.log("no login")
     }
   };
 
   return (
     <Container>
       <img
+        referrerPolicy='no-referrer'
         src={store.mainImage === null ? "/default-image.png" : store.mainImage}
         style={{
           objectFit: "cover",

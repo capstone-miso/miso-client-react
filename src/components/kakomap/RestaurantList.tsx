@@ -22,7 +22,7 @@ const RestaurantContainer = styled.div`
   height: 92%;
 `;
   const options = [
-    '거리순', '좋아요순', '방문순','매출순'
+    '거리순', '좋아요순', '방문횟수순','매출순','최근방문순'
   ];
   const defaultOption = options[0];
 
@@ -35,11 +35,14 @@ export default function RestaurantList({stores,currentAddress,setSortType}:{stor
     else if(type=="좋아요순"){
       setSortType("preference")
     }
-    else if(type=="방문순"){
+    else if(type=="방문횟수순"){
       setSortType("visit")
     }
+    else if(type=="매출순"){
+      setSortType("cost")
+    }
     else{
-      setSortType("sales")
+      setSortType("update")
     }
   }
 

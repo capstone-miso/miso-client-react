@@ -101,17 +101,22 @@ export default function MatzipDetail() {
   const [similarStores, setSimilarStores] = useState<Store[]>([]);
   console.log(storeId);
 
-  const getStoreDetail = async (storeId: string | null) => {
-    const response: AxiosResponse = await axios.get(
-      `https://dishcovery.site/api/store/${storeId}`,
+
+  const getStoreDetail=async (storeId:string|null)=>{
+    if(localStorage.getItem("Authorization")){
+      const response:AxiosResponse = await axios.get(`https://dishcovery.site/api/store/${storeId}`,
       {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("Authorization"),
-        },
-      }
-    );
-    setData(response.data);
-  };
+        headers:{
+          Authorization:"Bearer " + localStorage.getItem("Authorization")
+        }
+      })
+      setData(response.data)
+    }
+    else{
+      const response:AxiosResponse = await axios.get(`https://dishcovery.site/api/store/${storeId}`)
+      setData(response.data)
+    }
+  }
 
   const getSimilarStores = async (storeId: string | null) => {
     const response: AxiosResponse = await axios.get(

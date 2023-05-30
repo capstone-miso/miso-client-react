@@ -14,9 +14,10 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../Header";
+import { LoginAlert } from "../LoginAlert";
 
 const PersonalPage: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -32,6 +33,13 @@ const PersonalPage: React.FC = () => {
       pathname: "../",
     });
   };
+
+  const [isLogIn,setIsLogIn]=useState(false)
+  useEffect(()=>{
+    if(!localStorage.getItem("Authorization")){
+      setIsLogIn(true)
+    }
+  },[])
 
   return (
     <>
@@ -115,6 +123,9 @@ const PersonalPage: React.FC = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      <LoginAlert 
+      isLogIn={isLogIn}
+      setIsLogIn={setIsLogIn}/>
     </>
   );
 };

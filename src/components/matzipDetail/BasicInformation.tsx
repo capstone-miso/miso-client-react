@@ -8,6 +8,7 @@ import EmptyHeartIcon from "../../assets/emptyheart.png";
 import HeartIcon from "../../assets/heart.png";
 import { storeDetail } from "../../pages/MatzipDetail";
 import ImageSlider from "./ImageSlider";
+import { LoginAlert } from "../LoginAlert";
 // api 정보 반영
 
 type PreferenceCount = {
@@ -48,35 +49,41 @@ function BasicInformation(
     return EmptyHeartIcon;
   };
 
+  const [isLogIn,setIsLogIn]=useState(false)
   const clickHeart = () => {
-    if (!isClicked) {
-      axios
-        .post(
-          `https://dishcovery.site/api/preference/${storeData?.id}`,
-          {},
-          {
+    if(localStorage.getItem("Authorization")){
+      if (!isClicked) {
+        axios
+          .post(
+            `https://dishcovery.site/api/preference/${storeData?.id}`,
+            {},
+            {
+              headers: {
+                Authorization: "Bearer " + localStorage.getItem("Authorization"),
+              },
+            }
+          )
+          .then((res) => {
+            if (res.status === 201) {
+              setIsClicked(true);
+            }
+          });
+      } else {
+        axios
+          .delete(`https://dishcovery.site/api/preference/${storeData?.id}`, {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("Authorization"),
             },
-          }
-        )
-        .then((res) => {
-          if (res.status === 201) {
-            setIsClicked(true);
-          }
-        });
-    } else {
-      axios
-        .delete(`https://dishcovery.site/api/preference/${storeData?.id}`, {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("Authorization"),
-          },
-        })
-        .then((res) => {
-          if (res.status === 200) {
-            setIsClicked(false);
-          }
-        });
+          })
+          .then((res) => {
+            if (res.status === 200) {
+              setIsClicked(false);
+            }
+          });
+      }
+    }
+    else{
+      setIsLogIn(true)
     }
   };
 
@@ -189,6 +196,10 @@ function BasicInformation(
           </Stack>
         </Card>
       </Stack>
+      
+      <LoginAlert 
+      isLogIn={isLogIn}
+      setIsLogIn={setIsLogIn}/>
     </>
   );
 }

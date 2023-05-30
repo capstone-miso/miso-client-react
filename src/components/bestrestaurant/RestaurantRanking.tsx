@@ -7,7 +7,7 @@ import EmptyHeartIcon from "../../assets/emptyheart.png";
 import HeartIcon from "../../assets/heart.png";
 import { Store } from "../../models/Store";
 import HorizontalLine from "./HorizontalLine";
-
+import { LoginAlert } from "../LoginAlert";
 const Container = styled.div`
   width: 100%;
   height: auto;
@@ -71,38 +71,43 @@ export default function Restaurant({
   store: Store;
   ranking: number;
 }) {
-  const [isClicked, setIsClicked] = useState<boolean>(false); //사용자가 찜했는지 여부를 받아와 변수 초기화 필요
+  const [isClicked, setIsClicked] = useState<boolean>(store.preference);; //사용자가 찜했는지 여부를 받아와 변수 초기화 필요
   useEffect(() => {}, [isClicked]);
-
+  const [isLogIn,setIsLogIn]=useState(false)
   const clickHeart = () => {
-    if (!isClicked) {
-      axios
-        .post(
-          `https://dishcovery.site/api/preference/${store.id}`,
-          {},
-          {
+    if(localStorage.getItem("Authorization")){
+      if (!isClicked) {
+        axios
+          .post(
+            `https://dishcovery.site/api/preference/${store.id}`,
+            {},
+            {
+              headers: {
+                Authorization: "Bearer " + localStorage.getItem("Authorization"),
+              },
+            }
+          )
+          .then((res) => {
+            if (res.status === 201) {
+              setIsClicked(true);
+            }
+          });
+      } else {
+        axios
+          .delete(`https://dishcovery.site/api/preference/${store.id}`, {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("Authorization"),
             },
-          }
-        )
-        .then((res) => {
-          if (res.status === 201) {
-            setIsClicked(true);
-          }
-        });
-    } else {
-      axios
-        .delete(`https://dishcovery.site/api/preference/${store.id}`, {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("Authorization"),
-          },
-        })
-        .then((res) => {
-          if (res.status === 200) {
-            setIsClicked(false);
-          }
-        });
+          })
+          .then((res) => {
+            if (res.status === 200) {
+              setIsClicked(false);
+            }
+          });
+      }
+    }
+    else{
+      setIsLogIn(true)
     }
   };
 
@@ -167,6 +172,7 @@ export default function Restaurant({
   return (
     <Container>
       <img
+        referrerPolicy='no-referrer'
         src={store.mainImage === null ? "/default-image.png" : store.mainImage}
         style={{
           objectFit: "cover",
@@ -237,6 +243,10 @@ export default function Restaurant({
       <div style={{ padding: "1rem 0 1.3rem 0" }}>
         <HorizontalLine />
       </div>
+      <LoginAlert 
+      isLogIn={isLogIn}
+      setIsLogIn={setIsLogIn}/>
     </Container>
+    
   );
 }
