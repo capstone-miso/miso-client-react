@@ -14,7 +14,6 @@ export interface storeDetail {
   address: string;
   category: string;
   sector: string;
-  mainImage: string;
   preference: boolean;
   preferenceCount: number;
   storeInfo: {
@@ -34,20 +33,21 @@ export interface storeDetail {
         busNames: string[];
       };
     };
-  };
-  menuInfo: {
-    menuCount: number;
-    menuList: {
-      price: string;
-      menu: string;
-      description: string;
-      imgUrl: string;
+    menuInfo: {
+      menuCount: number;
+      menuList: {
+        price: string;
+        menu: string;
+        description: string;
+        imgUrl: string;
+      }[];
+    };
+    photoList: {
+      photoId: string;
+      photoUrl: string;
     }[];
   };
-  photoList: {
-    photoId: string;
-    photoUrl: string;
-  }[];
+
   keywords: string[];
   visitedTime: {
     under8: number;
@@ -99,6 +99,7 @@ export interface storeDetail {
 export default function MatzipDetail() {
   const [searchParams, setSearchParams] = useSearchParams();
   const storeId = searchParams.get("storeId");
+
   const [storeData, setData] = useState<storeDetail | null>(null);
   const [similarStores, setSimilarStores] = useState<Store[]>([]);
   console.log(storeId);
@@ -139,6 +140,10 @@ export default function MatzipDetail() {
     getSimilarStores(storeId);
     scrollToTop();
   }, [searchParams]);
+
+  useEffect(() => {
+    console.log(storeData);
+  }, [storeData]);
   return (
     <>
       <MatzipDetailPage storeData={storeData} similarStores={similarStores} />

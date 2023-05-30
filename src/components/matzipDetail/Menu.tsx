@@ -16,6 +16,8 @@ function MatzipMenu({ storeData }: { storeData: storeDetail | null }) {
     { mid: 3, name: "클로렐라만두-한판", cost: "6,000원" },
   ];
 
+  console.log(storeData?.storeInfo.menuInfo.menuList);
+
   return (
     <Card
       direction={{ base: "column", sm: "row" }}
@@ -28,7 +30,7 @@ function MatzipMenu({ storeData }: { storeData: storeDetail | null }) {
           <Heading size="md" mb="2">
             대표메뉴
           </Heading>
-          {storeData?.menuInfo.menuList.map((Menu, index) => (
+          {storeData?.storeInfo.menuInfo.menuList.map((Menu, index) => (
             <Stack key={index}>
               <Text mt="8px" mb="-10px" as="b" fontSize="sm">
                 {Menu.menu}
