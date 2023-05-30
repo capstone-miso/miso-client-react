@@ -73,13 +73,14 @@ export default function CategoryRestaurants() {
 
 
   const options = [
-    '거리순', '좋아요순', '방문순','매출순'
+    '좋아요순', '방문횟수순','매출순','최근방문순'
   ];
   const defaultOption = options[0];
 
-  const [sortType,setSortType]=useState<string>("distance")
+  const [sortType,setSortType]=useState<string>("preference")
   const getStore = () => {
-    axios
+    if(localStorage.getItem("Authorization")){
+      axios
       .get(
         `https://dishcovery.site/api/store?category=${categoryType}&page=${pageRef.current}&sort=${sortType}`,
         {
@@ -97,26 +98,42 @@ export default function CategoryRestaurants() {
         }
         pageRef.current = pageRef.current + 1;
       });
+    }
+    else{
+      axios
+      .get(
+        `https://dishcovery.site/api/store?category=${categoryType}&page=${pageRef.current}&sort=${sortType}`)
+      .then((response) => {
+        if(pageRef.current==1){
+          setStores(response.data.dtoList)
+        }
+        else{
+        setStores([...stores, ...response.data.dtoList]);
+        }
+        pageRef.current = pageRef.current + 1;
+      });
+    }
   };
 
   const fetchData = () => {
     setTimeout(() => {
       getStore();
-    }, 2000);
+    }, 1000);
   };
 
   const handleDropDownChange=(type:string)=>{
-    if(type=="거리순"){
-      setSortType("distance")
-    }
-    else if(type=="좋아요순"){
+    setStores([])
+    if(type=="좋아요순"){
       setSortType("preference")
     }
-    else if(type=="방문순"){
+    else if(type=="방문횟수순"){
       setSortType("visit")
     }
+    else if(type=="매출순"){
+      setSortType("cost")
+    }
     else{
-      setSortType("sales")
+      setSortType("update")
     }
   }
 

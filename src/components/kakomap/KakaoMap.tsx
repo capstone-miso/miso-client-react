@@ -1,188 +1,265 @@
-import { Map, ZoomControl, MarkerClusterer } from "react-kakao-maps-sdk"
-import { useState, useEffect, useRef } from "react"
-import RestaurantMarker from "./RestaurantMarker"
-import Button from '@material-ui/core/Button';
-import axios, { AxiosResponse } from "axios";
-import { Store, Location } from "../../models/Store";
-import { atom, useRecoilState } from 'recoil';
+import Button from "@material-ui/core/Button";
+import axios from "axios";
+import { useEffect, useRef, useState } from "react";
+import { Map, MarkerClusterer, ZoomControl } from "react-kakao-maps-sdk";
+import { atom, useRecoilState } from "recoil";
+import { Location, Store } from "../../models/Store";
+import RestaurantMarker from "./RestaurantMarker";
 
 const CurrentLocation = atom<Location>({
-  key: 'CurrentLocation',
+  key: "CurrentLocation",
   default: {
     center: {
       lat: 37.549605785399,
-      lng: 127.075150292867
+      lng: 127.075150292867,
     },
     errMsg: "",
-    isLoading: false
+    isLoading: false,
   },
 });
 
-export default function KakaoMap({stores,setStoreList,setCurrentAddress,sortType}:{stores:Store[],setStoreList:Function,setCurrentAddress:Function,sortType:string}){
+export default function KakaoMap({
+  stores,
+  setStoreList,
+  setCurrentAddress,
+  sortType,
+}: {
+  stores: Store[];
+  setStoreList: Function;
+  setCurrentAddress: Function;
+  sortType: string;
+}) {
   const kakaoMap = {
     width: "100%",
-    height: "100%"
-  }
-  const [level, setLevel] = useState<number>(3)
-  let [currentLocation, setCurrentLocation] =useRecoilState<Location>(CurrentLocation)
-  const mapRef = useRef<any>()
+    height: "100%",
+  };
+  const [level, setLevel] = useState<number>(3);
+  let [currentLocation, setCurrentLocation] =
+    useRecoilState<Location>(CurrentLocation);
+  const mapRef = useRef<any>();
 
   const onClusterclick = (_target: any, cluster: any) => {
-    const map = mapRef.current
-    map.setLevel(level - 2, {anchor: cluster.getCenter()});
-  }
+    const map = mapRef.current;
+    map.setLevel(level - 2, { anchor: cluster.getCenter() });
+  };
 
-  const [isClickSearch,setIsClickSearch]=useState<boolean>(false)
-  const [selectedTap,setSelectedTap]=useState<String>(" 전 체 ")
+  const [isClickSearch, setIsClickSearch] = useState<boolean>(false);
+  const [selectedTap, setSelectedTap] = useState<String>(" 전 체 ");
 
-  useEffect(()=>{
-    insertStores(0)
-  },[sortType])
+  const [isClickDong, setIsClickDong] = useState<boolean>(false);
+  const [selectedDong, setSelectedDong] = useState<String>(" 동 별 ");
+
+  useEffect(() => {
+    insertStores(0);
+  }, [sortType]);
 
   const LocateCurrentPosition = () => {
-    setCurrentLocation((prev) => ({ 
-            ...prev,
-            isLoading: true
-          }))
-    if (navigator.geolocation){
+    setCurrentLocation((prev) => ({
+      ...prev,
+      isLoading: true,
+    }));
+    if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setCurrentLocation((prev) => ({ 
+          setCurrentLocation((prev) => ({
             ...prev,
             center: {
-              lat: position.coords.latitude,   //위도
-              lng: position.coords.longitude   //경도
+              lat: position.coords.latitude, //위도
+              lng: position.coords.longitude, //경도
             },
-            isLoading: false
-          }))
+            isLoading: false,
+          }));
         },
         (err) => {
-          setCurrentLocation((prev) => ({ 
+          setCurrentLocation((prev) => ({
             ...prev,
             errMsg: err.message,
-            isLoading: false
-          }))
+            isLoading: false,
+          }));
         }
-      )
-    }else{
-      setCurrentLocation((prev) => ({ 
+      );
+    } else {
+      setCurrentLocation((prev) => ({
         ...prev,
         errMsg: "현재 위치를 불러올 수 없습니다.",
-        isLoading: false
-      }))
+        isLoading: false,
+      }));
     }
-  }
+  };
 
-  const detectLevel=(map:kakao.maps.Map)=>{
-    if(map.getLevel()>2){
-      setSelectedIndex(-1)
+  const LocateDongPosition = () => {
+    setCurrentLocation((prev) => ({
+      ...prev,
+      isLoading: true,
+    }));
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setCurrentLocation((prev) => ({
+            ...prev,
+            center: {
+              lat: position.coords.latitude, //위도
+              lng: position.coords.longitude, //경도
+            },
+            isLoading: false,
+          }));
+        },
+        (err) => {
+          setCurrentLocation((prev) => ({
+            ...prev,
+            errMsg: err.message,
+            isLoading: false,
+          }));
+        }
+      );
+    } else {
+      setCurrentLocation((prev) => ({
+        ...prev,
+        errMsg: "현재 위치를 불러올 수 없습니다.",
+        isLoading: false,
+      }));
     }
-  }
+  };
 
-
-  const insertStores=async (type:number)=>{
-    const items=await getStores(type)
-    setStoreList(items)
-  }
-
-  const getStores= async(type:number):Promise<Store[]>=>{
-    setIsClickSearch(false)
-    setStoreList([])
-    const pages:number[]=[]
-    for(var i=1;i<=level;i++){
-      pages.push(i)
+  const detectLevel = (map: kakao.maps.Map) => {
+    if (map.getLevel() > 2) {
+      setSelectedIndex(-1);
     }
-    const promises=pages.map((page)=>searchStore(type,page))
-    const result=await Promise.all(promises)
-    const items:Store[]=[]
-    result.forEach(element => {
-      element.forEach(item=>{
-        items.push(item)
-      })
+  };
+
+  const insertStores = async (type: number) => {
+    const items = await getStores(type);
+    setStoreList(items);
+  };
+
+  const getStores = async (type: number): Promise<Store[]> => {
+    setIsClickSearch(false);
+    setStoreList([]);
+    const pages: number[] = [];
+    for (var i = 1; i <= level; i++) {
+      pages.push(i);
+    }
+    const promises = pages.map((page) => searchStore(type, page));
+    const result = await Promise.all(promises);
+    const items: Store[] = [];
+    result.forEach((element) => {
+      element.forEach((item) => {
+        items.push(item);
+      });
     });
-    return items
-  }
+    return items;
+  };
 
-  const searchStore= async (type:number,page:number):Promise<Store[]>=>{
-    let lat=currentLocation.center.lat
-    let lng=currentLocation.center.lng
-    let category=""
-    if (type===0){
-      category=""
+  const searchStore = async (type: number, page: number): Promise<Store[]> => {
+    let lat = currentLocation.center.lat;
+    let lng = currentLocation.center.lng;
+    let category = "";
+    if (type === 0) {
+      category = "";
+    } else if (type === 1) {
+      category = "식당";
+    } else if (type === 2) {
+      category = "디저트";
     }
-    else if (type===1){
-      category="식당"
-    }
-    else if(type===2){
-      category="디저트"
-    }
-    try{const response= await axios.get("https://dishcovery.site/api/store",{
-      params:{
-        page:page,
-        lat:lat,
-        lon:lng,
-        category:category,
-        sort:sortType
-      },
-      headers:{
-        Authorization:"Bearer " + localStorage.getItem("Authorization") 
+    if(localStorage.getItem("Authorization")){
+      try{const response= await axios.get("https://dishcovery.site/api/store",{
+        params:{
+          page:page,
+          lat:lat,
+          lon:lng,
+          category:category,
+          sort:sortType
+        },
+        headers:{
+          Authorization:"Bearer " + localStorage.getItem("Authorization") 
+        }
+      })
+      return response.data.dtoList
+      } catch(e){
+        return []
       }
-    })
-    return response.data.dtoList
-    } catch(e){
-      return []
+    }
+    else{
+      try{const response= await axios.get("https://dishcovery.site/api/store",{
+        params:{
+          page:page,
+          lat:lat,
+          lon:lng,
+          category:category,
+          sort:sortType
+        }
+      })
+      return response.data.dtoList
+      } catch(e){
+        return []
+      }
     }
   }
 
-  const [selectedIndex,setSelectedIndex]=useState<number>(-1)
+  const [selectedIndex, setSelectedIndex] = useState<number>(-1);
 
-  return(
+  return (
     <>
       <Map
         style={kakaoMap}
         center={currentLocation.center}
-        level = {3}
-        onZoomChanged={(map) => {setLevel(map.getLevel())
-          detectLevel(map)}
+        level={3}
+        onZoomChanged={(map) => {
+          setLevel(map.getLevel());
+          detectLevel(map);
+        }}
+        onCreate={(map) =>
+          new kakao.maps.services.Geocoder().coord2Address(
+            map.getCenter().getLng(),
+            map.getCenter().getLat(),
+            (result) => {
+              setCurrentAddress(result[0].address.address_name);
+            }
+          )
         }
-        onCreate={(map)=>(
-          new kakao.maps.services.Geocoder().coord2Address(map.getCenter().getLng(),map.getCenter().getLat(),(result)=>{
-            setCurrentAddress(result[0].address.address_name)
-          })
-        )}
-        onDragEnd={(map)=>(
-          new kakao.maps.services.Geocoder().coord2Address(map.getCenter().getLng(),map.getCenter().getLat(),(result)=>{
-            setCurrentAddress(result[0].address.address_name)
-          })
-        )}
+        onDragEnd={(map) =>
+          new kakao.maps.services.Geocoder().coord2Address(
+            map.getCenter().getLng(),
+            map.getCenter().getLat(),
+            (result) => {
+              setCurrentAddress(result[0].address.address_name);
+            }
+          )
+        }
         ref={mapRef}
-        onCenterChanged={(map) => setCurrentLocation({
-          center: {
-            lat: map.getCenter().getLat(),
-            lng: map.getCenter().getLng(),
-          },
-          errMsg: "",
-          isLoading: false
-        })}
+        onCenterChanged={(map) =>
+          setCurrentLocation({
+            center: {
+              lat: map.getCenter().getLat(),
+              lng: map.getCenter().getLng(),
+            },
+            errMsg: "",
+            isLoading: false,
+          })
+        }
       >
 
         <MarkerClusterer
           averageCenter={true} // 평균 위치를 클러스터 마커 위치로 설정
-          minLevel={6}         // 클러스터 할 지도의 최소 레벨
+          minLevel={6} // 클러스터 할 지도의 최소 레벨
           disableClickZoom={true}
           onClusterclick={onClusterclick}
-          styles={[{ // calculator 각 사이 값 마다 적용될 스타일을 지정한다
-            color: '#000',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontWeight: 'bold',
-            // fontSize: '0px',
-            width : '50px',
-            height : '50px',
-            background: 'url("https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png") no-repeat',
-            positon: 'getCenter'
-          }]}
+          styles={[
+            {
+              // calculator 각 사이 값 마다 적용될 스타일을 지정한다
+              color: "#000",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontWeight: "bold",
+              // fontSize: '0px',
+              width: "50px",
+              height: "50px",
+              background:
+                'url("https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png") no-repeat',
+              positon: "getCenter",
+            },
+          ]}
         >
           {stores.map((store, index) => (
             <RestaurantMarker
@@ -195,11 +272,9 @@ export default function KakaoMap({stores,setStoreList,setCurrentAddress,sortType
               selectedIndex={selectedIndex}
               setSelectedIndex={setSelectedIndex}
               mapRef={mapRef.current}
-              />
+            />
           ))}
-
         </MarkerClusterer>
-        
       </Map>
       
       <div
@@ -272,16 +347,9 @@ export default function KakaoMap({stores,setStoreList,setCurrentAddress,sortType
           style={{backgroundColor:"white",height:"42px",fontWeight: "700", borderRadius: "50px", fontFamily: "Noto_Sans_KR_Regular"}}>
           {selectedTap}
         </Button>
-      </div>
-      }
 
-      {/* <button 
-        // colorScheme='blue'
-        style={{position: "fixed", top: "9%", left: "2%", width: "30%", zIndex: "10"}}
-        onClick={LocateCurrentPosition}>
-        leftIcon={<Image src={"./cafe.png"} alt="cafeImage" layout="fill"/>}
-          현재 위치
-      </button> */}
+        </div>
+      )}
     </>
-  )
+  );
 }
