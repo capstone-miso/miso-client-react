@@ -90,9 +90,6 @@ export interface storeDetail {
     costUnder25000: number;
     costOver25000: number;
     costDistribution: number;
-    highTotalVisited: number;
-    highTotalCost: number;
-    highTotalParticipants: number;
   };
 }
 
