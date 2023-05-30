@@ -112,7 +112,7 @@ export default function BestRestaurants(){
 
   const { state } = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [sortType,setSortType]=useState<string>("distance")
+  const [sortType,setSortType]=useState<string>("preference")
   const keyword = useRef<string>(searchParams.get('keyword'))
   const subKeywords = useRef<SubKeyword[]>(state);
 
@@ -137,17 +137,18 @@ export default function BestRestaurants(){
   const navigate = useNavigate();
 
   const handleDropDownChange=(type:string)=>{
-    if(type=="거리순"){
-      setSortType("distance")
-    }
-    else if(type=="좋아요순"){
+    setStores([])
+    if(type=="좋아요순"){
       setSortType("preference")
     }
-    else if(type=="방문순"){
+    else if(type=="방문횟수순"){
       setSortType("visit")
     }
+    else if(type=="매출순"){
+      setSortType("cost")
+    }
     else{
-      setSortType("sales")
+      setSortType("update")
     }
   }
 
@@ -171,7 +172,7 @@ export default function BestRestaurants(){
   }
 
   const options = [
-    '거리순', '좋아요순', '방문순','매출순'
+    '좋아요순', '방문횟수순','매출순','최근방문순'
   ];
   const defaultOption = options[0];
 

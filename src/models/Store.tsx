@@ -11,6 +11,9 @@ export interface Store {
   preference: boolean;
   sector: string;
   preferenceCount: string;
+  categoryGroup: string;
+  totalVisit:string;
+  totalCost:string;
 }
 
 export interface StoreRanking {

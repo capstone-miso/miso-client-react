@@ -157,6 +157,7 @@ export default function Restaurant({ store }: { store: Store }) {
   return (
     <Container>
       <img
+        referrerPolicy='no-referrer'
         src={store.mainImage === null ? "/default-image.png" : store.mainImage}
         style={{
           objectFit: "cover",
