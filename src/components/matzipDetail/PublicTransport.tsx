@@ -25,11 +25,15 @@ function MatzipMenu({ storeData }: { storeData: storeDetail | null }) {
                 alt="지하철"
                 mt="0.5"
               />
-              <Text mt="8px" mb="-2px" fontSize="sm">
-                {storeData?.storeInfo.findway.subway.stationName}{" "}
-                {storeData?.storeInfo.findway.subway.exitNum}번 출구 ~{" "}
-                {storeData?.storeInfo.findway.subway.distance}m
-              </Text>
+              {storeData?.storeInfo.findway.subway !== null && (
+                <Text mt="8px" mb="-2px" fontSize="sm">
+                  {storeData?.storeInfo.findway.subway.stationName !== null
+                    ? storeData?.storeInfo.findway.subway.stationName
+                    : ""}{" "}
+                  {storeData?.storeInfo.findway.subway.exitNum}번 출구{" "}
+                  {storeData?.storeInfo.findway.subway.distance}m
+                </Text>
+              )}
             </Stack>
             <Stack direction="row">
               <Image
@@ -38,13 +42,15 @@ function MatzipMenu({ storeData }: { storeData: storeDetail | null }) {
                 alt="버스"
                 mt="0.5"
               />
-              <Text mt="8px" mb="-2px" fontSize="sm">
-                {storeData?.storeInfo.findway.bus.busStopName} 정류장 ~{" "}
-                {storeData?.storeInfo.findway.bus.distance}m
-                {storeData?.storeInfo.findway.bus.busNames.map((info) => (
-                  <Text fontSize="sm">{info} </Text>
-                ))}
-              </Text>
+              {storeData?.storeInfo.findway.bus !== null && (
+                <Text mt="8px" mb="-2px" fontSize="sm">
+                  {storeData?.storeInfo.findway.bus.busStopName} 정류장{" "}
+                  {storeData?.storeInfo.findway.bus.distance}m
+                  {storeData?.storeInfo.findway.bus.busNames.map((info) => (
+                    <Text fontSize="sm">{info} </Text>
+                  ))}
+                </Text>
+              )}
             </Stack>
           </Stack>
         </CardBody>
