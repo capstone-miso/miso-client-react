@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
-import "./ImageSlider.css"
-import { IoIosArrowForward, IoIosArrowBack } from 'react-icons/io';
+import React, { useState } from "react";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import "./ImageSlider.css";
 
-const ImageSlider = ({slides}:{slides:string[]|undefined}) => {
+const ImageSlider = ({
+  slides,
+}: {
+  slides: { photoId: string; photoUrl: string }[] | undefined;
+}) => {
   const [current, setCurrent] = useState(0);
-  const length = slides?.length? slides?.length:0;
+  const length = slides?.length ? slides?.length : 0;
 
   const nextSlide = () => {
     setCurrent(current === length - 1 ? 0 : current + 1);
@@ -19,17 +23,22 @@ const ImageSlider = ({slides}:{slides:string[]|undefined}) => {
   }
 
   return (
-    <section className='slider'>
-      <IoIosArrowBack className='left-arrow' onClick={prevSlide} />
-      <IoIosArrowForward className='right-arrow' onClick={nextSlide} />
+    <section className="slider">
+      <IoIosArrowBack className="left-arrow" onClick={prevSlide} />
+      <IoIosArrowForward className="right-arrow" onClick={nextSlide} />
       {slides.map((slide, index) => {
         return (
           <div
-            className={index === current ? 'slide active' : 'slide'}
+            className={index === current ? "slide active" : "slide"}
             key={index}
           >
             {index === current && (
-              <img referrerPolicy='no-referrer' src={slide} alt='travel image' className='image' />
+              <img
+                referrerPolicy="no-referrer"
+                src={slide.photoUrl}
+                alt="travel image"
+                className="image"
+              />
             )}
           </div>
         );
