@@ -1,11 +1,13 @@
-import styled from 'styled-components'
-import Restaurant from '../components/bestrestaurant/RestaurantRanking'
-import { Button, Spinner } from "@chakra-ui/react";
-import { useState, useEffect, useRef } from "react"
-import { getStoreRanking, getNextStoreRanking } from "../services/RankingAPI"
-import { Store, StoreRanking, SubKeyword } from "../models/Store"
-import Scroll from 'react-infinite-scroll-component'
-import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
+import { Button, Select, Spinner } from "@chakra-ui/react";
+import { useEffect, useRef, useState } from "react";
+import "react-dropdown/style.css";
+import Scroll from "react-infinite-scroll-component";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import styled from "styled-components";
+import Restaurant from "../components/bestrestaurant/RestaurantRanking";
+import "../components/DropDown.css";
+import { Store, StoreRanking, SubKeyword } from "../models/Store";
+import { getNextStoreRanking, getStoreRanking } from "../services/RankingAPI";
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import '../components/DropDown.css'
@@ -60,9 +62,9 @@ const ScrollingWrapper = styled.div`
   padding: 0 10px;
   display: felx;
   justify-content: center;
-  border-bottom:2px solid orange;
-  margin-bottom:20px
-`
+  border-bottom: 2px solid orange;
+  margin-bottom: 20px;
+`;
 
 const ButtonContainer = styled.div`
   padding: 10px 10px 10px 0;
@@ -78,10 +80,10 @@ const RestaurantContainer = styled.div`
 
 const HighlighText = styled.span`
   color: orange;
-`
+`;
 
-export default function BestRestaurants(){
-  const [clickedButtonIndex, setClickedButtonIndex] = useState<number>(0);  //선택한 조회 유형
+export default function BestRestaurants() {
+  const [clickedButtonIndex, setClickedButtonIndex] = useState<number>(0); //선택한 조회 유형
   const [stores, setStores] = useState<Store[]>([]);
 
   const pageRef = useRef<number>(1);
@@ -112,15 +114,20 @@ export default function BestRestaurants(){
 
   const { state } = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [sortType,setSortType]=useState<string>("distance")
+  const [sortType,setSortType]=useState<string>("preference")
   const keyword = useRef<string>(searchParams.get('keyword'))
   const subKeywords = useRef<SubKeyword[]>(state);
 
   useEffect(() => {
     //조회 카테고리 버튼 클릭시 -> 가게 목록을 처음부터 다시 불러옴
     const setStoreRank = async () => {
-      let storeList: StoreRanking = await getStoreRanking(subKeywords.current[clickedButtonIndex].english, pageRef.current, 10,sortType)
-      setStores(storeList.dtoList)
+      let storeList: StoreRanking = await getStoreRanking(
+        subKeywords.current[clickedButtonIndex].english,
+        pageRef.current,
+        10,
+        sortType
+      );
+      setStores(storeList.dtoList);
 
       if (storeList.total <= 10) {
         scrollable.current = false;
@@ -132,50 +139,71 @@ export default function BestRestaurants(){
     };
 
     setStoreRank();
-  }, [clickedButtonIndex,sortType])
+  }, [clickedButtonIndex, sortType]);
 
   const navigate = useNavigate();
 
+
   const handleDropDownChange=(type:string)=>{
-    if(type=="거리순"){
-      setSortType("distance")
-    }
-    else if(type=="좋아요순"){
+    setStores([])
+    if(type=="좋아요순"){
       setSortType("preference")
     }
-    else if(type=="방문순"){
+    else if(type=="방문횟수순"){
       setSortType("visit")
     }
-    else{
-      setSortType("sales")
+    else if(type=="매출순"){
+      setSortType("cost")
     }
-  }
+    else{
+      setSortType("update")
+    }
+  };
 
   const backToMatzipList = () => {
     navigate(-1);
   };
 
   const getSubTitle = () => {
-    switch(keyword.current){
-      case '가격대':
-        return <SubTitle><HighlighText>공무원</HighlighText>도 인정한 가장 가성비 좋은 맛집</SubTitle>
-      case '계절별':
-        return <SubTitle>계절별로 찾아보는 <HighlighText>광진구청</HighlighText> 맛집</SubTitle>
-      case '시간대':
-        return <SubTitle><HighlighText>광진구청 공무원</HighlighText>도 줄서서 먹는 베스트 맛집</SubTitle>
-      case '방문자':
-        return <SubTitle><HighlighText>광진구청 공무원</HighlighText>이 가장 많이 찾는 베스트 맛집</SubTitle>
+    switch (keyword.current) {
+      case "가격대":
+        return (
+          <SubTitle>
+            <HighlighText>공무원</HighlighText>도 인정한 가장 가성비 좋은 맛집
+          </SubTitle>
+        );
+      case "계절별":
+        return (
+          <SubTitle>
+            계절별로 찾아보는 <HighlighText>광진구청</HighlighText> 맛집
+          </SubTitle>
+        );
+      case "시간대":
+        return (
+          <SubTitle>
+            <HighlighText>광진구청 공무원</HighlighText>도 줄서서 먹는 베스트
+            맛집
+          </SubTitle>
+        );
+      case "방문자":
+        return (
+          <SubTitle>
+            <HighlighText>광진구청 공무원</HighlighText>이 가장 많이 찾는 베스트
+            맛집
+          </SubTitle>
+        );
       default:
-        return <SubTitle>지금 가장 인기있는 맛집!</SubTitle>
+        return <SubTitle>지금 가장 인기있는 맛집!</SubTitle>;
     }
-  }
+  };
+
 
   const options = [
-    '거리순', '좋아요순', '방문순','매출순'
+    '좋아요순', '방문횟수순','매출순','최근방문순'
   ];
   const defaultOption = options[0];
 
-  return(
+  return (
     <Container>
       <BackButton onClick={backToMatzipList}>
         <img src="./back-button.png" style={{ width: "30px" }} />
@@ -211,9 +239,20 @@ export default function BestRestaurants(){
         ))}
       </ScrollingWrapper>
 
-      <div style={{display:"flex",justifyContent:"right"}}>
-          <Dropdown className="sort_select_dropdown" onChange={(selected)=>(handleDropDownChange(selected.value))} options={options} value={defaultOption} placeholder="Select an option" />
-        </div>
+      <div style={{ display: "flex", justifyContent: "right" }}>
+        <Dropdown
+          className="sort_select_dropdown"
+          onChange={(selected) => handleDropDownChange(selected.value)}
+          options={options}
+          value={defaultOption}
+          placeholder="Select an option"
+        />
+        {/* <Select mr="18px" maxW="30%">
+          <option value="option1">Option 1</option>
+          <option value="option2">Option 2</option>
+          <option value="option3">Option 3</option>
+        </Select> */}
+      </div>
 
       <RestaurantContainer>
         <Scroll

@@ -13,8 +13,10 @@ const Container = styled.div`
 const District = styled.div`
   width: 100%;
   height: 5%;
-  font-weight: 700;
-  font-size: 18px;
+  font-weight: 700;  
+  font-size: 1.3rem;
+  font-family: "Noto_Sans_KR_Bold";
+  margin: 0 0 30px 0;
 `;
 
 const RestaurantContainer = styled.div`
@@ -22,7 +24,7 @@ const RestaurantContainer = styled.div`
   height: 92%;
 `;
   const options = [
-    '거리순', '좋아요순', '방문순','매출순'
+    '거리순', '좋아요순', '방문횟수순','매출순','최근방문순'
   ];
   const defaultOption = options[0];
 
@@ -35,11 +37,14 @@ export default function RestaurantList({stores,currentAddress,setSortType}:{stor
     else if(type=="좋아요순"){
       setSortType("preference")
     }
-    else if(type=="방문순"){
+    else if(type=="방문횟수순"){
       setSortType("visit")
     }
+    else if(type=="매출순"){
+      setSortType("cost")
+    }
     else{
-      setSortType("sales")
+      setSortType("update")
     }
   }
 

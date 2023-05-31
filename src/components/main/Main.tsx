@@ -9,7 +9,8 @@ function Main() {
   const navigate = useNavigate();
 
   const navigateToPage = () => {
-    navigate("/test");
+    localStorage.removeItem("Authorization")
+    navigate("/restaurant-map");
   };
 
   return (
@@ -24,7 +25,10 @@ function Main() {
       >
         <Image mt="220px" w="480px" src={DishCovery} alt="로고" />
         <Text mt="5px" as="b" fontSize="md" color="white">
-          :: 공무원 맛집 추천 앱 ::
+          공무원 업무 추진비 내역 기반
+        </Text>
+        <Text mt="-3px" as="b" fontSize="md" color="white">
+          :: 로컬 맛집 추천 서비스 ::
         </Text>
         <KakaoButton />
         <Text

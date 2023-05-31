@@ -10,6 +10,7 @@ import {
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Store } from "../../models/Store";
+import styled from 'styled-components';
 
 interface Again {
   id: number;
@@ -60,11 +61,16 @@ const AgainListCard = ({ title, content, url, again, stores }: CardProps) => {
         >
           <Stack>
             <CardBody>
-              <Heading fontSize="lg">{title}</Heading>
-              <Text fontSize="xs">{content}</Text>
+              <Heading 
+                fontSize="lg" 
+                style={{fontFamily: "Noto_Sans_KR_Regular"}}>{title}</Heading>
+              <Text 
+                fontSize="xs"
+                style={{fontFamily: "Noto_Sans_KR_Regular"}}>{content}</Text>
               <Stack mt="2">
                 <Card variant="unstyled" w="310px">
                   <Text
+                    style={{fontFamily: "Noto_Sans_KR_Regular"}}
                     color="orange"
                     align="right"
                     alignItems="right"

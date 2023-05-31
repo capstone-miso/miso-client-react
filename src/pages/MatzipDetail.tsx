@@ -9,23 +9,52 @@ export interface storeDetail {
   storeName: string;
   lat: number;
   lon: number;
+  mainImageUrl: string;
   phone: string;
   address: string;
   category: string;
   sector: string;
-  mainImage: string;
   preference: boolean;
-  onInfo: string[];
-  offInfo: string[];
+  preferenceCount: number;
+  storeInfo: {
+    mainPhotoUrl: string;
+    openHour: string[];
+    offDays: string[];
+    tags: string[];
+    findway: {
+      subway: {
+        stationName: string;
+        exitNum: string;
+        distance: number;
+      };
+      bus: {
+        busStopName: string;
+        distance: number;
+        busNames: string[];
+      };
+      parkingZone: {
+        parkingName: string;
+        address: string;
+        lon: number;
+        lat: number;
+      }
+    };
+    menuInfo: {
+      menuCount: number;
+      menuList: {
+        price: string;
+        menu: string;
+        description: string;
+        imgUrl: string;
+      }[];
+    };
+    photoList: {
+      photoId: string;
+      photoUrl: string;
+    }[];
+  };
+
   keywords: string[];
-  images: string[];
-  menus: {
-    mid: number;
-    name: string;
-    cost: string;
-    detail: string;
-    menuImg: string;
-  }[];
   visitedTime: {
     under8: number;
     hour9: number;
@@ -67,53 +96,69 @@ export interface storeDetail {
     costUnder25000: number;
     costOver25000: number;
     costDistribution: number;
-    highTotalVisited: number;
-    highTotalCost: number;
-    highTotalParticipants: number;
   };
 }
 
 export default function MatzipDetail() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const storeId= searchParams.get("storeId");
+  const storeId = searchParams.get("storeId");
+
   const [storeData, setData] = useState<storeDetail | null>(null);
   const [similarStores, setSimilarStores] = useState<Store[]>([]);
   console.log(storeId);
 
 
   const getStoreDetail=async (storeId:string|null)=>{
-    const response:AxiosResponse = await axios.get(`https://dishcovery.site/api/store/${storeId}`,
-    {
-      headers:{
-        Authorization:"Bearer " + localStorage.getItem("Authorization")
-      }
-    })
-    setData(response.data)
+    if(localStorage.getItem("Authorization")){
+      const response:AxiosResponse = await axios.get(`https://dishcovery.site/api/store/${storeId}`,
+      {
+        headers:{
+          Authorization:"Bearer " + localStorage.getItem("Authorization")
+        }
+      })
+      setData(response.data)
+    }
+    else{
+      const response:AxiosResponse = await axios.get(`https://dishcovery.site/api/store/${storeId}`)
+      setData(response.data)
+    }
   }
 
-  const getSimilarStores=async (storeId:string|null)=>{
-    const response:AxiosResponse = await axios.get(`https://dishcovery.site/api/store/${storeId}/similar`,
-    {
-      headers:{
-        Authorization:"Bearer " + localStorage.getItem("Authorization")
-      }
-    })
-    setSimilarStores(response.data)
-  }
+  const getSimilarStores = async (storeId: string | null) => {
+    if(localStorage.getItem("Authorization")){
+      const response: AxiosResponse = await axios.get(
+        `https://dishcovery.site/api/store/${storeId}/similar`,
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("Authorization"),
+          },
+        }
+      );
+      setSimilarStores(response.data);
+    }
+    else{
+      const response: AxiosResponse = await axios.get(
+        `https://dishcovery.site/api/store/${storeId}/similar`)
+        setSimilarStores(response.data);
+    }
+  };
 
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth" // 부드럽게 스크롤링되도록 설정 (선택적)
+      behavior: "smooth", // 부드럽게 스크롤링되도록 설정 (선택적)
     });
   };
-  
 
   useEffect(() => {
     getStoreDetail(storeId);
     getSimilarStores(storeId);
-    scrollToTop()
+    scrollToTop();
   }, [searchParams]);
+
+  useEffect(() => {
+    console.log(storeData);
+  }, [storeData]);
   return (
     <>
       <MatzipDetailPage storeData={storeData} similarStores={similarStores} />

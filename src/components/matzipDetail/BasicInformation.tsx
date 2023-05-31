@@ -8,6 +8,8 @@ import EmptyHeartIcon from "../../assets/emptyheart.png";
 import HeartIcon from "../../assets/heart.png";
 import { storeDetail } from "../../pages/MatzipDetail";
 import ImageSlider from "./ImageSlider";
+import { LoginAlert } from "../LoginAlert";
+import { getCategory } from "../bestrestaurant/CategoryType"
 // api 정보 반영
 
 type PreferenceCount = {
@@ -48,35 +50,41 @@ function BasicInformation(
     return EmptyHeartIcon;
   };
 
+  const [isLogIn,setIsLogIn]=useState(false)
   const clickHeart = () => {
-    if (!isClicked) {
-      axios
-        .post(
-          `https://dishcovery.site/api/preference/${storeData?.id}`,
-          {},
-          {
+    if(localStorage.getItem("Authorization")){
+      if (!isClicked) {
+        axios
+          .post(
+            `https://dishcovery.site/api/preference/${storeData?.id}`,
+            {},
+            {
+              headers: {
+                Authorization: "Bearer " + localStorage.getItem("Authorization"),
+              },
+            }
+          )
+          .then((res) => {
+            if (res.status === 201) {
+              setIsClicked(true);
+            }
+          });
+      } else {
+        axios
+          .delete(`https://dishcovery.site/api/preference/${storeData?.id}`, {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("Authorization"),
             },
-          }
-        )
-        .then((res) => {
-          if (res.status === 201) {
-            setIsClicked(true);
-          }
-        });
-    } else {
-      axios
-        .delete(`https://dishcovery.site/api/preference/${storeData?.id}`, {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("Authorization"),
-          },
-        })
-        .then((res) => {
-          if (res.status === 200) {
-            setIsClicked(false);
-          }
-        });
+          })
+          .then((res) => {
+            if (res.status === 200) {
+              setIsClicked(false);
+            }
+          });
+      }
+    }
+    else{
+      setIsLogIn(true)
     }
   };
 
@@ -91,7 +99,7 @@ function BasicInformation(
           ml="-10px"
           onClick={onClickBackButton}
         />
-        <ImageSlider slides={storeData?.images} />
+        <ImageSlider slides={storeData?.storeInfo.photoList} />
         <Card
           variant="unstyled"
           alignContent="left"
@@ -103,7 +111,7 @@ function BasicInformation(
         >
           <Stack pl="4" mt="6" mb="6" spacing="1">
             <HStack>
-              <Heading size="lg">{storeData?.storeName}</Heading>
+              <Heading size="lg" style={{fontFamily: "Noto_Sans_KR_Bold"}}>{storeData?.storeName}</Heading>
 
               <HeartButtonContainer>
                 <HeartButton
@@ -114,68 +122,85 @@ function BasicInformation(
               </HeartButtonContainer>
             </HStack>
 
-            <Text color="gray.600" fontSize="xs">
-              {storeData?.category}
+            <Text color="gray.600" style={{marginBottom: "5px"}}>
+              {getCategory(storeData?.category || "음식 > 한식")}
             </Text>
-            <Stack direction="row">
-              <Image
-                src="https://ifh.cc/g/1NbN0R.png"
-                alt="위치"
-                mt="0.5"
-                boxSize="15px"
-              />
-              <Text fontSize="sm">{storeData?.address}</Text>
-            </Stack>
-            <Stack direction="row">
-              <Image
-                boxSize="15px"
-                src="https://ifh.cc/g/ZtPNRC.png"
-                alt="전화"
-                mt="0.5"
-              />
-              <Text fontSize="sm">{storeData?.phone}</Text>
-            </Stack>
-            <Stack direction="row">
-              <Image
-                boxSize="15px"
-                src="https://ifh.cc/g/jOK0yJ.png"
-                alt="운영시간"
-                mt="0.5"
-              />
-              <Stack>
-                {storeData?.onInfo.map((info) => (
-                  <Text fontSize="sm">{info}</Text>
-                ))}
+
+            {storeData?.address !== "" && (
+              <Stack direction="row">
+                <Image
+                  src="https://ifh.cc/g/1NbN0R.png"
+                  alt="위치"
+                  mt="0.5"
+                  boxSize="15px"
+                />
+                <Text fontSize="sm">{storeData?.address}</Text>
               </Stack>
-            </Stack>
-            <Stack direction="row">
-              <Image
-                boxSize="20px"
-                src="https://cdn-icons-png.flaticon.com/512/1234/1234037.png"
-                alt="휴무날"
-                mt="0.5"
-              />
-              <Stack>
-                {storeData?.offInfo.map((info) => (
-                  <Text fontSize="sm">{info}</Text>
-                ))}
+            )}
+
+            {storeData?.phone !== "" && (
+              <Stack direction="row">
+                <Image
+                  boxSize="15px"
+                  src="https://ifh.cc/g/ZtPNRC.png"
+                  alt="전화"
+                  mt="0.5"
+                />
+                <Text fontSize="sm">{storeData?.phone}</Text>
               </Stack>
-            </Stack>
+            )}
+
+            {storeData?.storeInfo.openHour.length !== 0 && (
+              <Stack direction="row">
+                <Image
+                  boxSize="15px"
+                  src="https://ifh.cc/g/jOK0yJ.png"
+                  alt="운영시간"
+                  mt="0.5"
+                />
+                <Stack>
+                  {storeData?.storeInfo.openHour.map((info) => (
+                    <Text fontSize="sm">{info}</Text>
+                  ))}
+                </Stack>
+              </Stack>
+            )}
+
+            {storeData?.storeInfo.offDays.length !== 0 && (
+              <Stack direction="row">
+                <Image
+                  boxSize="20px"
+                  src="https://cdn-icons-png.flaticon.com/512/1234/1234037.png"
+                  alt="휴무날"
+                  mt="0.5"
+                />
+                <Stack>
+                  {storeData?.storeInfo.offDays.map((info) => (
+                    <Text fontSize="sm">{info}</Text>
+                  ))}
+                </Stack>
+              </Stack>
+            )}
+
             <Stack direction="row">
               <Image
                 ml="1px"
                 boxSize="15px"
                 src={EmptyHeartIcon}
-                alt="운영시간"
+                alt="좋아요"
                 mt="0.5"
               />
               <Stack>
-                <Text fontSize="sm"></Text>
+                <Text fontSize="sm">{storeData?.preferenceCount}</Text>
               </Stack>
             </Stack>
           </Stack>
         </Card>
       </Stack>
+      
+      <LoginAlert 
+      isLogIn={isLogIn}
+      setIsLogIn={setIsLogIn}/>
     </>
   );
 }

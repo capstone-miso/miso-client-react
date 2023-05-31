@@ -5,12 +5,12 @@ import { useNavigate } from "react-router-dom"
 
 export default function RestaurantMarker({ store, setCurrentLocation, level,index,selectedIndex,setSelectedIndex,mapRef }: { store: Store , setCurrentLocation: Function,level:number,index:number,selectedIndex:number, setSelectedIndex:Function,mapRef:kakao.maps.Map}){
 
-  const getMarkerImage = (category: string): string => {
-    if (category.includes("음식점")){
-      return "/restaurant.png"
+  const getMarkerImage = (): string => {
+    if (store.categoryGroup=="음식점"){
+      return "/restaurant-marker.png"
     }
-    else if (category == "제과,베이커리"){
-      return "/cafe.png"
+    else if (store.categoryGroup == "카페"){
+      return "/cafe-marker.png"
     }
     
     return "/location.png"
@@ -104,7 +104,7 @@ export default function RestaurantMarker({ store, setCurrentLocation, level,inde
         }))
         setSelectedIndex(index)}}
         image={{
-          src: getMarkerImage(store.category), 
+          src: getMarkerImage(), 
           size: {
             width: 40,
             height: 40,
@@ -126,7 +126,7 @@ export default function RestaurantMarker({ store, setCurrentLocation, level,inde
         mapRef.setLevel(2)
       }}
         image={{
-          src: getMarkerImage(store.category), 
+          src: getMarkerImage(), 
           size: {
             width: 40,
             height: 40,

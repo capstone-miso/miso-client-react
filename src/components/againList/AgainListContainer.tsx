@@ -4,6 +4,7 @@ import Header from "../Header";
 import AgainListCard from "./AgainListCard";
 import axios from "axios";
 import { Store } from "../../models/Store";
+import { LoginAlert } from "../LoginAlert";
 
 function AgainListContainer() {
   interface AgainButton {
@@ -53,11 +54,16 @@ function AgainListContainer() {
         setSimilarAgainList(response.data.dtoList)
     })
   }
-
+  const [isLogIn,setIsLogIn]=useState(false)
   useEffect(()=>{
-    getMuchAgainStores();
-    getMyAgainStores();
-    getSimilarAgainStores();
+    if(localStorage.getItem("Authorization")){
+      getMuchAgainStores();
+      getMyAgainStores();
+      getSimilarAgainStores();
+    }
+    else{
+      setIsLogIn(true)
+    }
   },[])
 
   const getMyAgainButton=():Again[]=>{
@@ -141,6 +147,9 @@ function AgainListContainer() {
           </Stack>
         </Flex>
       </Flex>
+      <LoginAlert 
+      isLogIn={isLogIn}
+      setIsLogIn={setIsLogIn}/>
     </>
   );
 }
