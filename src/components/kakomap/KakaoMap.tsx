@@ -4,7 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import { Map, MarkerClusterer } from "react-kakao-maps-sdk";
 import { atom, useRecoilState } from "recoil";
 import { Location, Store } from "../../models/Store";
+import { Parking } from "../../models/Parking";
 import RestaurantMarker from "./RestaurantMarker";
+import ParkingMarker from "./ParkingMarker";
+import { getParkingLocation } from "../../services/ParkingAPI";
+import zIndex from '@material-ui/core/styles/zIndex';
 
 const CurrentLocation = atom<Location>({
   key: "CurrentLocation",
@@ -45,6 +49,9 @@ export default function KakaoMap({
 
   const [isClickSearch, setIsClickSearch] = useState<boolean>(false);
   const [selectedTap, setSelectedTap] = useState<String>(" 전 체 ");
+  
+  const [isClickParking, setIsClickParking] = useState<boolean>(false);
+  const [parking, setParking] = useState<Parking[]>([]);
 
   const [isClickDong, setIsClickDong] = useState<boolean>(false);
   const [selectedDong, setSelectedDong] = useState<String>(" 동 별 ");
@@ -162,6 +169,11 @@ export default function KakaoMap({
     }
   }
 
+  const insertParking = async () => {
+    const items = await getParkingLocation(currentLocation);
+    setParking(items);
+  };
+
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
 
   return (
@@ -227,6 +239,15 @@ export default function KakaoMap({
             },
           ]}
         >
+
+          {parking.map((parking, index) => (
+            <ParkingMarker
+              key={`${index}`}
+              lat={parking.lat}
+              lon={parking.lon}
+            />
+          ))}
+
           {stores.map((store, index) => (
             <RestaurantMarker
               key={`${store.id}`}
@@ -263,6 +284,31 @@ export default function KakaoMap({
         </Button>
         }
       </div>
+      {
+        isClickParking ?
+        <div style={{position: "fixed", top: "105px", right: "100px", zIndex: "10"}}>
+          <Button
+            variant="contained"
+            onClick={() => {
+              setParking([])
+              setIsClickParking(false)}}
+            style={{backgroundColor:"#0476e0", color: "white", height:"42px",fontWeight: "700", borderRadius: "50px", fontFamily: "Noto_Sans_KR_Regular"}}>
+            &nbsp;주차장&nbsp;
+          </Button>
+        </div>
+        :
+        <div style={{position: "fixed", top: "105px", right: "100px", zIndex: "10"}}>
+          <Button
+            variant="contained"
+            onClick={() => {
+              insertParking() 
+              setIsClickParking(true)}}
+            style={{backgroundColor:"white",height:"42px",fontWeight: "700", borderRadius: "50px", fontFamily: "Noto_Sans_KR_Regular"}}>
+            &nbsp;주차장&nbsp;
+          </Button>
+        </div>
+      }
+
       {
         isClickSearch ?
           <>
