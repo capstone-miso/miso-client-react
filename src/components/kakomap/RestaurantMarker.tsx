@@ -7,10 +7,10 @@ export default function RestaurantMarker({ store, setCurrentLocation, level,inde
 
   const getMarkerImage = (): string => {
     if (store.categoryGroup=="음식점"){
-      return "/restaurant.png"
+      return "/restaurant-marker.png"
     }
     else if (store.categoryGroup == "카페"){
-      return "/cafe.png"
+      return "/cafe-marker.png"
     }
     
     return "/location.png"

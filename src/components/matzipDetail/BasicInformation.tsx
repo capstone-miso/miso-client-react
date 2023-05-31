@@ -9,6 +9,7 @@ import HeartIcon from "../../assets/heart.png";
 import { storeDetail } from "../../pages/MatzipDetail";
 import ImageSlider from "./ImageSlider";
 import { LoginAlert } from "../LoginAlert";
+import { getCategory } from "../bestrestaurant/CategoryType"
 // api 정보 반영
 
 type PreferenceCount = {
@@ -110,7 +111,7 @@ function BasicInformation(
         >
           <Stack pl="4" mt="6" mb="6" spacing="1">
             <HStack>
-              <Heading size="lg">{storeData?.storeName}</Heading>
+              <Heading size="lg" style={{fontFamily: "Noto_Sans_KR_Bold"}}>{storeData?.storeName}</Heading>
 
               <HeartButtonContainer>
                 <HeartButton
@@ -121,8 +122,8 @@ function BasicInformation(
               </HeartButtonContainer>
             </HStack>
 
-            <Text color="gray.600" fontSize="xs">
-              {storeData?.category}
+            <Text color="gray.600" style={{marginBottom: "5px"}}>
+              {getCategory(storeData?.category || "음식 > 한식")}
             </Text>
 
             {storeData?.address !== "" && (

@@ -1,7 +1,7 @@
 import Button from "@material-ui/core/Button";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import { Map, MarkerClusterer, ZoomControl } from "react-kakao-maps-sdk";
+import { Map, MarkerClusterer } from "react-kakao-maps-sdk";
 import { atom, useRecoilState } from "recoil";
 import { Location, Store } from "../../models/Store";
 import RestaurantMarker from "./RestaurantMarker";

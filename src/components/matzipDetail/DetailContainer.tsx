@@ -14,6 +14,7 @@ function MatzipDetailContainer({
   storeData: storeDetail | null;
   similarStores: Store[];
 }) {
+  
   return (
     <Flex
       justifyContent="center"
@@ -25,7 +26,8 @@ function MatzipDetailContainer({
     >
       <BasicInformation storeData={storeData} />
       <MatzipMenu storeData={storeData} />
-      <PublicTransport storeData={storeData} />
+      <PublicTransport 
+        storeData={storeData}/>
       <MatzipStatistics storeData={storeData} />
       {similarStores.length == 0 ? (
         <></>

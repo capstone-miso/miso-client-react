@@ -1,9 +1,24 @@
 import { Card, CardBody, Heading, Image, Stack, Text } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { storeDetail } from "../../pages/MatzipDetail";
+import { StaticMap, Map, MapMarker } from "react-kakao-maps-sdk";
+
+interface Location{
+  lat: number;
+  lng: number;
+}
 
 // api 정보 반영
 function MatzipMenu({ storeData }: { storeData: storeDetail | null }) {
+  const [storeLocation, setStoreLocation] = useState<Location>({lat: 37.568338118683, lng: 126.97547642083})
+
+  useEffect(() => {
+    const lat = storeData?.lat || 37.568338118683
+    const lon = storeData?.lon || 126.97547642083
+
+    setStoreLocation({lat: lat, lng: lon})
+  }, [storeData])
+
   return (
     <Card
       direction={{ base: "column", sm: "row" }}
@@ -18,6 +33,35 @@ function MatzipMenu({ storeData }: { storeData: storeDetail | null }) {
             교통편
           </Heading>
           <Stack>
+            <Stack direction="row">
+            
+            <Map // 지도를 표시할 Container
+              center={{
+                // 지도의 중심좌표
+                lat: storeLocation.lat,
+                lng: storeLocation.lng
+              }}
+              style={{
+                // 지도의 크기
+                width: "100%",
+                height: "200px",
+              }}
+              level={3} // 지도의 확대 레벨
+            >
+              <MapMarker
+                position={{ 
+                  lat: storeLocation.lat,
+                  lng: storeLocation.lng
+                }}
+                image={{
+                  src: "./store-marker.png", 
+                  size: {
+                    width: 40,
+                    height: 40,
+                  }, 
+                }}/>
+              </Map>
+            </Stack>
             <Stack direction="row">
               <Image
                 boxSize="15px"
