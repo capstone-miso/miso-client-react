@@ -125,15 +125,22 @@ export default function MatzipDetail() {
   }
 
   const getSimilarStores = async (storeId: string | null) => {
-    const response: AxiosResponse = await axios.get(
-      `https://dishcovery.site/api/store/${storeId}/similar`,
-      {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("Authorization"),
-        },
-      }
-    );
-    setSimilarStores(response.data);
+    if(localStorage.getItem("Authorization")){
+      const response: AxiosResponse = await axios.get(
+        `https://dishcovery.site/api/store/${storeId}/similar`,
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("Authorization"),
+          },
+        }
+      );
+      setSimilarStores(response.data);
+    }
+    else{
+      const response: AxiosResponse = await axios.get(
+        `https://dishcovery.site/api/store/${storeId}/similar`)
+        setSimilarStores(response.data);
+    }
   };
 
   const scrollToTop = () => {

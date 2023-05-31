@@ -8,6 +8,9 @@ import Restaurant from "../components/bestrestaurant/RestaurantRanking";
 import "../components/DropDown.css";
 import { Store, StoreRanking, SubKeyword } from "../models/Store";
 import { getNextStoreRanking, getStoreRanking } from "../services/RankingAPI";
+import Dropdown from 'react-dropdown';
+import 'react-dropdown/style.css';
+import '../components/DropDown.css'
 const Container = styled.div`
   width: 100vw;
   height: 100vh;
@@ -237,18 +240,18 @@ export default function BestRestaurants() {
       </ScrollingWrapper>
 
       <div style={{ display: "flex", justifyContent: "right" }}>
-        {/* <Dropdown
+        <Dropdown
           className="sort_select_dropdown"
           onChange={(selected) => handleDropDownChange(selected.value)}
           options={options}
           value={defaultOption}
           placeholder="Select an option"
-        /> */}
-        <Select mr="18px" maxW="30%">
+        />
+        {/* <Select mr="18px" maxW="30%">
           <option value="option1">Option 1</option>
           <option value="option2">Option 2</option>
           <option value="option3">Option 3</option>
-        </Select>
+        </Select> */}
       </div>
 
       <RestaurantContainer>

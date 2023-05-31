@@ -1,23 +1,10 @@
-import { Card, CardBody, Heading, Image, Stack, Text } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import { Card, CardBody, Heading, Image, Stack, Text, position } from "@chakra-ui/react";
+import React from "react";
 import { storeDetail } from "../../pages/MatzipDetail";
-import { StaticMap, Map, MapMarker } from "react-kakao-maps-sdk";
-
-interface Location{
-  lat: number;
-  lng: number;
-}
+import { StaticMap } from "react-kakao-maps-sdk";
 
 // api 정보 반영
 function MatzipMenu({ storeData }: { storeData: storeDetail | null }) {
-  const [storeLocation, setStoreLocation] = useState<Location>({lat: 37.568338118683, lng: 126.97547642083})
-
-  useEffect(() => {
-    const lat = storeData?.lat || 37.568338118683
-    const lon = storeData?.lon || 126.97547642083
-
-    setStoreLocation({lat: lat, lng: lon})
-  }, [storeData])
 
   return (
     <Card
@@ -33,6 +20,29 @@ function MatzipMenu({ storeData }: { storeData: storeDetail | null }) {
             교통편
           </Heading>
           <Stack>
+            {
+              storeData?.lat&&storeData.lon&&(
+                <StaticMap // 지도를 표시할 Container
+            center={{
+              // 지도의 중심좌표
+              lat: storeData.lat,
+              lng: storeData.lon
+            }}
+            style={{
+              // 지도의 크기
+              width: "280px",
+              height: "280px",
+            }}
+            marker={{
+              position:{
+                lat: storeData.lat,
+                lng: storeData.lon
+              }}
+            }
+            level={3} // 지도의 확대 레벨
+          />
+              )
+            }
             <Stack direction="row">
             
             <Map // 지도를 표시할 Container
