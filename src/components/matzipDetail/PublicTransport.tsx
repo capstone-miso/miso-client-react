@@ -44,6 +44,35 @@ function MatzipMenu({ storeData }: { storeData: storeDetail | null }) {
               )
             }
             <Stack direction="row">
+            
+            <Map // 지도를 표시할 Container
+              center={{
+                // 지도의 중심좌표
+                lat: storeLocation.lat,
+                lng: storeLocation.lng
+              }}
+              style={{
+                // 지도의 크기
+                width: "100%",
+                height: "200px",
+              }}
+              level={3} // 지도의 확대 레벨
+            >
+              <MapMarker
+                position={{ 
+                  lat: storeLocation.lat,
+                  lng: storeLocation.lng
+                }}
+                image={{
+                  src: "./store-marker.png", 
+                  size: {
+                    width: 40,
+                    height: 40,
+                  }, 
+                }}/>
+              </Map>
+            </Stack>
+            <Stack direction="row">
               <Image
                 boxSize="15px"
                 src="https://ifh.cc/g/00oJP1.png"
