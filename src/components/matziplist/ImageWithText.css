@@ -1,0 +1,22 @@
+.banner {
+    width: 400px;
+    height: 200px;
+    background-image: url("https://ifh.cc/g/8p8xlh.jpg");
+    background-size: cover; /* 핵심코드 */
+    position: relative; /* 핵심코드 */
+    display : inline-block;
+    margin-top: 10px;
+    margin-bottom: 5%;
+    max-width: 100%;
+    background-repeat :no-repeat;
+    z-index: 0;
+  }
+  
+  .banner-txt {
+    position: absolute; /* 핵심코드 */
+    top: 50%; /* 핵심코드 */
+    left: 50%; /* 핵심코드 */
+    transform: translate( -50%, -50%); /* 핵심코드 */
+    font-size: large;
+    color:white;
+  }

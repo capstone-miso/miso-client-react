@@ -1,82 +1,148 @@
-import {
-  Flex,
-  Heading,
-  Image,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Text,
-  Tr,
-} from "@chakra-ui/react";
-// import axios from "axios";
-import React from "react";
-// import HeartButton from "../HeartButton";
+import { Spinner, Stack } from "@chakra-ui/react";
+import axios from "axios";
+import React, { useEffect, useRef, useState } from "react";
+import Scroll from "react-infinite-scroll-component";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import Restaurant from "../bestrestaurant/RestaurantRanking";
+import { Store } from "../../models/Store";
+import 'react-dropdown/style.css';
+import '../DropDown.css'
+import Dropdown from 'react-dropdown';
 
-// interface PostProps {
-//   // Specify the types for props here if needed
-// }
-// const MatzipListContainer = (props: PostProps) => {
+const RestaurantContainer = styled.div`
+  width: 100%;
+  height: 60%;
+`;
 
 const MatzipListContainer = () => {
-  // const [like, setLike] = useState<boolean>(false);
+  const [stores, setStores] = useState<Store[]>([]);
+  const pageRef = useRef<number>(1);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const res = await axios.get(/* ... */);
-  //     if (res.data.type === "liked") {
-  //       setLike(true);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
-
-  // const toggleLike = async (e: React.MouseEvent<HTMLButtonElement>) => {
-  //   const res = await axios.post(/* ... */);
-  //   setLike(!like);
-  // };
-
-  const matzipTable: [string, string, string, string][] = [
-    ["https://ifh.cc/g/HY2lWp.jpg", "시홍쓰", "중식", "❤️"],
-    ["https://ifh.cc/g/HnMJm7.jpg", "춘천집", "한식", "❤️"],
-    ["https://ifh.cc/g/dKD1wS.png", "개미집투", "한식", "❤️"],
-    ["https://ifh.cc/g/1qrGTs.jpg", "오돌이생삼겹", "한식", "❤️"],
+  const options = [
+    '좋아요순', '방문횟수순','매출순','최근방문순'
   ];
+  const defaultOption = options[0];
+
+  const [sortType,setSortType]=useState<string>("preference")
+  const getStore = () => {
+    if(localStorage.getItem("Authorization")){
+      axios
+      .get(
+        `https://dishcovery.site/api/store?&page=${pageRef.current}&sort=${sortType}`,
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("Authorization"),
+          },
+        }
+      )
+      .then((response) => {
+        if(pageRef.current==1){
+          setStores(response.data.dtoList)
+        }
+        else{
+        setStores([...stores, ...response.data.dtoList]);
+        }
+        pageRef.current = pageRef.current + 1;
+      });
+    }
+    else{
+      axios
+      .get(
+        `https://dishcovery.site/api/store?&page=${pageRef.current}&sort=${sortType}`)
+      .then((response) => {
+        if(pageRef.current==1){
+          setStores(response.data.dtoList)
+        }
+        else{
+        setStores([...stores, ...response.data.dtoList]);
+        }
+        pageRef.current = pageRef.current + 1;
+      });
+    }
+  };
+
+  const fetchData = () => {
+    setTimeout(() => {
+      getStore();
+    }, 1000);
+  };
+
+  const handleDropDownChange=(type:string)=>{
+    setStores([])
+    if(type=="좋아요순"){
+      setSortType("preference")
+    }
+    else if(type=="방문횟수순"){
+      setSortType("visit")
+    }
+    else if(type=="매출순"){
+      setSortType("cost")
+    }
+    else{
+      setSortType("update")
+    }
+  }
+
+  useEffect(()=>{
+    pageRef.current=1
+    getStore()
+  },[sortType])
+  
+
+  const scrollable = useRef<boolean>(true);
 
   return (
     <>
-      <Flex
-        maxW="100%"
-        justifyContent="center"
-        justifyItems="center"
-        alignContent="center"
-        alignItems="center"
-      >
-        <TableContainer pt="30px" maxW="100%">
-          <Table w="350px">
-            <Tbody>
-              {/* <HeartButton like={like} onClick={toggleLike} /> */}
-              {matzipTable.map(([imageUrl, menu, type, like], index) => (
-                <Tr key={index}>
-                  <Td>
-                    <Image
-                      boxSize="100px"
-                      src={imageUrl}
-                      alt={menu}
-                      borderRadius="lg"
-                    />
-                  </Td>
-                  <Td>
-                    <Heading size="sm">{menu}</Heading>
-                    <Text fontSize="xs">{type}</Text>
-                  </Td>
-                  <Td>{like}</Td>
-                </Tr>
-              ))}
-            </Tbody>
-          </Table>
-        </TableContainer>
-      </Flex>
+      <Stack mt="55px"></Stack>
+      <div style={{display:"flex",justifyContent:"right"}}>
+          <Dropdown className="sort_select_dropdown" onChange={(selected)=>(handleDropDownChange(selected.value))} options={options} value={defaultOption} placeholder="Select an option" />
+        </div>
+      <RestaurantContainer>
+        <Scroll
+          dataLength={stores.length} //반복되는 컴포넌트 개수
+          next={fetchData} //스크롤이 바닥에 닿은 경우 -> 데이터 추가
+          hasMore={scrollable.current} //추가 데이터 유무
+          loader={
+            <h4
+              style={{
+                textAlign: "center",
+                padding: "10px 0 10px 0",
+              }}
+            >
+              <Spinner
+                thickness="4px"
+                speed="0.65s"
+                emptyColor="gray.200"
+                color="orange.300"
+                size="xl"
+              />
+            </h4>
+          } //로딩 스피너
+          endMessage={
+            <h4
+              style={{
+                textAlign: "center",
+                padding: "10px 0 10px 0",
+              }}
+            >
+              End...
+            </h4>
+          }
+          scrollableTarget={RestaurantContainer}
+          style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}
+        >
+          {stores.map((store, index) => (
+            <Restaurant
+              key={`${store.id}-${index}`}
+              {...stores[index]}
+              store={store}
+              ranking={index+1}
+            />
+          ))}
+        </Scroll>
+      </RestaurantContainer>
+      <Stack mb="45px" />
     </>
   );
 };

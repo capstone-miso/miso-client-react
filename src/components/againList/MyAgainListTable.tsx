@@ -1,23 +1,55 @@
-import {
-  Flex,
-  Heading,
-  Image,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Text,
-  Tr,
-} from "@chakra-ui/react";
-import React from "react";
+import { Flex, Spinner, Stack } from "@chakra-ui/react";
+import axios from "axios";
+import React, { useRef, useState } from "react";
+import Scroll from "react-infinite-scroll-component";
+import styled from "styled-components";
+import { Store } from "../../models/Store";
+import Restaurant from "../kakomap/Restaurant";
 
-function MyAgainListTable() {
-  const matzipTable: [string, string, string, string][] = [
-    ["https://ifh.cc/g/HY2lWp.jpg", "시홍쓰", "중식", "❤️"],
-    ["https://ifh.cc/g/HnMJm7.jpg", "춘천집", "한식", "❤️"],
-    ["https://ifh.cc/g/dKD1wS.png", "개미집투", "한식", "❤️"],
-    ["https://ifh.cc/g/1qrGTs.jpg", "오돌이생삼겹", "한식", "❤️"],
-  ];
+const ScrollingWrapper = styled.div`
+  height: 10%;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  padding: 0 10px;
+  display: felx;
+  justify-content: center;
+`;
+
+const RestaurantContainer = styled.div`
+  width: 100%;
+  height: 60%;
+  padding: 0 10px 0 10px;
+`;
+
+function MyAgainListTable({ stores }: { stores: Store[] }) {
+  const [storeList, setStoreList] = useState<Store[]>([...stores]);
+  const pageRef = useRef<number>(2);
+  const scrollable = useRef<boolean>(true);
+
+  const getStore = () => {
+    axios
+      .get(`https://dishcovery.site/api/preference?page=${pageRef.current}`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("Authorization"),
+        },
+      })
+      .then((response) => {
+        pageRef.current = pageRef.current + 1;
+        console.log(response.data);
+        setStoreList([...storeList, ...response.data.dtoList]);
+      });
+  };
+
+  const fetchData = () => {
+    setTimeout(() => {
+      getStore();
+    }, 2000);
+  };
 
   return (
     <>
@@ -28,29 +60,52 @@ function MyAgainListTable() {
         alignContent="center"
         alignItems="center"
       >
-        <TableContainer maxW="100%">
-          <Table w="350px">
-            <Tbody>
-              {matzipTable.map(([imageUrl, menu, type, like], index) => (
-                <Tr key={index}>
-                  <Td>
-                    <Image
-                      boxSize="100px"
-                      src={imageUrl}
-                      alt={menu}
-                      borderRadius="lg"
-                    />
-                  </Td>
-                  <Td>
-                    <Heading size="sm">{menu}</Heading>
-                    <Text fontSize="xs">{type}</Text>
-                  </Td>
-                  <Td>{like}</Td>
-                </Tr>
+        <Stack maxW="100%">
+          <ScrollingWrapper></ScrollingWrapper>
+
+          <RestaurantContainer>
+            <Scroll
+              dataLength={storeList.length} //반복되는 컴포넌트 개수
+              next={fetchData} //스크롤이 바닥에 닿은 경우 -> 데이터 추가
+              hasMore={scrollable.current} //추가 데이터 유무
+              loader={
+                <h4
+                  style={{
+                    textAlign: "center",
+                    padding: "10px 0 10px 0",
+                  }}
+                >
+                  <Spinner
+                    thickness="4px"
+                    speed="0.65s"
+                    emptyColor="gray.200"
+                    color="orange.300"
+                    size="xl"
+                  />
+                </h4>
+              } //로딩 스피너
+              endMessage={
+                <h4
+                  style={{
+                    textAlign: "center",
+                    padding: "10px 0 10px 0",
+                  }}
+                >
+                  End...
+                </h4>
+              }
+              scrollableTarget={RestaurantContainer}
+            >
+              {storeList.map((store, index) => (
+                <Restaurant
+                  key={`${store.id}-${index}`}
+                  {...stores[index]}
+                  store={store}
+                />
               ))}
-            </Tbody>
-          </Table>
-        </TableContainer>
+            </Scroll>
+          </RestaurantContainer>
+        </Stack>
       </Flex>
     </>
   );

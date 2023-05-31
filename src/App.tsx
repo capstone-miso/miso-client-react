@@ -1,36 +1,25 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import AfterEntering from "./AfterEntering";
 import "./App.css";
 import theme from "./constants/theme";
-import Matziplist from "./pages/matziplist";
-import RestaurantMap from "./RestaurantMap";
+import Main from "./pages/Main";
+import MuchAgainList from "./pages/MuchAgainList";
+import OauthDetection from "./pages/OauthDetection";
+import SimilarAgainList from "./pages/SimilarAgainList";
 
-function App() {
+const App: React.FC = () => {
   return (
     <ChakraProvider theme={theme}>
       <BrowserRouter>
         <Routes>
-          <Route path="/test" element={<RestaurantMap />}></Route>
-          <Route path="/matzipList" element={<Matziplist />}></Route>
+          <Route path="/*" element={<AfterEntering />} />
+          <Route path="/" element={<Main />} />
+          <Route path="/auth" element={<OauthDetection />}></Route>
         </Routes>
       </BrowserRouter>
     </ChakraProvider>
   );
-}
-
-// function App() {
-//   return (
-//     // <BrowserRouter>
-//     //   <Routes>
-//     //     <Route path="/test" element={<RestaurantMap />}></Route>
-//     //   </Routes>
-//     // </BrowserRouter>
-//     <ChakraProvider theme={theme}>
-//       <Layout>
-//         <Component {...pageProps} />
-//       </Layout>
-//     </ChakraProvider>
-//   );
-// }
+};
 
 export default App;
