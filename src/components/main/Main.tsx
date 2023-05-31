@@ -11,6 +11,7 @@ function Main() {
   const navigateToPage = () => {
     localStorage.removeItem("Authorization")
     navigate("/restaurant-map");
+    localStorage.setItem("path","/restaurant-map")
   };
 
   return (
