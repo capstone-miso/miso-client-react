@@ -52,17 +52,6 @@ const PersonalPage: React.FC = () => {
           alignItems="center"
         >
           <Stack maxW="390px" mt="85px">
-            <Flex ml="10px">
-              <Image
-                boxSize="23px"
-                src="https://ifh.cc/g/aS7Aw8.png"
-                alt="사람"
-                mt="1px"
-              />
-              <Heading ml="10px" fontSize="md">
-                yxxngxix@gmail.com
-              </Heading>
-            </Flex>
             <Flex direction="column" alignContent="center" alignItems="center">
               <Card
                 w="330px"

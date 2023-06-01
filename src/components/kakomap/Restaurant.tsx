@@ -5,6 +5,7 @@ import styled from "styled-components";
 import EmptyHeartIcon from "../../assets/emptyheart.png";
 import HeartIcon from "../../assets/heart.png";
 import { Store } from "../../models/Store";
+import { LoginAlert } from "../LoginAlert";
 
 const Container = styled.div`
   width: 330px;
@@ -64,6 +65,7 @@ const SubKeyword = styled.span`
 `
 
 export default function Restaurant({ store }: { store: Store }) {
+  const [isLogIn,setIsLogIn]=useState(false)
   const [isClicked, setIsClicked] = useState<boolean>(store.preference); //사용자가 찜했는지 여부를 받아와 변수 초기화 필요
   const getHeartButtonIcon = () => {
     if (isClicked) {
@@ -152,7 +154,7 @@ export default function Restaurant({ store }: { store: Store }) {
       }
     }
     else{
-      console.log("no login")
+      setIsLogIn(true)
     }
   };
 
@@ -213,7 +215,6 @@ export default function Restaurant({ store }: { store: Store }) {
             onClick={() => clickHeart()}
           />
         </HeartButtonContainer>
-
       
       </div>
       <SubKeywordContainer>
@@ -225,6 +226,9 @@ export default function Restaurant({ store }: { store: Store }) {
           </SubKeyword>
         ))}
       </SubKeywordContainer>
+      <LoginAlert 
+      isLogIn={isLogIn}
+      setIsLogIn={setIsLogIn}/>
     </Container>
   );
 }

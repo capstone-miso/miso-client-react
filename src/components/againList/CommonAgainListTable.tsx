@@ -43,7 +43,6 @@ function CommonAgainListTable({ stores }: { stores: Store[] }) {
       )
       .then((response) => {
         pageRef.current = pageRef.current + 1;
-        console.log(response.data);
         setStoreList([...storeList, ...response.data.dtoList]);
       });
   };

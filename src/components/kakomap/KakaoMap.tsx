@@ -14,8 +14,8 @@ const CurrentLocation = atom<Location>({
   key: "CurrentLocation",
   default: {
     center: {
-      lat: 37.549605785399,
-      lng: 127.075150292867,
+      lat: 37.566474,
+      lng: 126.978466,
     },
     errMsg: "",
     isLoading: false,

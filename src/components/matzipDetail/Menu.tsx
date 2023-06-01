@@ -16,8 +16,6 @@ function MatzipMenu({ storeData }: { storeData: storeDetail | null }) {
     { mid: 3, name: "클로렐라만두-한판", cost: "6,000원" },
   ];
 
-  console.log(storeData?.storeInfo.menuInfo.menuList);
-
   return (
     <Card
       direction={{ base: "column", sm: "row" }}

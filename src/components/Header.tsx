@@ -18,9 +18,9 @@ const Header = ({ title }: HeaderProps) => {
     <Card
       variant="unstyled"
       // bgColor="blue"
-      w="390px"
+      w="100%"
       h="85px"
-      zIndex="1"
+      zIndex="20"
       display="left"
       direction="row"
       position="fixed"

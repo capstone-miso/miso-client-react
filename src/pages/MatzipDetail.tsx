@@ -105,7 +105,7 @@ export default function MatzipDetail() {
 
   const [storeData, setData] = useState<storeDetail | null>(null);
   const [similarStores, setSimilarStores] = useState<Store[]>([]);
-  console.log(storeId);
+
 
 
   const getStoreDetail=async (storeId:string|null)=>{
@@ -157,7 +157,7 @@ export default function MatzipDetail() {
   }, [searchParams]);
 
   useEffect(() => {
-    console.log(storeData);
+  
   }, [storeData]);
   return (
     <>

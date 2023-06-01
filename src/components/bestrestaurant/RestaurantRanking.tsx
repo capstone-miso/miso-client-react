@@ -167,7 +167,6 @@ export default function Restaurant({
         state: storeId,
       }
     );
-    navigate(0);
   };
 
   return (

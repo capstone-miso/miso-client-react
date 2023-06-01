@@ -18,7 +18,8 @@ const Title = styled.div`
   display: flex;
   align-items: center;
   font-size: 30px;
-  font-family: "Noto_Sans_KR_Bold"
+  font-family: "Noto_Sans_KR_Bold";
+  z-index:100;
 `;
 
 const Rectangle = styled.div`
