@@ -114,7 +114,7 @@ SNS, 포털 사이트 검색을 통한 맛집들은 광고 기반인 경우가 �
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-### `Set .env file"
+### `Set .env file`
 You need to store kakao dev javascript key in .env file.
 
 #### `npm start`
