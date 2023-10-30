@@ -1,13 +1,14 @@
 # Dishcovery
 
 공무원 업무추진비 내역을 기반으로 한 로컬 맛집 추천 서비스
+- 2023년 제 15회 창의설계경진대회 우수상
+<img src="https://github.com/capstone-miso/miso-server/assets/86183856/f3deca72-37b1-4331-95ab-f121083bc348" height="400px">
 
 ### 접속 도메인
-
-[https://dishcovery.life](https://dishcovery.life)
-
+[https://dishcovery.life](https://dishcovery.life)  
 본 서비스는 Mobile 환경에 최적화 되어 있습니다.
 
+---
 ## 기획 배경
 
 1. 기존의 맛집 추천 및 검색 방식의 신뢰 문제
@@ -37,6 +38,19 @@ SNS, 포털 사이트 검색을 통한 맛집들은 광고 기반인 경우가 �
 6. React (웹페이지 구성)
     1. Chakra UI (애플리케이션 개발)
     2. Axios (비동기 통신을 통한 서버 연동)
+
+## 시퀸스 다이어그램
+<img src="https://github.com/capstone-miso/miso-server/assets/86183856/4c8edcba-66bb-49db-9882-729210e82b83" width="600px">
+<img src="https://github.com/capstone-miso/miso-server/assets/86183856/ea217ca4-0057-400c-ac53-4e4101d39e7f" width="600px">
+
+## 서비스 아키텍처
+- Client
+<img src="https://github.com/capstone-miso/miso-server/assets/86183856/42cdc524-ae58-4e4c-a89d-a34d65ff98d9" width="600px">
+- Server
+<img src="https://github.com/capstone-miso/miso-server/assets/86183856/5acd141b-cd94-43de-a8a5-ef918314a9f3" width="600px">
+
+## ERD 설계
+<img src="https://github.com/capstone-miso/miso-server/assets/86183856/01c3cb97-e3f8-4e97-8557-c67eda68ac29" width="600px"/>
 
 ## 화면 구성
 <div>
@@ -91,34 +105,3 @@ SNS, 포털 사이트 검색을 통한 맛집들은 광고 기반인 경우가 �
 👩🏻‍💻 [ming-taro](https://github.com/ming-taro)
 
 👨🏻‍💻 [RecordOfJun](https://github.com/RecordOfJun)
-
----
-#### Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-### `Set .env file`
-You need to store kakao dev javascript key in .env file.
-
-#### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-#### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-#### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
